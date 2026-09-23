@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace Monogame;
 
@@ -12,6 +13,7 @@ public class Game1 : Game
     private Texture2D playerTexture;
 
     private IPlayer player;
+    private IItem item;
     private IController keyboardController;
     private IController mouseController;
     private int animationFrame = 0;
@@ -27,7 +29,6 @@ public class Game1 : Game
     protected override void Initialize()
     {
         player = new Player(new Vector2(100, 100));
-        keyboardController = new KeyboardController(this, player);
         mouseController = new MouseController(player);
 
         base.Initialize();
@@ -38,6 +39,12 @@ public class Game1 : Game
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
         playerTexture = Content.Load<Texture2D>("mario");
+        SpriteFactory spriteFactory = new SpriteFactory();
+        spriteFactory.LoadTextures(Content);
+
+        item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
+
+        keyboardController = new KeyboardController(this, player, item);
 
     }
 
@@ -49,6 +56,7 @@ public class Game1 : Game
         keyboardController.Update(gameTime);
         mouseController.Update(gameTime);
         player.Update(gameTime);
+        item.Update(gameTime);
         if (player.IsMoving)
         {
             animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
@@ -138,6 +146,8 @@ public class Game1 : Game
             spriteEffect,
             0f
         );
+
+        item.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
