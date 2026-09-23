@@ -6,10 +6,14 @@ public class KeyboardController : IController
     private IPlayer player;
     private Game game;
 
-    public KeyboardController(Game game, IPlayer player)
+    private IItem item;
+    private KeyboardState previousState;
+
+    public KeyboardController(Game game, IPlayer player, IItem item)
     {
         this.game = game;
         this.player = player;
+        this.item = item;
     }
 
     public void Update(GameTime gameTime)
@@ -35,5 +39,15 @@ public class KeyboardController : IController
         {
             game.Exit();
         }
+        if (keyboardState.IsKeyDown(Keys.O) && previousState.IsKeyUp(Keys.O))
+        {
+            item.nextSprite();
+        }
+        if (keyboardState.IsKeyDown(Keys.P) && previousState.IsKeyUp(Keys.P))
+        {
+            item.prevSprite();
+        }
+
+        previousState = keyboardState;
     }
 }
