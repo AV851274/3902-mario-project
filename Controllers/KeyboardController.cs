@@ -8,17 +8,18 @@ public class KeyboardController : IController
 
     public KeyboardController(Game game, IPlayer player)
     {
+        this.game = game;
         this.player = player;
     }
 
     public void Update(GameTime gameTime)
     {
         KeyboardState keyboardState = Keyboard.GetState();
-        if (keyboardState.IsKeyDown(Keys.Left))
+        if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
         {
             player.MoveLeft();
         }
-        else if (keyboardState.IsKeyDown(Keys.Right))
+        else if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
         {
             player.MoveRight();
         }
@@ -26,7 +27,7 @@ public class KeyboardController : IController
         {
             player.StopMoving();
         }
-        if (keyboardState.IsKeyDown(Keys.Up))
+        if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
         {
             player.Jump();
         }
