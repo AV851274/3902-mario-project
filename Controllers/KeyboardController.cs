@@ -7,13 +7,15 @@ public class KeyboardController : IController
     private Game game;
 
     private IItem item;
+    private IBlock block;
     private KeyboardState previousState;
 
-    public KeyboardController(Game game, IPlayer player, IItem item)
+    public KeyboardController(Game game, IPlayer player, IItem item, IBlock block)
     {
         this.game = game;
         this.player = player;
         this.item = item;
+        this.block = block;
     }
 
     public void Update(GameTime gameTime)
@@ -46,6 +48,14 @@ public class KeyboardController : IController
         if (keyboardState.IsKeyDown(Keys.P) && previousState.IsKeyUp(Keys.P))
         {
             item.prevSprite();
+        }
+        if (keyboardState.IsKeyDown(Keys.K) && previousState.IsKeyUp(Keys.K))
+        {
+            block.nextSprite();
+        }
+        if (keyboardState.IsKeyDown(Keys.L) && previousState.IsKeyUp(Keys.L))
+        {
+            block.prevSprite();
         }
 
         previousState = keyboardState;
