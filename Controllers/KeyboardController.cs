@@ -41,19 +41,19 @@ public class KeyboardController : IController
         {
             game.Exit();
         }
-        if (keyboardState.IsKeyDown(Keys.O) && previousState.IsKeyUp(Keys.O))
+        if (keyboardState.IsKeyDown(Keys.Y) && previousState.IsKeyUp(Keys.Y))
         {
             item.nextSprite();
         }
-        if (keyboardState.IsKeyDown(Keys.P) && previousState.IsKeyUp(Keys.P))
+        if (keyboardState.IsKeyDown(Keys.T) && previousState.IsKeyUp(Keys.T))
         {
             item.prevSprite();
         }
-        if (keyboardState.IsKeyDown(Keys.K) && previousState.IsKeyUp(Keys.K))
+        if (keyboardState.IsKeyDown(Keys.I) && previousState.IsKeyUp(Keys.I))
         {
             block.nextSprite();
         }
-        if (keyboardState.IsKeyDown(Keys.L) && previousState.IsKeyUp(Keys.L))
+        if (keyboardState.IsKeyDown(Keys.U) && previousState.IsKeyUp(Keys.U))
         {
             block.prevSprite();
         }
