@@ -14,6 +14,7 @@ public class Game1 : Game
 
     private IPlayer player;
     private IItem item;
+    private IBlock block;
     private IController keyboardController;
     private IController mouseController;
     private int animationFrame = 0;
@@ -43,8 +44,9 @@ public class Game1 : Game
         spriteFactory.LoadTextures(Content);
 
         item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
+        block = new Block(spriteFactory.CreateBlockSprites(), new Vector2(250, 200));
 
-        keyboardController = new KeyboardController(this, player, item);
+        keyboardController = new KeyboardController(this, player, item, block);
 
     }
 
@@ -56,6 +58,7 @@ public class Game1 : Game
         keyboardController.Update(gameTime);
         mouseController.Update(gameTime);
         player.Update(gameTime);
+        block.Update(gameTime);
         item.Update(gameTime);
         if (player.IsMoving)
         {
@@ -148,6 +151,7 @@ public class Game1 : Game
         );
 
         item.Draw(_spriteBatch);
+        block.Draw(_spriteBatch);
 
         _spriteBatch.End();
 
