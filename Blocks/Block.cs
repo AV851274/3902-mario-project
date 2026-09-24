@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Game2D.Interfaces;
 
 public class Block : IBlock
 {
@@ -27,7 +28,7 @@ public class Block : IBlock
 
     public void Update(GameTime gameTime)
     {
-        sprites[currentSpriteIndex].Update(gameTime);
+        sprites[currentSpriteIndex].UpdateAnimation(gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)

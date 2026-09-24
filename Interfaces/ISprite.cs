@@ -1,8 +1,16 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-public interface ISprite
+namespace Game2D.Interfaces
 {
-    void Update(GameTime gameTime);
-    void Draw(SpriteBatch spriteBatch, Vector2 position);
+    public interface ISprite
+    {
+        void UpdateAnimation(GameTime gameTime);
+        void Draw(
+            SpriteBatch spriteBatch,
+            Vector2 position,
+            float rotation = 0f,
+            SpriteEffects effects = SpriteEffects.None);
+        void Play(string clipName);
+    }
 }

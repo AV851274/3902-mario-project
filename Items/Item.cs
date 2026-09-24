@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Game2D.Interfaces;
 
 public class Item : IItem
 {
@@ -29,7 +30,7 @@ public class Item : IItem
 
     public void Update(GameTime gameTime)
     {
-        sprites[currentSpriteIndex].Update(gameTime);
+        sprites[currentSpriteIndex].UpdateAnimation(gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)

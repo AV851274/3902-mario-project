@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Game2D.Interfaces;
 
 public class StaticSprite : ISprite
 {
@@ -14,20 +15,31 @@ public class StaticSprite : ISprite
         this.sourceRectangle = sourceRectangle;
     }
 
-    public void Update(GameTime gameTime)
+    public void UpdateAnimation(GameTime gameTime)
     {
         // Static sprites do not have any update logic for now
     }
 
-    public void Draw(SpriteBatch spriteBatch, Vector2 position)
+    public void Play(string clipName)
     {
-        Rectangle spritePosition = new Rectangle(
-            (int)position.X,
-            (int)position.Y,
-            sourceRectangle.Width * scale,
-            sourceRectangle.Height * scale);
+    }
 
-        spriteBatch.Draw(texture, spritePosition, sourceRectangle, Color.White);
+    public void Draw(
+        SpriteBatch spriteBatch,
+        Vector2 position,
+        float rotation = 0f,
+        SpriteEffects effects = SpriteEffects.None)
+    {
+        spriteBatch.Draw(
+            texture,
+            position,
+            sourceRectangle,
+            Color.White,
+            rotation,
+            Vector2.Zero,
+            scale,
+            effects,
+            0f);
     }
 
 }

@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using Game2D.Animation;
+using Game2D.Interfaces;
 
 namespace Monogame;
 
@@ -10,16 +12,12 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
 
-    private Texture2D playerTexture;
-
     private IPlayer player;
+    private ISprite playerSprite;
     private IItem item;
     private IBlock block;
     private IController keyboardController;
     private IController mouseController;
-    private int animationFrame = 0;
-    private double animationTimer = 0;
-
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -39,12 +37,12 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         
-        playerTexture = Content.Load<Texture2D>("mario");
         SpriteFactory spriteFactory = new SpriteFactory();
         spriteFactory.LoadTextures(Content);
 
         item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
         block = new Block(spriteFactory.CreateBlockSprites(), new Vector2(250, 200));
+        playerSprite = spriteFactory.CreatePlayerSprite();
 
         keyboardController = new KeyboardController(this, player, item, block);
 
@@ -60,26 +58,21 @@ public class Game1 : Game
         player.Update(gameTime);
         block.Update(gameTime);
         item.Update(gameTime);
-        if (player.IsMoving)
+
+        if (!player.IsOnGround)
         {
-            animationTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (animationTimer >= 0.15)
-            {
-                animationFrame++;
-
-                if (animationFrame > 2)
-                {
-                    animationFrame = 0;
-                }
-
-                animationTimer = 0;
-            }
+            playerSprite.Play("Jump");
+        }
+        else if (player.IsMoving)
+        {
+            playerSprite.Play("Run");
         }
         else
         {
-            animationFrame = 0;
+            playerSprite.Play("Idle");
         }
+
+        playerSprite.UpdateAnimation(gameTime);
 
         base.Update(gameTime);
     }
@@ -88,67 +81,13 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        Rectangle sourceRectangle;
-        SpriteEffects spriteEffect = SpriteEffects.None;
-
-        if (!player.IsOnGround)
-        {
-            sourceRectangle = new Rectangle(150, 0, 14, 15);
-
-            if (player.FacingDirection == 1)
-            {
-                spriteEffect = SpriteEffects.FlipHorizontally;
-            }
-        }
-        else if (player.IsMoving)
-        {
-            if (animationFrame == 0)
-            {
-                sourceRectangle = new Rectangle(60, 0, 14, 16);
-            }
-            else if (animationFrame == 1)
-            {
-                sourceRectangle = new Rectangle(89, 0, 16, 16);
-            }
-            else
-            {
-                sourceRectangle = new Rectangle(121, 0, 12, 16);
-            }
-
-            if (player.FacingDirection == 1)
-            {
-                spriteEffect = SpriteEffects.FlipHorizontally;
-            }
-        }
-        else
-        {
-            if (player.FacingDirection == -1)
-            {
-                sourceRectangle = new Rectangle(0, 57, 16, 22);
-            }
-            else
-            {
-                sourceRectangle = new Rectangle(389, 57, 16, 22);
-            }
-        }
-
-        if (player.IsMoving && player.FacingDirection == 1)
-        {
-            spriteEffect = SpriteEffects.FlipHorizontally;
-        }
+        SpriteEffects spriteEffect = player.FacingDirection == Direction.Right
+            ? SpriteEffects.FlipHorizontally
+            : SpriteEffects.None;
 
         _spriteBatch.Begin();
 
-        _spriteBatch.Draw(
-            playerTexture,
-            new Rectangle((int)player.Position.X,(int)player.Position.Y,40,40),
-            sourceRectangle,
-            Color.White,
-            0f,
-            Vector2.Zero,
-            spriteEffect,
-            0f
-        );
+        playerSprite.Draw(_spriteBatch, player.Position, effects: spriteEffect);
 
         item.Draw(_spriteBatch);
         block.Draw(_spriteBatch);

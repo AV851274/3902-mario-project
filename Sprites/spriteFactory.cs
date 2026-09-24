@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Game2D.Animation;
+using Game2D.Interfaces;
 
 public class SpriteFactory
 {
@@ -36,5 +38,36 @@ public class SpriteFactory
             new StaticSprite(blockTexture, new Rectangle(180, 116, 16, 16)),  // blue brick
             new StaticSprite(blockTexture, new Rectangle(180, 332, 16, 16)),  // grey block
         };
+    }
+
+    public ISprite CreatePlayerSprite()
+    {
+        AnimationController animationController = new AnimationController(
+            marioTexture,
+            Vector2.Zero,
+            2.5f);
+
+        animationController.AddClip(new Track(
+            "Idle",
+            [new Rectangle(389, 57, 16, 22)],
+            [1f],
+            true));
+        animationController.AddClip(new Track(
+            "Run",
+            [
+                new Rectangle(60, 0, 14, 16),
+                new Rectangle(89, 0, 16, 16),
+                new Rectangle(121, 0, 12, 16)
+            ],
+            [0.15f, 0.15f, 0.15f],
+            true));
+        animationController.AddClip(new Track(
+            "Jump",
+            [new Rectangle(150, 0, 14, 15)],
+            [1f],
+            false));
+        animationController.Play("Idle");
+
+        return animationController;
     }
 }

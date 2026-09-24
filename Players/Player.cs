@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Game2D.Animation;
 
 public class Player : IPlayer
 {
@@ -9,7 +10,7 @@ public class Player : IPlayer
     private const float Gravity = 1000f;
     private const float GroundY = 400f;
     private bool isOnGround;
-    private int facingDirection = 1;
+    private Direction facingDirection = Direction.Right;
 
     public Vector2 Position
     {
@@ -27,7 +28,7 @@ public class Player : IPlayer
         }
     }
 
-    public int FacingDirection
+    public Direction FacingDirection
     {
         get
         {
@@ -52,13 +53,13 @@ public class Player : IPlayer
     public void MoveLeft()
     {
         velocity.X = -MoveSpeed;
-        facingDirection = -1;
+        facingDirection = Direction.Left;
     }
 
     public void MoveRight()
     {
         velocity.X = MoveSpeed;
-        facingDirection = 1;
+        facingDirection = Direction.Right;
     }
 
     public void StopMoving()
@@ -77,7 +78,7 @@ public class Player : IPlayer
 
     public void Dash()
     {
-        velocity.X = 600f * facingDirection;
+        velocity.X = 600f * (facingDirection == Direction.Right ? 1f : -1f);
     }
 
     public void Update(GameTime gameTime)
