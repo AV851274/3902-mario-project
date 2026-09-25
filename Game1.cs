@@ -15,6 +15,7 @@ public class Game1 : Game
     private ISprite playerSprite;
     private IItem item;
     private IBlock block;
+    private IEnemy enemy;
     private IController keyboardController;
     private IController mouseController;
     public Game1()
@@ -41,6 +42,7 @@ public class Game1 : Game
 
         item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
         block = new Block(spriteFactory.CreateBlockSprites(), new Vector2(250, 200));
+        enemy = new Goomba(spriteFactory.CreateGoombaSprite(), new Vector2(600, 400));
         playerSprite = spriteFactory.CreatePlayerSprite();
 
         keyboardController = new KeyboardController(this, player, item, block);
@@ -56,6 +58,7 @@ public class Game1 : Game
         mouseController.Update(gameTime);
         player.Update(gameTime);
         block.Update(gameTime);
+        enemy.Update(gameTime);
         item.Update(gameTime);
 
         if (!player.IsOnGround)
@@ -89,6 +92,7 @@ public class Game1 : Game
         playerSprite.Draw(_spriteBatch, player.Position, effects: spriteEffect);
 
         item.Draw(_spriteBatch);
+        enemy.Draw(_spriteBatch);
         block.Draw(_spriteBatch);
 
         _spriteBatch.End();
