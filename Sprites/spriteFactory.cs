@@ -114,24 +114,46 @@ public class SpriteFactory
     //ENEMY SPRITES
 
     public ISprite CreateGoombaSprite()
-{
-    AnimationController goomba = new AnimationController(enemyTexture, Vector2.Zero, 3f);
+    {
+        AnimationController goomba = new AnimationController(enemyTexture, Vector2.Zero, 2f);
 
-    goomba.AddClip(new Track(
-        "Walk",
-        [
-            new Rectangle(0, 16, 16, 16),
-            new Rectangle(18, 16, 16, 16)
-        ],
-        [0.2f, 0.2f],
-        true));
-    // goomba.AddClip(new Track(
-    //     "Stomped",
-    //     [new Rectangle(32, 0, 16, 8)],
-    //     [1f],
-    //     false));
-    goomba.Play("Walk");
+        goomba.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(0, 16, 16, 16),
+                new Rectangle(18, 16, 16, 16)
+            ],
+            [0.2f, 0.2f],
+            true));
+        // goomba.AddClip(new Track(
+        //     "Stomped",
+        //     [new Rectangle(32, 0, 16, 8)],
+        //     [1f],
+        //     false));
+        goomba.Play("Walk");
 
-    return goomba;
-}
+        return goomba;
+    }
+
+    public ISprite CreateTurtleSprite()
+    {
+        AnimationController turtle = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+
+        turtle.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(0, 112, 16, 24),
+                new Rectangle(18, 112, 16, 24)
+            ],
+            [0.2f, 0.2f],
+            true));
+        // turtle.AddClip(new Track(
+        //     "Stomped",
+        //     [new Rectangle(32, 0, 16, 8)],
+        //     [1f],
+        //     false));
+        turtle.Play("Walk");
+
+        return turtle;
+    }
 }
