@@ -21,9 +21,21 @@ public class KeyboardController : IController
     public void Update(GameTime gameTime)
     {
         KeyboardState keyboardState = Keyboard.GetState();
-        if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
+        if ((keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A)) && (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))) //No movement when both left and right are pressed
+        {
+            player.StopMoving();
+        }
+        else if ((keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A)) && keyboardState.IsKeyDown(Keys.Space))
+        {
+            player.DashLeft();
+        }
+        else if (keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A))
         {
             player.MoveLeft();
+        }
+        else if ((keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D)) && keyboardState.IsKeyDown(Keys.Space))
+        {
+            player.DashRight();
         }
         else if (keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D))
         {
