@@ -5,7 +5,9 @@ public class Player : IPlayer
 {
     private Vector2 position;
     private Vector2 velocity;
-    private const float MoveSpeed = 200f;
+    private const float MoveAcceleration = 5;
+    private const float MoveMaxSpeed = 200f;
+    private const float DashMaxSpeed = 600f;
     private const float JumpSpeed = 450f;
     private const float Gravity = 1000f;
     private const float GroundY = 400f;
@@ -52,19 +54,35 @@ public class Player : IPlayer
 
     public void MoveLeft()
     {
-        velocity.X = -MoveSpeed;
+        if (velocity.X > -MoveMaxSpeed)
+        {
+            velocity.X -= MoveAcceleration;
+        }
         facingDirection = Direction.Left;
     }
 
     public void MoveRight()
     {
-        velocity.X = MoveSpeed;
+        if (velocity.X < MoveMaxSpeed)
+        {
+            velocity.X += MoveAcceleration;
+        }
         facingDirection = Direction.Right;
     }
 
-    public void StopMoving()
+    public void StopMoving() //Update to resolve issues with movement
     {
-        velocity.X = 0;
+        if (velocity.X < -MoveAcceleration)
+        {
+            velocity.X += MoveAcceleration;
+        }
+        else if (velocity.X > MoveAcceleration)
+        {
+            velocity.X -= MoveAcceleration;
+        } else
+        {
+            velocity.X = 0;
+        }
     }
 
     public void Jump()
@@ -79,6 +97,24 @@ public class Player : IPlayer
     public void Dash()
     {
         velocity.X = 600f * (facingDirection == Direction.Right ? 1f : -1f);
+    }
+
+        public void DashLeft()
+    {
+        if (velocity.X > -3f*MoveMaxSpeed)
+        {
+            velocity.X -= 2f*MoveAcceleration;
+        }
+        facingDirection = Direction.Left;
+    }
+
+    public void DashRight()
+    {
+        if (velocity.X < 3f*MoveMaxSpeed)
+        {
+            velocity.X += 2f*MoveAcceleration;
+        }
+        facingDirection = Direction.Right;
     }
 
     public void Update(GameTime gameTime)

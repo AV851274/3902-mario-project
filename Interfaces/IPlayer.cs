@@ -12,5 +12,7 @@ public interface IPlayer
     void StopMoving();
     void Jump();
     void Dash();
+    void DashLeft();
+    void DashRight();
     void Update(GameTime gameTime);
 }
