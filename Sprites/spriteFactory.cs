@@ -24,9 +24,47 @@ public class SpriteFactory
         {
             new StaticSprite(itemTexture, new Rectangle(0, 8, 16, 16)),    // mushroom
             new StaticSprite(itemTexture, new Rectangle(32, 8, 16, 16)),   // fire flower
-            new StaticSprite(itemTexture, new Rectangle(142, 8, 16, 16)),  // star
-            new StaticSprite(itemTexture, new Rectangle(180, 36, 8, 15)),  // coin
+            CreateCoinSprite(),
+            CreateStarSprite(),
         };
+    }
+
+    private ISprite CreateCoinSprite()
+    {
+        AnimationController coin = new AnimationController(itemTexture, Vector2.Zero, 3f);
+
+        coin.AddClip(new Track(
+            "Spin",
+            [
+                new Rectangle(180, 36, 8, 15),
+                new Rectangle(190, 36, 8, 15),
+                new Rectangle(200, 36, 8, 15),
+                new Rectangle(210, 36, 8, 15)
+            ],
+            [0.15f, 0.15f, 0.15f, 0.15f],
+            true));
+        coin.Play("Spin");
+
+        return coin;
+    }
+
+    private ISprite CreateStarSprite()
+    {
+        AnimationController star = new AnimationController(itemTexture, Vector2.Zero, 3f);
+
+        star.AddClip(new Track(
+            "Spin",
+            [
+                new Rectangle(142, 8, 16, 16),
+                new Rectangle(160, 8, 16, 16),
+                new Rectangle(142, 8, 16, 16),
+                new Rectangle(160, 8, 16, 16),
+            ],
+            [0.15f, 0.15f, 0.15f, 0.15f],
+            true));
+        star.Play("Spin");
+
+        return star;
     }
 
     public List<ISprite> CreateBlockSprites()
@@ -49,7 +87,7 @@ public class SpriteFactory
 
         animationController.AddClip(new Track(
             "Idle",
-            [new Rectangle(389, 57, 16, 22)],
+            [new Rectangle(0, 57, 16, 22)],
             [1f],
             true));
         animationController.AddClip(new Track(
