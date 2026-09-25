@@ -10,12 +10,14 @@ public class SpriteFactory
     private Texture2D marioTexture;
     private Texture2D itemTexture;
     private Texture2D blockTexture;
+    private Texture2D enemyTexture;
 
     public void LoadTextures(ContentManager content)
     {
         marioTexture = content.Load<Texture2D>("mario");
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
+        enemyTexture = content.Load<Texture2D>("enemies");
     }
 
     public List<ISprite> CreateItemSprites()
@@ -108,4 +110,28 @@ public class SpriteFactory
 
         return animationController;
     }
+
+    //ENEMY SPRITES
+
+    public ISprite CreateGoombaSprite()
+{
+    AnimationController goomba = new AnimationController(enemyTexture, Vector2.Zero, 3f);
+
+    goomba.AddClip(new Track(
+        "Walk",
+        [
+            new Rectangle(0, 16, 16, 16),
+            new Rectangle(18, 16, 16, 16)
+        ],
+        [0.2f, 0.2f],
+        true));
+    // goomba.AddClip(new Track(
+    //     "Stomped",
+    //     [new Rectangle(32, 0, 16, 8)],
+    //     [1f],
+    //     false));
+    goomba.Play("Walk");
+
+    return goomba;
+}
 }
