@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 using Game2D.Animation;
 using Game2D.Interfaces;
 
@@ -15,7 +16,7 @@ public class Game1 : Game
     private ISprite playerSprite;
     private IItem item;
     private IBlock block;
-    private IEnemy enemy;
+    private List<IEnemy> enemies;
     private IController keyboardController;
     private IController mouseController;
     public Game1()
@@ -42,7 +43,11 @@ public class Game1 : Game
 
         item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
         block = new Block(spriteFactory.CreateBlockSprites(), new Vector2(250, 200));
-        enemy = new Goomba(spriteFactory.CreateGoombaSprite(), new Vector2(600, 400));
+        enemies = new List<IEnemy>
+        {
+            new Goomba(spriteFactory.CreateGoombaSprite(), new Vector2(600, 400)),
+            new Turtle(spriteFactory.CreateTurtleSprite(), new Vector2(300, 385))
+        };
         playerSprite = spriteFactory.CreatePlayerSprite();
 
         keyboardController = new KeyboardController(this, player, item, block);
@@ -58,7 +63,10 @@ public class Game1 : Game
         mouseController.Update(gameTime);
         player.Update(gameTime);
         block.Update(gameTime);
-        enemy.Update(gameTime);
+        foreach (var enemy in enemies)
+        {
+            enemy.Update(gameTime);
+        }
         item.Update(gameTime);
 
         if (!player.IsOnGround)
@@ -92,7 +100,10 @@ public class Game1 : Game
         playerSprite.Draw(_spriteBatch, player.Position, effects: spriteEffect);
 
         item.Draw(_spriteBatch);
-        enemy.Draw(_spriteBatch);
+        foreach (var enemy in enemies)
+        {
+            enemy.Draw(_spriteBatch);
+        }
         block.Draw(_spriteBatch);
 
         _spriteBatch.End();
