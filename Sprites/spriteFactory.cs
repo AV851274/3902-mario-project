@@ -89,15 +89,15 @@ public class SpriteFactory
 
         animationController.AddClip(new Track(
             "Idle",
-            [new Rectangle(0, 57, 16, 22)],
+            [new Rectangle(180, 0, 16, 22)],
             [1f],
             true));
         animationController.AddClip(new Track(
             "Run",
             [
-                new Rectangle(60, 0, 14, 16),
-                new Rectangle(89, 0, 16, 16),
-                new Rectangle(121, 0, 12, 16)
+                new Rectangle(149, 0, 15, 16),
+                new Rectangle(120, 0, 13, 16),
+                new Rectangle(88, 0, 17, 16)
             ],
             [0.15f, 0.15f, 0.15f],
             true));
