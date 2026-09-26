@@ -103,7 +103,7 @@ public class SpriteFactory
             true));
         animationController.AddClip(new Track(
             "Jump",
-            [new Rectangle(150, 0, 14, 15)],
+            [new Rectangle(26, 0, 20, 16)],
             [1f],
             false));
         animationController.Play("Idle");
