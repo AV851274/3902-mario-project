@@ -11,6 +11,7 @@ public class SpriteFactory
     private Texture2D itemTexture;
     private Texture2D blockTexture;
     private Texture2D enemyTexture;
+    private Texture2D tileSet;
 
     public void LoadTextures(ContentManager content)
     {
@@ -18,6 +19,7 @@ public class SpriteFactory
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
+        tileSet = content.Load<Texture2D>("tileset");
     }
 
     public List<ISprite> CreateItemSprites()
@@ -73,11 +75,31 @@ public class SpriteFactory
     {
         return new List<ISprite>
         {
-            new StaticSprite(blockTexture, new Rectangle(328, 128, 16, 16)),   // brick
-            new StaticSprite(blockTexture, new Rectangle(180, 7, 16, 16)),  // question block
+            new StaticSprite(tileSet, new Rectangle(17, 16, 16, 16)),   // brick
+            CreateQuestionBlockSprites(), // Question block animated
             new StaticSprite(blockTexture, new Rectangle(180, 116, 16, 16)),  // blue brick
             new StaticSprite(blockTexture, new Rectangle(180, 332, 16, 16)),  // grey block
+            new StaticSprite(tileSet, new Rectangle(0, 16, 16, 16)),  // Ground block
+            new StaticSprite(tileSet, new Rectangle(349, 78, 16, 16)),  // :Hit: question block
         };
+    }
+
+    public ISprite CreateQuestionBlockSprites()
+    {
+        AnimationController qBlock = new AnimationController(tileSet, Vector2.Zero, 3f);
+
+        qBlock.AddClip(new Track(
+            "Spin",
+            [
+                new Rectangle(298, 78, 16, 16),
+                new Rectangle(315, 78, 16, 16),
+                new Rectangle(332, 78, 16, 16),
+            ],
+            [0.15f, 0.15f, 0.15f],
+            true));
+        qBlock.Play("Spin");
+
+        return qBlock;
     }
 
     public ISprite CreatePlayerSprite()

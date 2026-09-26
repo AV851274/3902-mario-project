@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -7,27 +6,25 @@ using Monogame;
 public class KeyboardController : IController
 {
     private IPlayer player;
-    private Dictionary<Keys, Action> pressActions;
+    private Dictionary<Keys, ICommand> pressCommands;
     private KeyboardState previousState;
 
     public KeyboardController(Game1 game, IPlayer player, IItem item, IBlock block, EnemyCycler enemies)
     {
         this.player = player;
 
-        // Keys that trigger once per press
-        pressActions = new Dictionary<Keys, Action>
+        pressCommands = new Dictionary<Keys, ICommand>
         {
-            { Keys.T, block.prevSprite },
-            { Keys.Y, block.nextSprite },
-            { Keys.U, item.prevSprite },
-            { Keys.I, item.nextSprite },
-            { Keys.O, enemies.Previous },
-            { Keys.P, enemies.Next },
-            { Keys.Q, game.Exit },
-            { Keys.R, game.ResetGame },
+            { Keys.T, new PreviousBlockCommand(block) },
+            { Keys.Y, new NextBlockCommand(block) },
+            { Keys.U, new PreviousItemCommand(item) },
+            { Keys.I, new NextItemCommand(item) },
+            { Keys.O, new PreviousEnemyCommand(enemies) },
+            { Keys.P, new NextEnemyCommand(enemies) },
+            { Keys.Q, new QuitCommand(game) },
+            { Keys.R, new ResetCommand(game) },
         };
 
-        // Start from the real keyboard state so a key held during reset isn't treated as a new press
         previousState = Keyboard.GetState();
     }
 
@@ -37,35 +34,44 @@ public class KeyboardController : IController
 
         UpdateMovement(keyboardState);
 
-        foreach (KeyValuePair<Keys, Action> pressAction in pressActions)
+        foreach (KeyValuePair<Keys, ICommand> pressCommand in pressCommands)
         {
-            if (keyboardState.IsKeyDown(pressAction.Key) && previousState.IsKeyUp(pressAction.Key))
+            if (keyboardState.IsKeyDown(pressCommand.Key) && previousState.IsKeyUp(pressCommand.Key))
             {
-                pressAction.Value();
+                pressCommand.Value.Execute();
             }
         }
 
         previousState = keyboardState;
     }
 
-    // Keys that act every frame while held
     private void UpdateMovement(KeyboardState keyboardState)
     {
         bool left = keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A);
         bool right = keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D);
         bool dash = keyboardState.IsKeyDown(Keys.Space);
 
-        if (left == right) // neither or both pressed
+        if (left == right)
         {
             player.StopMoving();
         }
         else if (left)
         {
-            if (dash) player.DashLeft(); else player.MoveLeft();
+            if (dash)
+            {
+                player.DashLeft();
+            } else {
+                player.MoveLeft();
+            }
         }
         else
         {
-            if (dash) player.DashRight(); else player.MoveRight();
+            if (dash)
+            {
+                player.DashRight();
+            } else {
+                player.MoveRight();
+            }
         }
 
         if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
