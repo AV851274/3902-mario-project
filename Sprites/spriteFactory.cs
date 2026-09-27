@@ -102,35 +102,53 @@ public class SpriteFactory
         return qBlock;
     }
 
-    public ISprite CreatePlayerSprite()
+    public ISprite CreateSmallMarioSprite()
     {
-        AnimationController animationController = new AnimationController(
-            marioTexture,
-            Vector2.Zero,
-            2.5f);
-
-        animationController.AddClip(new Track(
-            "Idle",
-            [new Rectangle(180, 0, 16, 22)],
-            [1f],
-            true));
-        animationController.AddClip(new Track(
-            "Run",
+        return CreateMarioSprite(
+            new Rectangle(180, 0, 16, 22),                 // idle (your current one)
             [
                 new Rectangle(149, 0, 15, 16),
                 new Rectangle(120, 0, 13, 16),
                 new Rectangle(88, 0, 17, 16)
             ],
-            [0.15f, 0.15f, 0.15f],
-            true));
-        animationController.AddClip(new Track(
-            "Jump",
-            [new Rectangle(26, 0, 20, 16)],
-            [1f],
-            false));
-        animationController.Play("Idle");
+            new Rectangle(26, 0, 20, 16));                 // jump
+    }
 
-        return animationController;
+    public ISprite CreateBigMarioSprite()
+    {
+        return CreateMarioSprite(
+            new Rectangle(180, 50, 16, 34),                   // CHECK: big idle
+            [
+                new Rectangle(150, 50, 16, 32),               // CHECK: big run frames
+                new Rectangle(120, 50, 16, 32),
+                new Rectangle(90, 50, 16, 32)
+            ],
+            new Rectangle(28, 50, 16, 32));                  // CHECK: big jump
+    }
+
+    public ISprite CreateFireMarioSprite()
+    {
+        // Same shapes as Big Mario, just the white/red rows of the sheet
+        return CreateMarioSprite(
+            new Rectangle(180, 120, 16, 32),                   // CHECK: fire idle
+            [
+                new Rectangle(150, 120, 16, 32),               // CHECK: fire run frames
+                new Rectangle(150, 120, 16, 32),
+                new Rectangle(150, 120, 16, 32)
+            ],
+            new Rectangle(0, 0, 16, 32));                  // CHECK: fire jump
+    }
+
+    private ISprite CreateMarioSprite(Rectangle idle, Rectangle[] run, Rectangle jump)
+    {
+        AnimationController mario = new AnimationController(marioTexture, Vector2.Zero, 2.5f);
+
+        mario.AddClip(new Track("Idle", [idle], [1f], true));
+        mario.AddClip(new Track("Run", run, [0.15f, 0.15f, 0.15f], true));
+        mario.AddClip(new Track("Jump", [jump], [1f], false));
+        mario.Play("Idle");
+
+        return mario;
     }
 
     //ENEMY SPRITES

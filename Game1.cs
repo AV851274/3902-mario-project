@@ -14,7 +14,6 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
 
     private IPlayer player;
-    private ISprite playerSprite;
     private ISprite fireballSprite;
     private IItem item;
     private IBlock block;
@@ -49,7 +48,7 @@ public class Game1 : Game
     //TODO: I THINK THIS IS GOING TO NEED TO MOVE SOON ResetGame()
     public void ResetGame()
     {
-        var player1 = new Player(new Vector2(100, 100));
+        var player1 = new Player(spriteFactory, new Vector2(100, 100));
         player1.SummonFireball +=
             (position, direction) => {
                 float flip = direction == Direction.Left ? -1f : 1f;
@@ -60,7 +59,6 @@ public class Game1 : Game
         this.player = player1;
 
 
-        playerSprite = spriteFactory.CreatePlayerSprite();
         fireballSprite = spriteFactory.CreateFireBallSprite();
         projectiles.Clear();
 
@@ -89,21 +87,6 @@ public class Game1 : Game
         item.Update(gameTime);
         UpdateProjectiles(gameTime);
 
-        if (!player.IsOnGround)
-        {
-            playerSprite.Play("Jump");
-        }
-        else if (player.IsMoving)
-        {
-            playerSprite.Play("Run");
-        }
-        else
-        {
-            playerSprite.Play("Idle");
-        }
-
-        playerSprite.UpdateAnimation(gameTime);
-
         base.Update(gameTime);
     }
 
@@ -111,13 +94,9 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        SpriteEffects spriteEffect = player.FacingDirection == Direction.Right
-            ? SpriteEffects.FlipHorizontally
-            : SpriteEffects.None;
-
         _spriteBatch.Begin();
 
-        playerSprite.Draw(_spriteBatch, player.Position, effects: spriteEffect);
+        player.Draw(_spriteBatch);
 
         item.Draw(_spriteBatch);
         enemies.Draw(_spriteBatch);
