@@ -117,7 +117,7 @@ public class Game1 : Game
 
         _spriteBatch.Begin();
 
-        playerSprite.Draw(_spriteBatch, player.Position, effects: spriteEffect);
+        player.Draw(_spriteBatch);
 
         item.Draw(_spriteBatch);
         enemies.Draw(_spriteBatch);

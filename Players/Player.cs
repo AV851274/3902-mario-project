@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 using Game2D.Animation;
+using Microsoft.Xna.Framework.Graphics;
 
 public class Player : IPlayer
 {
@@ -118,5 +119,10 @@ public class Player : IPlayer
             velocity.Y = 0;
             isOnGround = true;
         }
+    }
+
+    public void Draw (SpriteBatch spriteBatch)
+    {
+        //Fill with what Sam did
     }
 }

@@ -2,6 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Game2D.Animation;
 using Game2D.Interfaces;
+using Microsoft.Xna.Framework.Graphics;
 
 public class SwimmingPlayer : IPlayer
 {
@@ -11,6 +12,7 @@ public class SwimmingPlayer : IPlayer
     private Vector2 velocity;
     private const float MoveAcceleration = 1.5f;
     private const float SwimMaxSpeed = 100f;
+    private const float FallMaxSpeed = 100f;
     private const float WalkMaxSpeed = 50f;
     private float MoveMaxSpeed = 200f;
     private const float DashMaxSpeed = 200f;
@@ -105,6 +107,10 @@ public class SwimmingPlayer : IPlayer
             (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         velocity.Y += Gravity * deltaTime;
+        if (velocity.Y > FallMaxSpeed)
+        {
+            velocity.Y = FallMaxSpeed;
+        }
 
         position += velocity * deltaTime;
 
@@ -118,7 +124,7 @@ public class SwimmingPlayer : IPlayer
             MoveMaxSpeed = WalkMaxSpeed;
         }
 
-        if (jumpTimer < 0.6f)
+        if (jumpTimer < 0.4f)
         {
             playerSprite.Play("Swim");
         }
@@ -134,5 +140,16 @@ public class SwimmingPlayer : IPlayer
         {
             playerSprite.Play("Stand");
         }
+
+        playerSprite.UpdateAnimation(gameTime);
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        SpriteEffects effects = facingDirection == Direction.Left
+            ? SpriteEffects.FlipHorizontally
+            : SpriteEffects.None;
+
+        playerSprite.Draw(spriteBatch, position, effects: effects);
     }
 }

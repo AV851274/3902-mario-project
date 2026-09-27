@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Game2D.Animation;
+using Microsoft.Xna.Framework.Graphics;
 
 public interface IPlayer
 {
@@ -16,4 +17,5 @@ public interface IPlayer
     void DashRight();
     void Attack();
     void Update(GameTime gameTime);
+    void Draw(SpriteBatch spriteBatch);
 }

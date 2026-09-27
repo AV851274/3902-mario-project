@@ -18,7 +18,7 @@ public class SpriteFactory
     public void LoadTextures(ContentManager content)
     {
         marioTexture = content.Load<Texture2D>("mario");
-        marioSwimmingTexture = content.Load<Texture2D>("swimMario");
+        marioSwimmingTexture = content.Load<Texture2D>("mario-2");
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
@@ -148,7 +148,7 @@ public class SpriteFactory
             "Stand",
             [new Rectangle(6, 7, 12, 16)],
             [1f],
-            true));
+            false));
         animationController.AddClip(new Track(
             "Walk",
             [
@@ -156,14 +156,14 @@ public class SpriteFactory
                 new Rectangle(38, 7, 15, 16),
                 new Rectangle(57, 7, 11, 16)
             ],
-            [0.6f, 0.6f, 0.6f],
+            [0.3f, 0.3f, 0.3f],
             true));
         animationController.AddClip(new Track("Float",
             [
                 new Rectangle(124, 6, 13, 15),
                 new Rectangle(140, 6, 13, 15)
             ],
-            [0.15f, 0.15f],
+            [0.05f, 0.05f],
             true));
         animationController.AddClip(new Track(
             "Swim",
@@ -171,14 +171,19 @@ public class SpriteFactory
                 new Rectangle(140, 6, 13, 15),
                 new Rectangle(156, 6, 13, 15),
                 new Rectangle(173, 6, 13, 15),
+                new Rectangle(189, 6, 13, 15),
+                new Rectangle(140, 6, 13, 15),
+                new Rectangle(156, 6, 13, 15),
+                new Rectangle(173, 6, 13, 15),
                 new Rectangle(189, 6, 13, 15)
             ],
-            [0.15f,0.15f,0.15f,0.15f],
-            false));
+            [0.05f,0.05f,0.05f,0.05f,0.05f,0.05f,0.05f,0.05f],
+            true));
         animationController.Play("Stand");
 
         return animationController;
     }
+
     //ENEMY SPRITES
 
     public ISprite CreateGoombaSprite()
