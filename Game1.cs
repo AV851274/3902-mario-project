@@ -53,9 +53,9 @@ public class Game1 : Game
         player1.SummonFireball +=
             (position, direction) => {
                 float flip = direction == Direction.Left ? -1f : 1f;
-                var velocity = new Vector2(0.85f * flip, 0);
+                var velocity = new Vector2(850f * flip, 0);
                 projectiles.Add(
-                    new Fireball(fireballSprite, position + new Vector2(20 * flip, 2f), velocity, 1000));
+                    new Fireball(fireballSprite, position + new Vector2(20 * flip, 2f), velocity, 1f));
             };
         this.player = player1;
 

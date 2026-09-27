@@ -24,7 +24,7 @@ public class Fireball : IProjectile
 
     public void Update(GameTime gameTime)
     {
-        var deltaTime = gameTime.ElapsedGameTime.Milliseconds;
+        float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         elapsedTime += deltaTime;
         if (elapsedTime > lifeTime)
         {
