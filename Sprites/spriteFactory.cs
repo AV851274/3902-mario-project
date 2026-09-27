@@ -102,6 +102,8 @@ public class SpriteFactory
         return qBlock;
     }
 
+    //PLAYER SPRITES
+
     public ISprite CreatePlayerSprite()
     {
         AnimationController animationController = new AnimationController(
@@ -133,6 +135,36 @@ public class SpriteFactory
         return animationController;
     }
 
+    public ISprite CreateSwimmingPlayerSprite()
+    {
+        AnimationController animationController = new AnimationController(
+            marioTexture,
+            Vector2.Zero,
+            2.5f);
+
+        animationController.AddClip(new Track(
+            "IdleGrounded",
+            [new Rectangle(180, 0, 16, 22)],
+            [1f],
+            true));
+        animationController.AddClip(new Track(
+            "RunGrounded",
+            [
+                new Rectangle(149, 0, 15, 16),
+                new Rectangle(120, 0, 13, 16),
+                new Rectangle(88, 0, 17, 16)
+            ],
+            [0.6f, 0.6f, 0.6f],
+            true));
+        animationController.AddClip(new Track(
+            "Jump",
+            [new Rectangle(26, 0, 20, 16)],
+            [1f],
+            false));
+        animationController.Play("Idle");
+
+        return animationController;
+    }
     //ENEMY SPRITES
 
     public ISprite CreateGoombaSprite()
