@@ -62,11 +62,11 @@ public class Game1 : Game
 
         playerSprite = spriteFactory.CreatePlayerSprite();
         fireballSprite = spriteFactory.CreateFireBallSprite();
+        projectiles.Clear();
 
         item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
         block = new Block(spriteFactory.CreateBlockSprites(), new Vector2(250, 200));
-        enemies = new EnemyCycler(new List<IEnemy>
-        {
+        enemies = new EnemyCycler(new List<IEnemy> {
             new Goomba(spriteFactory.CreateGoombaSprite(), new Vector2(600, 408)),
             new Turtle(spriteFactory.CreateTurtleSprite(), new Vector2(600, 392))
         });
@@ -87,7 +87,7 @@ public class Game1 : Game
         block.Update(gameTime);
         enemies.Update(gameTime);
         item.Update(gameTime);
-        updateProjectiles(gameTime);
+        UpdateProjectiles(gameTime);
 
         if (!player.IsOnGround)
         {
@@ -122,19 +122,24 @@ public class Game1 : Game
         item.Draw(_spriteBatch);
         enemies.Draw(_spriteBatch);
         block.Draw(_spriteBatch);
-        projectiles.ForEach(p => p.Draw(_spriteBatch));
+        foreach (var projectile in projectiles)
+        {
+            projectile.Draw(_spriteBatch);
+        }
 
         _spriteBatch.End();
 
         base.Draw(gameTime);
     }
 
-    private void updateProjectiles(GameTime gameTime)
+    private void UpdateProjectiles(GameTime gameTime)
     {
-        projectiles.RemoveAll(p => !p.Active);
         foreach (var projectile in projectiles)
         {
-            projectile.Update(gameTime);
+            if (projectile.Active)
+                projectile.Update(gameTime);
         }
+
+        projectiles.RemoveAll(p => !p.Active);
     }
 }
