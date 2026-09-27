@@ -18,7 +18,7 @@ public class SpriteFactory
     public void LoadTextures(ContentManager content)
     {
         marioTexture = content.Load<Texture2D>("mario");
-        marioSwimmingTexture = content.Load<Texture2D>("mario-2");
+        marioSwimmingTexture = content.Load<Texture2D>("mariogif");
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
