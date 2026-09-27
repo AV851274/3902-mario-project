@@ -4,15 +4,15 @@ using Game2D.Interfaces;
 
 public class StaticSprite : ISprite
 {
-
     private Texture2D texture;
     private Rectangle sourceRectangle;
-    private int scale = 3;
+    private float scale;
 
-    public StaticSprite(Texture2D texture, Rectangle sourceRectangle)
+    public StaticSprite(Texture2D texture, Rectangle sourceRectangle, float scale = 3)
     {
         this.texture = texture;
         this.sourceRectangle = sourceRectangle;
+        this.scale = scale;
     }
 
     public void UpdateAnimation(GameTime gameTime)
@@ -41,5 +41,4 @@ public class StaticSprite : ISprite
             effects,
             0f);
     }
-
 }

@@ -13,8 +13,7 @@ public class KeyboardController : IController
     {
         this.player = player;
 
-        pressCommands = new Dictionary<Keys, ICommand>
-        {
+        pressCommands = new Dictionary<Keys, ICommand> {
             { Keys.T, new PreviousBlockCommand(block) },
             { Keys.Y, new NextBlockCommand(block) },
             { Keys.U, new PreviousItemCommand(item) },
@@ -60,7 +59,9 @@ public class KeyboardController : IController
             if (dash)
             {
                 player.DashLeft();
-            } else {
+            }
+            else
+            {
                 player.MoveLeft();
             }
         }
@@ -69,7 +70,9 @@ public class KeyboardController : IController
             if (dash)
             {
                 player.DashRight();
-            } else {
+            }
+            else
+            {
                 player.MoveRight();
             }
         }
@@ -77,6 +80,11 @@ public class KeyboardController : IController
         if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
         {
             player.Jump();
+        }
+
+        if (keyboardState.IsKeyDown(Keys.F) && !previousState.IsKeyDown(Keys.F))
+        {
+            player.Attack();
         }
     }
 }

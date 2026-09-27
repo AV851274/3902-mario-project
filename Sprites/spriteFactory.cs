@@ -12,6 +12,7 @@ public class SpriteFactory
     private Texture2D blockTexture;
     private Texture2D enemyTexture;
     private Texture2D tileSet;
+    private Texture2D fireballTexture;
 
     public void LoadTextures(ContentManager content)
     {
@@ -20,14 +21,14 @@ public class SpriteFactory
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
         tileSet = content.Load<Texture2D>("tileset");
+        fireballTexture = content.Load<Texture2D>("orange_fireball");
     }
 
     public List<ISprite> CreateItemSprites()
     {
-        return new List<ISprite>
-        {
-            new StaticSprite(itemTexture, new Rectangle(0, 8, 16, 16)),    // mushroom
-            new StaticSprite(itemTexture, new Rectangle(32, 8, 16, 16)),   // fire flower
+        return new List<ISprite> {
+            new StaticSprite(itemTexture, new Rectangle(0, 8, 16, 16)), // mushroom
+            new StaticSprite(itemTexture, new Rectangle(32, 8, 16, 16)), // fire flower
             CreateCoinSprite(),
             CreateStarSprite(),
         };
@@ -73,14 +74,13 @@ public class SpriteFactory
 
     public List<ISprite> CreateBlockSprites()
     {
-        return new List<ISprite>
-        {
-            new StaticSprite(tileSet, new Rectangle(17, 16, 16, 16)),   // brick
+        return new List<ISprite> {
+            new StaticSprite(tileSet, new Rectangle(17, 16, 16, 16)), // brick
             CreateQuestionBlockSprites(), // Question block animated
-            new StaticSprite(blockTexture, new Rectangle(180, 116, 16, 16)),  // blue brick
-            new StaticSprite(blockTexture, new Rectangle(180, 332, 16, 16)),  // grey block
-            new StaticSprite(tileSet, new Rectangle(0, 16, 16, 16)),  // Ground block
-            new StaticSprite(tileSet, new Rectangle(349, 78, 16, 16)),  // :Hit: question block
+            new StaticSprite(blockTexture, new Rectangle(180, 116, 16, 16)), // blue brick
+            new StaticSprite(blockTexture, new Rectangle(180, 332, 16, 16)), // grey block
+            new StaticSprite(tileSet, new Rectangle(0, 16, 16, 16)), // Ground block
+            new StaticSprite(tileSet, new Rectangle(349, 78, 16, 16)), // :Hit: question block
         };
     }
 
@@ -178,4 +178,7 @@ public class SpriteFactory
 
         return turtle;
     }
+
+    public ISprite CreateFireBallSprite()
+        => new StaticSprite(fireballTexture, new Rectangle(0, 0, 32, 32), 1);
 }
