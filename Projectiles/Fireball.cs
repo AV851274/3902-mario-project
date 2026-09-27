@@ -24,14 +24,15 @@ public class Fireball : IProjectile
 
     public void Update(GameTime gameTime)
     {
-        elapsedTime += gameTime.ElapsedGameTime.Milliseconds;
+        var deltaTime = gameTime.ElapsedGameTime.Milliseconds;
+        elapsedTime += deltaTime;
         if (elapsedTime > lifeTime)
         {
             Active = false;
             return;
         }
 
-        Position += Velocity;
+        Position += Velocity * deltaTime;
 
         sprite.UpdateAnimation(gameTime);
     }
