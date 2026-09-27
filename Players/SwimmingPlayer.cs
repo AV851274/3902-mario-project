@@ -1,10 +1,12 @@
 using System;
 using Microsoft.Xna.Framework;
 using Game2D.Animation;
+using Game2D.Interfaces;
 
 public class SwimmingPlayer : IPlayer
 {
     private SpriteFactory spriteFactory;
+    private ISprite playerSprite;
     private Vector2 position;
     private Vector2 velocity;
     private const float MoveAcceleration = 1.5f;
@@ -13,6 +15,7 @@ public class SwimmingPlayer : IPlayer
     private float MoveMaxSpeed = 200f;
     private const float DashMaxSpeed = 200f;
     private const float JumpSpeed = 75f;
+    private float jumpTimer = 0.61f;
     private const float Gravity = 200f;
     private const float GroundY = 400f;
     private bool isOnGround;
@@ -26,6 +29,7 @@ public class SwimmingPlayer : IPlayer
     public SwimmingPlayer(SpriteFactory spriteFactory, Vector2 startingPosition)
     {
         this.spriteFactory = spriteFactory;
+        playerSprite = spriteFactory.CreateSwimmingPlayerSprite();
         position = startingPosition;
         velocity = Vector2.Zero;
         isOnGround = false;
@@ -72,6 +76,7 @@ public class SwimmingPlayer : IPlayer
         velocity.Y = -JumpSpeed;
         isOnGround = false;
         MoveMaxSpeed = SwimMaxSpeed;
+        jumpTimer = 0f;
     }
 
     public void Dash()
@@ -103,12 +108,31 @@ public class SwimmingPlayer : IPlayer
 
         position += velocity * deltaTime;
 
+        jumpTimer += deltaTime;
+
         if (position.Y >= GroundY)
         {
             position.Y = GroundY;
             velocity.Y = 0;
             isOnGround = true;
             MoveMaxSpeed = WalkMaxSpeed;
+        }
+
+        if (jumpTimer < 0.6f)
+        {
+            playerSprite.Play("Swim");
+        }
+        else if (!isOnGround)
+        {
+            playerSprite.Play("Float");
+        }
+        else if (IsMoving)
+        {
+            playerSprite.Play("Walk");
+        }
+        else
+        {
+            playerSprite.Play("Stand");
         }
     }
 }

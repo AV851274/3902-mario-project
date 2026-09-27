@@ -8,6 +8,7 @@ using Game2D.Interfaces;
 public class SpriteFactory
 {
     private Texture2D marioTexture;
+    private Texture2D marioSwimmingTexture;
     private Texture2D itemTexture;
     private Texture2D blockTexture;
     private Texture2D enemyTexture;
@@ -17,6 +18,7 @@ public class SpriteFactory
     public void LoadTextures(ContentManager content)
     {
         marioTexture = content.Load<Texture2D>("mario");
+        marioSwimmingTexture = content.Load<Texture2D>("swimMario");
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
@@ -138,30 +140,42 @@ public class SpriteFactory
     public ISprite CreateSwimmingPlayerSprite()
     {
         AnimationController animationController = new AnimationController(
-            marioTexture,
+            marioSwimmingTexture,
             Vector2.Zero,
             2.5f);
 
         animationController.AddClip(new Track(
-            "IdleGrounded",
-            [new Rectangle(180, 0, 16, 22)],
+            "Stand",
+            [new Rectangle(6, 7, 12, 16)],
             [1f],
             true));
         animationController.AddClip(new Track(
-            "RunGrounded",
+            "Walk",
             [
-                new Rectangle(149, 0, 15, 16),
-                new Rectangle(120, 0, 13, 16),
-                new Rectangle(88, 0, 17, 16)
+                new Rectangle(21, 8, 13, 15),
+                new Rectangle(38, 7, 15, 16),
+                new Rectangle(57, 7, 11, 16)
             ],
             [0.6f, 0.6f, 0.6f],
             true));
+        animationController.AddClip(new Track("Float",
+            [
+                new Rectangle(124, 6, 13, 15),
+                new Rectangle(140, 6, 13, 15)
+            ],
+            [0.15f, 0.15f],
+            true));
         animationController.AddClip(new Track(
-            "Jump",
-            [new Rectangle(26, 0, 20, 16)],
-            [1f],
+            "Swim",
+            [
+                new Rectangle(140, 6, 13, 15),
+                new Rectangle(156, 6, 13, 15),
+                new Rectangle(173, 6, 13, 15),
+                new Rectangle(189, 6, 13, 15)
+            ],
+            [0.15f,0.15f,0.15f,0.15f],
             false));
-        animationController.Play("Idle");
+        animationController.Play("Stand");
 
         return animationController;
     }
