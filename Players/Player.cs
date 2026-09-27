@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Game2D.Animation;
 
@@ -14,36 +15,12 @@ public class Player : IPlayer
     private bool isOnGround;
     private Direction facingDirection = Direction.Right;
 
-    public Vector2 Position
-    {
-        get
-        {
-            return position;
-        }
-    }
+    public event Action<Vector2, Direction> SummonFireball;
 
-    public bool IsMoving
-    {
-        get
-        {
-            return velocity.X != 0;
-        }
-    }
-
-    public Direction FacingDirection
-    {
-        get
-        {
-            return facingDirection;
-        }
-    }
-    public bool IsOnGround
-    {
-        get
-        {
-            return isOnGround;
-        }
-    }
+    public Vector2 Position => position;
+    public bool IsMoving => velocity.X != 0;
+    public Direction FacingDirection => facingDirection;
+    public bool IsOnGround => isOnGround;
 
     public Player(Vector2 startingPosition)
     {
@@ -58,6 +35,7 @@ public class Player : IPlayer
         {
             velocity.X -= MoveAcceleration;
         }
+
         facingDirection = Direction.Left;
     }
 
@@ -67,6 +45,7 @@ public class Player : IPlayer
         {
             velocity.X += MoveAcceleration;
         }
+
         facingDirection = Direction.Right;
     }
 
@@ -79,7 +58,8 @@ public class Player : IPlayer
         else if (velocity.X > MoveAcceleration)
         {
             velocity.X -= MoveAcceleration;
-        } else
+        }
+        else
         {
             velocity.X = 0;
         }
@@ -99,22 +79,29 @@ public class Player : IPlayer
         velocity.X = 600f * (facingDirection == Direction.Right ? 1f : -1f);
     }
 
-        public void DashLeft()
+    public void DashLeft()
     {
-        if (velocity.X > -3f*MoveMaxSpeed)
+        if (velocity.X > -3f * MoveMaxSpeed)
         {
-            velocity.X -= 2f*MoveAcceleration;
+            velocity.X -= 2f * MoveAcceleration;
         }
+
         facingDirection = Direction.Left;
     }
 
     public void DashRight()
     {
-        if (velocity.X < 3f*MoveMaxSpeed)
+        if (velocity.X < 3f * MoveMaxSpeed)
         {
-            velocity.X += 2f*MoveAcceleration;
+            velocity.X += 2f * MoveAcceleration;
         }
+
         facingDirection = Direction.Right;
+    }
+
+    public void Attack()
+    {
+        SummonFireball?.Invoke(position, facingDirection);
     }
 
     public void Update(GameTime gameTime)

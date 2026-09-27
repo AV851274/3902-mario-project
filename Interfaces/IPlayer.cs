@@ -14,5 +14,6 @@ public interface IPlayer
     void Dash();
     void DashLeft();
     void DashRight();
+    void Attack();
     void Update(GameTime gameTime);
 }
