@@ -42,6 +42,7 @@ public class Game1 : Game
         ResetGame();
     }
 
+    //TODO: I THINK THIS IS GOING TO NEED TO MOVE SOON ResetGame()
     public void ResetGame()
     {
         player = new Player(new Vector2(100, 100));
@@ -51,8 +52,8 @@ public class Game1 : Game
         block = new Block(spriteFactory.CreateBlockSprites(), new Vector2(250, 200));
         enemies = new EnemyCycler(new List<IEnemy>
         {
-            new Goomba(spriteFactory.CreateGoombaSprite(), new Vector2(600, 400)),
-            new Turtle(spriteFactory.CreateTurtleSprite(), new Vector2(600, 385))
+            new Goomba(spriteFactory.CreateGoombaSprite(), new Vector2(600, 408)),
+            new Turtle(spriteFactory.CreateTurtleSprite(), new Vector2(600, 392))
         });
 
         keyboardController = new KeyboardController(this, player, item, block, enemies);
@@ -65,7 +66,7 @@ public class Game1 : Game
             Exit();
 
         keyboardController.Update(gameTime);
-        mouseController.Update(gameTime);
+        //mouseController.Update(gameTime);
         player.Update(gameTime);
         block.Update(gameTime);
         enemies.Update(gameTime);
