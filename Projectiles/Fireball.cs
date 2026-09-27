@@ -41,13 +41,4 @@ public class Fireball : IProjectile
     {
         sprite.Draw(spriteBatch, Position);
     }
-
-    // currently only one sprite for fireball
-    public void nextSprite()
-    {
-    }
-
-    public void prevSprite()
-    {
-    }
 }

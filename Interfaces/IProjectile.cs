@@ -9,8 +9,4 @@ public interface IProjectile
     void Update(GameTime gameTime);
 
     void Draw(SpriteBatch spriteBatch);
-
-    void nextSprite();
-
-    void prevSprite();
 }
