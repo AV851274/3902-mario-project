@@ -20,3 +20,5 @@ From this website:
 https://www.mariouniverse.com/sprites-nes-smb/
 Using this to remove the background:
 https://ezgif.com/remove-background/ezgif-2e049edabdd9f560.gif.html
+Using this to find the pixels for each sprite:
+http://www.spritecow.com/

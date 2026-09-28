@@ -21,6 +21,7 @@ public interface IPlayer
     void BecomeSmall();
     void BecomeBig();
     void BecomeFire();
+    void TakeDamage();
     void Draw(SpriteBatch spriteBatch);
     void Update(GameTime gameTime);
 }

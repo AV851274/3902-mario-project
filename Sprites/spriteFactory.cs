@@ -179,42 +179,42 @@ public class SpriteFactory
     public ISprite CreateBigSwimmingMarioSprite()
     {
         return CreateSwimmingMarioSprite(
-            new Rectangle(5, 60, 16, 32),                     // stand
+            new Rectangle(6, 61, 16, 32),                     // stand
             [
-                new Rectangle(30, 60, 16, 32),                 // walk
-                new Rectangle(50, 60, 16, 32),
-                new Rectangle(70, 60, 16, 32)
+                new Rectangle(29, 62, 16, 32),                 // walk
+                new Rectangle(52, 63, 16, 30),
+                new Rectangle(74, 62, 14, 31)
             ],
             [
-                new Rectangle(160, 60, 16, 32),                 // float
-                new Rectangle(180, 60, 16, 32)
+                new Rectangle(162, 61, 14, 30),                 // float
+                new Rectangle(179, 62, 16, 29)
             ],
             [
-                new Rectangle(200, 60, 16, 32),                 // swim stroke
-                new Rectangle(220, 59, 16, 32),
-                new Rectangle(240, 60, 16, 32),
-                new Rectangle(260, 60, 16, 32)
+                new Rectangle(179, 62, 16, 29),                 // swim stroke
+                new Rectangle(201, 62, 14, 30),
+                new Rectangle(220, 61, 16, 29),
+                new Rectangle(241, 60, 16, 30)
             ]);
     }
 
     public ISprite CreateFireSwimmingMarioSprite()
     {
         return CreateSwimmingMarioSprite(
-            new Rectangle(5, 100, 16, 32),                     // stand
+            new Rectangle(6, 101, 16, 32),                     // stand
             [
-                new Rectangle(30, 100, 16, 32),                 // walk
-                new Rectangle(48, 100, 16, 32),
-                new Rectangle(70, 100, 16, 32)
+                new Rectangle(48, 101, 16, 32),                 // walk
+                new Rectangle(70, 100, 16, 30),
+                new Rectangle(92, 98, 14, 31)
             ],
             [
-                new Rectangle(175, 95, 16, 32),                 // float
-                new Rectangle(195, 95, 16, 32)
+                new Rectangle(177, 96, 14, 30),                 // float
+                new Rectangle(194, 97, 16, 29)
             ],
             [
-                new Rectangle(215, 95, 16, 32),                 // swim stroke
-                new Rectangle(235, 95, 16, 32),
-                new Rectangle(255, 95, 16, 32),
-                new Rectangle(275, 95, 16, 32)
+                new Rectangle(194, 97, 16, 29),                 // swim stroke
+                new Rectangle(216, 97, 14, 30),
+                new Rectangle(235, 96, 16, 29),
+                new Rectangle(256, 95, 16, 30)
             ]);
     }
 

@@ -6,8 +6,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class SwimmingPlayer : IPlayer
 {
+    private IMarioState powerState;
     private SpriteFactory spriteFactory;
-    private ISprite playerSprite;
     private Vector2 position;
     private Vector2 velocity;
     private const float MoveAcceleration = 1.5f;
@@ -33,7 +33,7 @@ public class SwimmingPlayer : IPlayer
     public SwimmingPlayer(SpriteFactory spriteFactory, Vector2 startingPosition)
     {
         this.spriteFactory = spriteFactory;
-        playerSprite = spriteFactory.CreateSmallSwimmingMarioSprite();
+        powerState = new SwimSmallMarioState(spriteFactory);
         position = startingPosition;
         velocity = Vector2.Zero;
         isOnGround = false;
@@ -106,25 +106,35 @@ public class SwimmingPlayer : IPlayer
         }
     }
 
-    void IPlayer.BecomeSmall()
+    public void BecomeSmall()
     {
-        playerSprite = spriteFactory.CreateSmallSwimmingMarioSprite();
-        drawOffset = Vector2.Zero;
-        canShootFireball = false;
+        powerState = new SwimSmallMarioState(spriteFactory);
     }
 
-    void IPlayer.BecomeBig()
+    public void BecomeBig()
     {
-        playerSprite = spriteFactory.CreateBigSwimmingMarioSprite();
-        drawOffset = new Vector2(0, -40);
-        canShootFireball = false;
+        powerState = new SwimBigMarioState(spriteFactory);
     }
 
-    void IPlayer.BecomeFire()
+    public void BecomeFire()
     {
-        playerSprite = spriteFactory.CreateFireSwimmingMarioSprite();
-        drawOffset = new Vector2(0, -40);
-        canShootFireball = true;
+        powerState = new SwimFireMarioState(spriteFactory);
+    }
+
+    public void TakeDamage()
+    {
+        if (powerState.marioPower == MarioPower.Fire)
+        {
+            BecomeBig();
+        }
+        else if (powerState.marioPower == MarioPower.Big)
+        {
+            BecomeSmall();
+        }
+        else if (powerState.marioPower == MarioPower.Small)
+        {
+            //Die
+        }
     }
 
     public void Update(GameTime gameTime)
@@ -152,22 +162,22 @@ public class SwimmingPlayer : IPlayer
 
         if (jumpTimer < 0.4f)
         {
-            playerSprite.Play("Swim");
+            powerState.Sprite.Play("Swim");
         }
         else if (!isOnGround)
         {
-            playerSprite.Play("Float");
+            powerState.Sprite.Play("Float");
         }
         else if (IsMoving)
         {
-            playerSprite.Play("Walk");
+            powerState.Sprite.Play("Walk");
         }
         else
         {
-            playerSprite.Play("Stand");
+            powerState.Sprite.Play("Stand");
         }
 
-        playerSprite.UpdateAnimation(gameTime);
+        powerState.Sprite.UpdateAnimation(gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)
@@ -176,6 +186,6 @@ public class SwimmingPlayer : IPlayer
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
-        playerSprite.Draw(spriteBatch, position + drawOffset, effects: effects);
+        powerState.Sprite.Draw(spriteBatch, position + powerState.DrawOffset, effects: effects);
     }
 }

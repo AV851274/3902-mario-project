@@ -32,6 +32,7 @@ public class KeyboardController : IController
             { Keys.P, new NextEnemyCommand(enemies) },
             { Keys.Q, new QuitCommand(game) },
             { Keys.R, new ResetCommand(game) },
+            { Keys.E, new PlayerTakeDamageCommand(player) },
             { Keys.D1, new ChangeMarioCommand(game, false, MarioPower.Small) },
             { Keys.D2, new ChangeMarioCommand(game, false, MarioPower.Big) },
             { Keys.D3, new ChangeMarioCommand(game, false, MarioPower.Fire) },
