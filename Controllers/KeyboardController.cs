@@ -1,18 +1,28 @@
 using System.Collections.Generic;
+using Game2D.Animation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Monogame;
 
 public class KeyboardController : IController
 {
-    private IPlayer player;
+    private enum PlayerActions
+    {
+        MoveL,
+        MoveR,
+        Jump,
+        DashL,
+        DashR,
+        StopMoving,
+        Attack
+    }
+
     private Dictionary<Keys, ICommand> pressCommands;
+    private Dictionary<PlayerActions, ICommand> playerCommands;
     private KeyboardState previousState;
 
     public KeyboardController(Game1 game, IPlayer player, IItem item, IBlock block, EnemyCycler enemies)
     {
-        this.player = player;
-
         pressCommands = new Dictionary<Keys, ICommand> {
             { Keys.T, new PreviousBlockCommand(block) },
             { Keys.Y, new NextBlockCommand(block) },
@@ -29,6 +39,17 @@ public class KeyboardController : IController
             { Keys.D5, new ChangeMarioCommand(game, true, MarioPower.Big) },
             { Keys.D6, new ChangeMarioCommand(game, true, MarioPower.Fire) },
         };
+
+        playerCommands = new Dictionary<PlayerActions, ICommand> {
+            { PlayerActions.MoveL, new PlayerMoveCommand(player, Direction.Left) },
+            { PlayerActions.MoveR, new PlayerMoveCommand(player, Direction.Right) },
+            { PlayerActions.Jump, new PlayerJumpCommand(player) },
+            { PlayerActions.DashL, new PlayerDashCommand(player, Direction.Left) },
+            { PlayerActions.DashR, new PlayerDashCommand(player, Direction.Right) },
+            { PlayerActions.StopMoving, new PlayerStopMovingCommand(player) },
+            { PlayerActions.Attack, new PlayerAttackCommand(player) }
+        };
+
 
         previousState = Keyboard.GetState();
     }
@@ -56,41 +77,20 @@ public class KeyboardController : IController
         bool right = keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D);
         bool dash = keyboardState.IsKeyDown(Keys.Space);
 
+        PlayerActions action;
+
         if (left == right)
-        {
-            player.StopMoving();
-        }
+            action = PlayerActions.StopMoving;
         else if (left)
-        {
-            if (dash)
-            {
-                player.DashLeft();
-            }
-            else
-            {
-                player.MoveLeft();
-            }
-        }
+            action = dash ? PlayerActions.DashL : PlayerActions.MoveL;
         else
-        {
-            if (dash)
-            {
-                player.DashRight();
-            }
-            else
-            {
-                player.MoveRight();
-            }
-        }
+            action = dash ? PlayerActions.DashR : PlayerActions.MoveR;
+        playerCommands[action].Execute();
 
         if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
-        {
-            player.Jump();
-        }
+            playerCommands[PlayerActions.Jump].Execute();
 
         if (keyboardState.IsKeyDown(Keys.F) && !previousState.IsKeyDown(Keys.F))
-        {
-            player.Attack();
-        }
+            playerCommands[PlayerActions.Attack].Execute();
     }
 }
