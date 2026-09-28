@@ -225,7 +225,7 @@ public class SpriteFactory
 
     private ISprite CreateSwimmingMarioSprite(Rectangle stand, Rectangle[] walk, Rectangle[] floatFrames, Rectangle[] swim)
     {
-        AnimationController mario = new AnimationController(marioSwimmingTexture, Vector2.Zero, 2.5f);
+        AnimationController mario = new AnimationController(marioGifTexture, Vector2.Zero, 2.5f);
 
         mario.AddClip(new Track("Stand", [stand], [1f], false));
         mario.AddClip(new Track("Walk", walk, [0.3f, 0.3f, 0.3f], true));
