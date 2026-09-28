@@ -21,8 +21,6 @@ public class SwimmingPlayer : IPlayer
     private const float Gravity = 200f;
     private const float GroundY = 400f;
     private bool isOnGround;
-    private bool canShootFireball = false;
-    private Vector2 drawOffset = Vector2.Zero;
     private Direction facingDirection = Direction.Right;
     public event Action<Vector2, Direction> SummonFireball;
     public Vector2 Position => position;
@@ -100,7 +98,7 @@ public class SwimmingPlayer : IPlayer
 
     public void Attack()
     {
-        if (canShootFireball)
+        if (powerState.CanShootFireball)
         {
             SummonFireball?.Invoke(position, facingDirection);
         }
