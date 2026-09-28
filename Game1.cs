@@ -94,8 +94,14 @@ public class Game1 : Game
     {
         float flip = direction == Direction.Left ? -1f : 1f;
         var velocity = new Vector2(850f * flip, 0);
-        projectiles.Add(
-            new Fireball(fireballSprite, position + new Vector2(25 * flip, -25f), velocity, 1f));
+        projectiles.Add(new Fireball(
+            fireballSprite,
+            position + new Vector2(25 * flip, -25f),
+            velocity,
+            1f,
+            1000f,
+            400f
+        ));
     }
 
     protected override void Update(GameTime gameTime)
