@@ -161,16 +161,7 @@ public class Player : IPlayer
         float deltaTime =
             (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        velocity.Y += Gravity * deltaTime;
-
-        position += velocity * deltaTime;
-
-        if (position.Y >= GroundY)
-        {
-            position.Y = GroundY;
-            velocity.Y = 0;
-            isOnGround = true;
-        }
+        isOnGround = GravityPhysics.Apply(ref position, ref velocity, deltaTime, Gravity, GroundY);
 
         if (!isOnGround)
         {
