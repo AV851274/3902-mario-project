@@ -39,7 +39,10 @@ public class Fireball : IProjectile
         Velocity += new Vector2(0, gravity * deltaTime);
         Position += Velocity * deltaTime;
         if (Position.Y >= groundY)
+        {
             Velocity *= new Vector2(1, -1);
+            Position = new Vector2(Position.X, groundY - 0.1f);
+        }
 
         sprite.Play("Idle");
         sprite.UpdateAnimation(gameTime);
