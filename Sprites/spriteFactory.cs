@@ -178,7 +178,6 @@ public class SpriteFactory
 
     public ISprite CreateBigSwimmingMarioSprite()
     {
-        // CHECK: all rectangles, middle row of Mariogif.gif (big Mario is about 16x32)
         return CreateSwimmingMarioSprite(
             new Rectangle(5, 60, 16, 32),                     // stand
             [
@@ -200,7 +199,6 @@ public class SpriteFactory
 
     public ISprite CreateFireSwimmingMarioSprite()
     {
-        // CHECK: all rectangles, bottom row of Mariogif.gif (same shapes as big Mario)
         return CreateSwimmingMarioSprite(
             new Rectangle(5, 100, 16, 32),                     // stand
             [
