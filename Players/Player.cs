@@ -10,6 +10,7 @@ public class Player : IPlayer
     private Vector2 position;
     private Vector2 velocity;
     private const float MoveAcceleration = 5f;
+    private const float TurnAcceleration = 15f;
     private const float MoveMaxSpeed = 200f;
     private const float JumpSpeed = 450f;
     private const float Gravity = 1000f;
@@ -35,7 +36,11 @@ public class Player : IPlayer
 
     public void MoveLeft()
     {
-        if (velocity.X > -MoveMaxSpeed)
+        if (velocity.X > 0)
+        {
+            velocity.X -= TurnAcceleration;
+        }
+        else if (velocity.X > -MoveMaxSpeed)
         {
             velocity.X -= MoveAcceleration;
         }
@@ -45,7 +50,11 @@ public class Player : IPlayer
 
     public void MoveRight()
     {
-        if (velocity.X < MoveMaxSpeed)
+        if (velocity.X < 0)
+        {
+            velocity.X += TurnAcceleration;
+        }
+        else if (velocity.X < MoveMaxSpeed)
         {
             velocity.X += MoveAcceleration;
         }
