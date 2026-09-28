@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,22 +9,22 @@ using Game2D.Interfaces;
 public class SpriteFactory
 {
     private Texture2D marioTexture;
-    private Texture2D marioSwimmingTexture;
+    private Texture2D marioGifTexture;
     private Texture2D itemTexture;
     private Texture2D blockTexture;
     private Texture2D enemyTexture;
     private Texture2D tileSet;
-    private Texture2D fireballTexture;
+    // private Texture2D fireballTexture;
 
     public void LoadTextures(ContentManager content)
     {
         marioTexture = content.Load<Texture2D>("mario");
-        marioSwimmingTexture = content.Load<Texture2D>("Mariogif");
+        marioGifTexture = content.Load<Texture2D>("Mariogif");
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
         tileSet = content.Load<Texture2D>("tileset");
-        fireballTexture = content.Load<Texture2D>("orange_fireball");
+        // fireballTexture = content.Load<Texture2D>("orange_fireball");
     }
 
     public List<ISprite> CreateItemSprites()
@@ -282,5 +283,20 @@ public class SpriteFactory
     }
 
     public ISprite CreateFireBallSprite()
-        => new StaticSprite(fireballTexture, new Rectangle(0, 0, 32, 32), 1);
+    {
+        AnimationController fireball = new AnimationController(marioGifTexture, Vector2.Zero, 4f);
+        fireball.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(3, 135, 16, 16),
+                    new Rectangle(17, 135, 16, 16),
+                    new Rectangle(33, 135, 16, 16),
+                    new Rectangle(46, 135, 16, 16),
+                ],
+                Enumerable.Repeat(0.12f, 4).ToArray(),
+                true)
+        );
+        return fireball;
+    }
 }

@@ -14,8 +14,10 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
 
     private IPlayer player;
+
     private bool isSwimming;
-    private ISprite fireballSprite;
+
+    // private ISprite fireballSprite;
     private IItem item;
     private IBlock block;
     private EnemyCycler enemies;
@@ -48,7 +50,7 @@ public class Game1 : Game
 
     public void ResetGame()
     {
-        fireballSprite = spriteFactory.CreateFireBallSprite();
+        // fireballSprite = spriteFactory.CreateFireBallSprite();
         projectiles.Clear();
 
         item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
@@ -94,8 +96,14 @@ public class Game1 : Game
     {
         float flip = direction == Direction.Left ? -1f : 1f;
         var velocity = new Vector2(850f * flip, 0);
-        projectiles.Add(
-            new Fireball(fireballSprite, position + new Vector2(20 * flip, 2f), velocity, 1f));
+        projectiles.Add(new Fireball(
+            spriteFactory.CreateFireBallSprite(), // new animation contoller for each fireball
+            position + new Vector2(25 * flip, -25f),
+            velocity,
+            1f,
+            1000f,
+            400f
+        ));
     }
 
     protected override void Update(GameTime gameTime)
