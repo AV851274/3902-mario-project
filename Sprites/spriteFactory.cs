@@ -155,51 +155,82 @@ public class SpriteFactory
         return mario;
     }
 
-    public ISprite CreateSwimmingPlayerSprite()
+        public ISprite CreateSmallSwimmingMarioSprite()
     {
-        AnimationController animationController = new AnimationController(
-            marioSwimmingTexture,
-            Vector2.Zero,
-            2.5f);
-
-        animationController.AddClip(new Track(
-            "Stand",
-            [new Rectangle(6, 7, 12, 16)],
-            [1f],
-            false));
-        animationController.AddClip(new Track(
-            "Walk",
+        return CreateSwimmingMarioSprite(
+            new Rectangle(6, 7, 12, 16),                     // stand
             [
-                new Rectangle(21, 8, 13, 15),
+                new Rectangle(21, 8, 13, 15),                // walk
                 new Rectangle(38, 7, 15, 16),
                 new Rectangle(57, 7, 11, 16)
             ],
-            [0.3f, 0.3f, 0.3f],
-            true));
-        animationController.AddClip(new Track("Float",
             [
-                new Rectangle(124, 6, 13, 15),
+                new Rectangle(124, 6, 13, 15),               // float
                 new Rectangle(140, 6, 13, 15)
             ],
-            [0.05f, 0.05f],
-            true));
-        animationController.AddClip(new Track(
-            "Swim",
             [
-                new Rectangle(140, 6, 13, 15),
-                new Rectangle(156, 6, 13, 15),
-                new Rectangle(173, 6, 13, 15),
-                new Rectangle(189, 6, 13, 15),
-                new Rectangle(140, 6, 13, 15),
+                new Rectangle(140, 6, 13, 15),               // swim stroke
                 new Rectangle(156, 6, 13, 15),
                 new Rectangle(173, 6, 13, 15),
                 new Rectangle(189, 6, 13, 15)
-            ],
-            [0.05f,0.05f,0.05f,0.05f,0.05f,0.05f,0.05f,0.05f],
-            true));
-        animationController.Play("Stand");
+            ]);
+    }
 
-        return animationController;
+    public ISprite CreateBigSwimmingMarioSprite()
+    {
+        // CHECK: all rectangles, middle row of Mariogif.gif (big Mario is about 16x32)
+        return CreateSwimmingMarioSprite(
+            new Rectangle(5, 60, 16, 32),                     // stand
+            [
+                new Rectangle(30, 60, 16, 32),                 // walk
+                new Rectangle(50, 60, 16, 32),
+                new Rectangle(70, 60, 16, 32)
+            ],
+            [
+                new Rectangle(160, 60, 16, 32),                 // float
+                new Rectangle(180, 60, 16, 32)
+            ],
+            [
+                new Rectangle(200, 60, 16, 32),                 // swim stroke
+                new Rectangle(220, 59, 16, 32),
+                new Rectangle(240, 60, 16, 32),
+                new Rectangle(260, 60, 16, 32)
+            ]);
+    }
+
+    public ISprite CreateFireSwimmingMarioSprite()
+    {
+        // CHECK: all rectangles, bottom row of Mariogif.gif (same shapes as big Mario)
+        return CreateSwimmingMarioSprite(
+            new Rectangle(5, 100, 16, 32),                     // stand
+            [
+                new Rectangle(30, 100, 16, 32),                 // walk
+                new Rectangle(48, 100, 16, 32),
+                new Rectangle(70, 100, 16, 32)
+            ],
+            [
+                new Rectangle(175, 95, 16, 32),                 // float
+                new Rectangle(195, 95, 16, 32)
+            ],
+            [
+                new Rectangle(215, 95, 16, 32),                 // swim stroke
+                new Rectangle(235, 95, 16, 32),
+                new Rectangle(255, 95, 16, 32),
+                new Rectangle(275, 95, 16, 32)
+            ]);
+    }
+
+    private ISprite CreateSwimmingMarioSprite(Rectangle stand, Rectangle[] walk, Rectangle[] floatFrames, Rectangle[] swim)
+    {
+        AnimationController mario = new AnimationController(marioSwimmingTexture, Vector2.Zero, 2.5f);
+
+        mario.AddClip(new Track("Stand", [stand], [1f], false));
+        mario.AddClip(new Track("Walk", walk, [0.3f, 0.3f, 0.3f], true));
+        mario.AddClip(new Track("Float", floatFrames, [0.05f, 0.05f], true));
+        mario.AddClip(new Track("Swim", swim, [0.05f, 0.05f, 0.05f, 0.05f], true));
+        mario.Play("Stand");
+
+        return mario;
     }
 
     //ENEMY SPRITES
