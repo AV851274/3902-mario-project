@@ -12,3 +12,11 @@ A floating item that can be switched using U/I
 Animations for all sprites that require such
 
 Our current "bug" is that the acceleration and physics behind Mario could be a bit smoother. Intend to be fixed soon.
+
+Credit for Other Mario Sprites:
+This sprite:
+https://www.mariouniverse.com/wp-content/img/sprites/nes/smb/mario-2.gif
+From this website:
+https://www.mariouniverse.com/sprites-nes-smb/
+Using this to remove the background:
+https://ezgif.com/remove-background/ezgif-2e049edabdd9f560.gif.html

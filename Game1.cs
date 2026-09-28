@@ -48,6 +48,7 @@ public class Game1 : Game
     //TODO: I THINK THIS IS GOING TO NEED TO MOVE SOON ResetGame()
     public void ResetGame()
     {
+        var player1 = new SwimmingPlayer(spriteFactory,new Vector2(100, 100));
         var player1 = new Player(spriteFactory, new Vector2(100, 100));
         player1.SummonFireball +=
             (position, direction) => {
@@ -86,6 +87,21 @@ public class Game1 : Game
         enemies.Update(gameTime);
         item.Update(gameTime);
         UpdateProjectiles(gameTime);
+
+        // if (!player.IsOnGround)
+        // {
+        //     playerSprite.Play("Jump");
+        // }
+        // else if (player.IsMoving)
+        // {
+        //     playerSprite.Play("Run");
+        // }
+        // else
+        // {
+        //     playerSprite.Play("Idle");
+        // }
+
+        //playerSprite.UpdateAnimation(gameTime);
 
         base.Update(gameTime);
     }

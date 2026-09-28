@@ -8,6 +8,7 @@ using Game2D.Interfaces;
 public class SpriteFactory
 {
     private Texture2D marioTexture;
+    private Texture2D marioSwimmingTexture;
     private Texture2D itemTexture;
     private Texture2D blockTexture;
     private Texture2D enemyTexture;
@@ -17,6 +18,7 @@ public class SpriteFactory
     public void LoadTextures(ContentManager content)
     {
         marioTexture = content.Load<Texture2D>("mario");
+        marioSwimmingTexture = content.Load<Texture2D>("mariogif");
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
@@ -101,8 +103,12 @@ public class SpriteFactory
 
         return qBlock;
     }
+    //PLAYER SPRITES
+
+    public ISprite CreatePlayerSprite()
 
     public ISprite CreateSmallMarioSprite()
+
     {
         return CreateMarioSprite(
             new Rectangle(180, 0, 16, 22),                 // idle (your current one)
@@ -149,6 +155,53 @@ public class SpriteFactory
         mario.Play("Idle");
 
         return mario;
+    }
+
+    public ISprite CreateSwimmingPlayerSprite()
+    {
+        AnimationController animationController = new AnimationController(
+            marioSwimmingTexture,
+            Vector2.Zero,
+            2.5f);
+
+        animationController.AddClip(new Track(
+            "Stand",
+            [new Rectangle(6, 7, 12, 16)],
+            [1f],
+            false));
+        animationController.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(21, 8, 13, 15),
+                new Rectangle(38, 7, 15, 16),
+                new Rectangle(57, 7, 11, 16)
+            ],
+            [0.3f, 0.3f, 0.3f],
+            true));
+        animationController.AddClip(new Track("Float",
+            [
+                new Rectangle(124, 6, 13, 15),
+                new Rectangle(140, 6, 13, 15)
+            ],
+            [0.05f, 0.05f],
+            true));
+        animationController.AddClip(new Track(
+            "Swim",
+            [
+                new Rectangle(140, 6, 13, 15),
+                new Rectangle(156, 6, 13, 15),
+                new Rectangle(173, 6, 13, 15),
+                new Rectangle(189, 6, 13, 15),
+                new Rectangle(140, 6, 13, 15),
+                new Rectangle(156, 6, 13, 15),
+                new Rectangle(173, 6, 13, 15),
+                new Rectangle(189, 6, 13, 15)
+            ],
+            [0.05f,0.05f,0.05f,0.05f,0.05f,0.05f,0.05f,0.05f],
+            true));
+        animationController.Play("Stand");
+
+        return animationController;
     }
 
     //ENEMY SPRITES

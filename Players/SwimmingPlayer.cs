@@ -1,33 +1,37 @@
 using System;
 using Microsoft.Xna.Framework;
 using Game2D.Animation;
+using Game2D.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
 
-public class Player : IPlayer
+public class SwimmingPlayer : IPlayer
 {
-    private IMarioState powerState;
     private SpriteFactory spriteFactory;
+    private ISprite playerSprite;
     private Vector2 position;
     private Vector2 velocity;
-    private const float MoveAcceleration = 5f;
-    private const float MoveMaxSpeed = 200f;
-    private const float JumpSpeed = 450f;
-    private const float Gravity = 1000f;
+    private const float MoveAcceleration = 1.5f;
+    private const float SwimMaxSpeed = 100f;
+    private const float FallMaxSpeed = 100f;
+    private const float WalkMaxSpeed = 50f;
+    private float MoveMaxSpeed = 200f;
+    private const float DashMaxSpeed = 200f;
+    private const float JumpSpeed = 75f;
+    private float jumpTimer = 0.61f;
+    private const float Gravity = 200f;
     private const float GroundY = 400f;
     private bool isOnGround;
     private Direction facingDirection = Direction.Right;
-
     public event Action<Vector2, Direction> SummonFireball;
-
     public Vector2 Position => position;
     public bool IsMoving => velocity.X != 0;
     public Direction FacingDirection => facingDirection;
     public bool IsOnGround => isOnGround;
 
-    public Player(SpriteFactory spriteFactory, Vector2 startingPosition)
+    public SwimmingPlayer(SpriteFactory spriteFactory, Vector2 startingPosition)
     {
         this.spriteFactory = spriteFactory;
-        powerState = new SmallMarioState(spriteFactory);
+        playerSprite = spriteFactory.CreateSwimmingPlayerSprite();
         position = startingPosition;
         velocity = Vector2.Zero;
         isOnGround = false;
@@ -71,11 +75,10 @@ public class Player : IPlayer
 
     public void Jump()
     {
-        if (isOnGround)
-        {
-            velocity.Y = -JumpSpeed;
-            isOnGround = false;
-        }
+        velocity.Y = -JumpSpeed;
+        isOnGround = false;
+        MoveMaxSpeed = SwimMaxSpeed;
+        jumpTimer = 0f;
     }
 
     public void Dash()
@@ -85,59 +88,17 @@ public class Player : IPlayer
 
     public void DashLeft()
     {
-        if (velocity.X > -3f * MoveMaxSpeed)
-        {
-            velocity.X -= 2f * MoveAcceleration;
-        }
-
-        facingDirection = Direction.Left;
+        this.MoveLeft();
     }
 
     public void DashRight()
     {
-        if (velocity.X < 3f * MoveMaxSpeed)
-        {
-            velocity.X += 2f * MoveAcceleration;
-        }
-
-        facingDirection = Direction.Right;
+        this.MoveRight();
     }
 
     public void Attack()
     {
-        if (powerState.CanShootFireball)
-        {
-            SummonFireball?.Invoke(position, facingDirection);
-        }
-    }
-
-    public void SetPowerState(IMarioState newState)
-    {
-        powerState = newState;
-    }
-
-    public void BecomeSmall()
-    {
-        powerState = new SmallMarioState(spriteFactory);
-    }
-
-    public void BecomeBig()
-    {
-        powerState = new BigMarioState(spriteFactory);
-    }
-
-    public void BecomeFire()
-    {
-        powerState = new FireMarioState(spriteFactory);
-    }
-
-    public void Draw(SpriteBatch spriteBatch)
-    {
-        SpriteEffects effects = facingDirection == Direction.Right
-            ? SpriteEffects.FlipHorizontally
-            : SpriteEffects.None;
-
-        powerState.Sprite.Draw(spriteBatch, position + powerState.DrawOffset, effects: effects);
+        SummonFireball?.Invoke(position, facingDirection);
     }
 
     public void Update(GameTime gameTime)
@@ -146,34 +107,49 @@ public class Player : IPlayer
             (float)gameTime.ElapsedGameTime.TotalSeconds;
 
         velocity.Y += Gravity * deltaTime;
+        if (velocity.Y > FallMaxSpeed)
+        {
+            velocity.Y = FallMaxSpeed;
+        }
 
         position += velocity * deltaTime;
+
+        jumpTimer += deltaTime;
 
         if (position.Y >= GroundY)
         {
             position.Y = GroundY;
             velocity.Y = 0;
             isOnGround = true;
+            MoveMaxSpeed = WalkMaxSpeed;
         }
 
-        if (!isOnGround)
+        if (jumpTimer < 0.4f)
         {
-            powerState.Sprite.Play("Jump");
+            playerSprite.Play("Swim");
+        }
+        else if (!isOnGround)
+        {
+            playerSprite.Play("Float");
         }
         else if (IsMoving)
         {
-            powerState.Sprite.Play("Run");
+            playerSprite.Play("Walk");
         }
         else
         {
-            powerState.Sprite.Play("Idle");
+            playerSprite.Play("Stand");
         }
 
-        powerState.Sprite.UpdateAnimation(gameTime);
+        playerSprite.UpdateAnimation(gameTime);
     }
 
-    public void Draw (SpriteBatch spriteBatch)
+    public void Draw(SpriteBatch spriteBatch)
     {
-        //Fill with what Sam did
+        SpriteEffects effects = facingDirection == Direction.Left
+            ? SpriteEffects.FlipHorizontally
+            : SpriteEffects.None;
+
+        playerSprite.Draw(spriteBatch, position, effects: effects);
     }
 }
