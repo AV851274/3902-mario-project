@@ -1,15 +1,15 @@
 using Microsoft.Xna.Framework;
 using Game2D.Interfaces;
 
-public class SmallMarioState : IMarioState
+public class SwimSmallMarioState : IMarioState
 {
     public ISprite Sprite { get; }
     public bool CanShootFireball => false;
     public Vector2 DrawOffset => Vector2.Zero;
     public MarioPower marioPower => MarioPower.Small;
 
-    public SmallMarioState(SpriteFactory spriteFactory)
+    public SwimSmallMarioState(SpriteFactory spriteFactory)
     {
-        Sprite = spriteFactory.CreateSmallMarioSprite();
+        Sprite = spriteFactory.CreateSmallSwimmingMarioSprite();
     }
 }

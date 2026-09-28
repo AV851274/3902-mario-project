@@ -131,6 +131,22 @@ public class Player : IPlayer
         powerState = new FireMarioState(spriteFactory);
     }
 
+    public void TakeDamage()
+    {
+        if (powerState.marioPower == MarioPower.Fire)
+        {
+            BecomeBig();
+        }
+        else if (powerState.marioPower == MarioPower.Big)
+        {
+            BecomeSmall();
+        }
+        else if (powerState.marioPower == MarioPower.Small)
+        {
+            //Die
+        }
+    }
+
     public void Draw(SpriteBatch spriteBatch)
     {
         SpriteEffects effects = facingDirection == Direction.Right
