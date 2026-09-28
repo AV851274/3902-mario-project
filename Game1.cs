@@ -14,7 +14,6 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
 
     private IPlayer player;
-    private ISprite playerSprite;
     private ISprite fireballSprite;
     private IItem item;
     private IBlock block;
@@ -50,6 +49,7 @@ public class Game1 : Game
     public void ResetGame()
     {
         var player1 = new SwimmingPlayer(spriteFactory,new Vector2(100, 100));
+        var player1 = new Player(spriteFactory, new Vector2(100, 100));
         player1.SummonFireball +=
             (position, direction) => {
                 float flip = direction == Direction.Left ? -1f : 1f;
@@ -60,7 +60,6 @@ public class Game1 : Game
         this.player = player1;
 
 
-        playerSprite = spriteFactory.CreatePlayerSprite();
         fireballSprite = spriteFactory.CreateFireBallSprite();
         projectiles.Clear();
 
@@ -110,10 +109,6 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
-        SpriteEffects spriteEffect = player.FacingDirection == Direction.Right
-            ? SpriteEffects.FlipHorizontally
-            : SpriteEffects.None;
 
         _spriteBatch.Begin();
 

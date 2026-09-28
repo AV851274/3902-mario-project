@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 public class Player : IPlayer
 {
+    private IMarioState powerState;
+    private SpriteFactory spriteFactory;
     private Vector2 position;
     private Vector2 velocity;
     private const float MoveAcceleration = 5f;
@@ -22,8 +24,10 @@ public class Player : IPlayer
     public Direction FacingDirection => facingDirection;
     public bool IsOnGround => isOnGround;
 
-    public Player(Vector2 startingPosition)
+    public Player(SpriteFactory spriteFactory, Vector2 startingPosition)
     {
+        this.spriteFactory = spriteFactory;
+        powerState = new SmallMarioState(spriteFactory);
         position = startingPosition;
         velocity = Vector2.Zero;
         isOnGround = false;
@@ -101,7 +105,39 @@ public class Player : IPlayer
 
     public void Attack()
     {
-        SummonFireball?.Invoke(position, facingDirection);
+        if (powerState.CanShootFireball)
+        {
+            SummonFireball?.Invoke(position, facingDirection);
+        }
+    }
+
+    public void SetPowerState(IMarioState newState)
+    {
+        powerState = newState;
+    }
+
+    public void BecomeSmall()
+    {
+        powerState = new SmallMarioState(spriteFactory);
+    }
+
+    public void BecomeBig()
+    {
+        powerState = new BigMarioState(spriteFactory);
+    }
+
+    public void BecomeFire()
+    {
+        powerState = new FireMarioState(spriteFactory);
+    }
+
+    public void Draw(SpriteBatch spriteBatch)
+    {
+        SpriteEffects effects = facingDirection == Direction.Right
+            ? SpriteEffects.FlipHorizontally
+            : SpriteEffects.None;
+
+        powerState.Sprite.Draw(spriteBatch, position + powerState.DrawOffset, effects: effects);
     }
 
     public void Update(GameTime gameTime)
@@ -119,6 +155,21 @@ public class Player : IPlayer
             velocity.Y = 0;
             isOnGround = true;
         }
+
+        if (!isOnGround)
+        {
+            powerState.Sprite.Play("Jump");
+        }
+        else if (IsMoving)
+        {
+            powerState.Sprite.Play("Run");
+        }
+        else
+        {
+            powerState.Sprite.Play("Idle");
+        }
+
+        powerState.Sprite.UpdateAnimation(gameTime);
     }
 
     public void Draw (SpriteBatch spriteBatch)
