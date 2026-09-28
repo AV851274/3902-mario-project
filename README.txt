@@ -9,6 +9,10 @@ A simple goomba that walks back and forth
 A simple koopa that walks back and forth (switch enemy using O/P)
 A floating block that can be switched using T/Y
 A floating item that can be switched using U/I
+A firepower used only in fire mode using F
+Switch between small, big, and fire mario using 1/2/3
+Switch between small, big and fire swimming mario using 4/5/6
+Take damage to mario using E
 Animations for all sprites that require such
 
 Our current "bug" is that the acceleration and physics behind Mario could be a bit smoother. Intend to be fixed soon.
