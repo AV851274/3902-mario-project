@@ -22,6 +22,7 @@ public class SwimmingPlayer : IPlayer
     private const float GroundY = 400f;
     private bool isOnGround;
     private bool canShootFireball = false;
+    private Vector2 drawOffset = Vector2.Zero;
     private Direction facingDirection = Direction.Right;
     public event Action<Vector2, Direction> SummonFireball;
     public Vector2 Position => position;
@@ -32,7 +33,7 @@ public class SwimmingPlayer : IPlayer
     public SwimmingPlayer(SpriteFactory spriteFactory, Vector2 startingPosition)
     {
         this.spriteFactory = spriteFactory;
-        playerSprite = spriteFactory.CreateSwimmingPlayerSprite();
+        playerSprite = spriteFactory.CreateSmallSwimmingMarioSprite();
         position = startingPosition;
         velocity = Vector2.Zero;
         isOnGround = false;
@@ -107,16 +108,22 @@ public class SwimmingPlayer : IPlayer
 
     void IPlayer.BecomeSmall()
     {
+        playerSprite = spriteFactory.CreateSmallSwimmingMarioSprite();
+        drawOffset = Vector2.Zero;
         canShootFireball = false;
     }
 
     void IPlayer.BecomeBig()
     {
+        playerSprite = spriteFactory.CreateBigSwimmingMarioSprite();
+        drawOffset = new Vector2(0, -40);
         canShootFireball = false;
     }
 
     void IPlayer.BecomeFire()
     {
+        playerSprite = spriteFactory.CreateFireSwimmingMarioSprite();
+        drawOffset = new Vector2(0, -40);
         canShootFireball = true;
     }
 
@@ -169,6 +176,6 @@ public class SwimmingPlayer : IPlayer
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
-        playerSprite.Draw(spriteBatch, position, effects: effects);
+        playerSprite.Draw(spriteBatch, position + drawOffset, effects: effects);
     }
 }
