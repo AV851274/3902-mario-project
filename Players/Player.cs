@@ -16,6 +16,7 @@ public class Player : IPlayer
     private const float Gravity = 1000f;
     private const float GroundY = 400f;
     private bool isOnGround;
+    private bool isSkidding = false;
     private Direction facingDirection = Direction.Right;
 
     public event Action<Vector2, Direction> SummonFireball;
@@ -36,7 +37,9 @@ public class Player : IPlayer
 
     public void MoveLeft()
     {
-        if (velocity.X > 0)
+        isSkidding = isOnGround && velocity.X > 0;
+
+        if (isSkidding)
         {
             velocity.X -= TurnAcceleration;
         }
@@ -50,7 +53,9 @@ public class Player : IPlayer
 
     public void MoveRight()
     {
-        if (velocity.X < 0)
+        isSkidding = isOnGround && velocity.X < 0;
+
+        if (isSkidding)
         {
             velocity.X += TurnAcceleration;
         }
@@ -62,8 +67,10 @@ public class Player : IPlayer
         facingDirection = Direction.Right;
     }
 
-    public void StopMoving() 
+    public void StopMoving()
     {
+        isSkidding = false;
+
         if (velocity.X < -MoveAcceleration)
         {
             velocity.X += MoveAcceleration;
@@ -94,7 +101,13 @@ public class Player : IPlayer
 
     public void DashLeft()
     {
-        if (velocity.X > -3f * MoveMaxSpeed)
+        isSkidding = isOnGround && velocity.X > 0;
+
+        if (isSkidding)
+        {
+            velocity.X -= TurnAcceleration;
+        }
+        else if (velocity.X > -3f * MoveMaxSpeed)
         {
             velocity.X -= 2f * MoveAcceleration;
         }
@@ -104,7 +117,13 @@ public class Player : IPlayer
 
     public void DashRight()
     {
-        if (velocity.X < 3f * MoveMaxSpeed)
+        isSkidding = isOnGround && velocity.X < 0;
+
+        if (isSkidding)
+        {
+            velocity.X += TurnAcceleration;
+        }
+        else if (velocity.X < 3f * MoveMaxSpeed)
         {
             velocity.X += 2f * MoveAcceleration;
         }
@@ -184,6 +203,10 @@ public class Player : IPlayer
         if (!isOnGround)
         {
             powerState.Sprite.Play("Jump");
+        }
+        else if (isSkidding)
+        {
+            powerState.Sprite.Play("Skid");
         }
         else if (IsMoving)
         {
