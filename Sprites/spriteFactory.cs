@@ -109,47 +109,51 @@ public class SpriteFactory
 
     {
         return CreateMarioSprite(
-            new Rectangle(180, 0, 16, 22),                 // idle (your current one)
+            new Rectangle(180, 0, 16, 22),  // idle
             [
                 new Rectangle(149, 0, 15, 16),
                 new Rectangle(120, 0, 13, 16),
                 new Rectangle(88, 0, 17, 16)
             ],
-            new Rectangle(26, 0, 20, 16));                 // jump
+            new Rectangle(26, 0, 20, 16),  // jump
+            new Rectangle(60, 0, 14, 16));   // small skid
     }
 
     public ISprite CreateBigMarioSprite()
     {
         return CreateMarioSprite(
-            new Rectangle(180, 50, 16, 34),                   // CHECK: big idle
+            new Rectangle(180, 50, 16, 34), //big idle
             [
-                new Rectangle(150, 50, 16, 32),               // CHECK: big run frames
+                new Rectangle(150, 50, 16, 32),  //big run frames
                 new Rectangle(120, 50, 16, 32),
                 new Rectangle(90, 50, 16, 32)
             ],
-            new Rectangle(28, 50, 16, 32));                  // CHECK: big jump
+            new Rectangle(28, 50, 20, 32),  //big jump
+            new Rectangle(325, 50, 20, 32));  //big skid
     }
 
     public ISprite CreateFireMarioSprite()
     {
         // Same shapes as Big Mario, just the white/red rows of the sheet
         return CreateMarioSprite(
-            new Rectangle(180, 120, 16, 32),                   // CHECK: fire idle
+            new Rectangle(180, 120, 16, 32),  //fire idle
             [
-                new Rectangle(150, 120, 16, 32),               // CHECK: fire run frames
-                new Rectangle(125, 120, 16, 32),
-                new Rectangle(100, 120, 16, 32)
+                new Rectangle(150, 120, 20, 32),  //fire run frames
+                new Rectangle(125, 120, 20, 32),
+                new Rectangle(100, 120, 20, 32)
             ],
-            new Rectangle(25, 120, 16, 32));                  // CHECK: fire jump
+            new Rectangle(25, 120, 20, 32),  //fire jump
+            new Rectangle(335, 120, 20, 32));  //fire skid
     }
 
-    private ISprite CreateMarioSprite(Rectangle idle, Rectangle[] run, Rectangle jump)
+    private ISprite CreateMarioSprite(Rectangle idle, Rectangle[] run, Rectangle jump, Rectangle skid)
     {
         AnimationController mario = new AnimationController(marioTexture, Vector2.Zero, 2.5f);
 
         mario.AddClip(new Track("Idle", [idle], [1f], true));
         mario.AddClip(new Track("Run", run, [0.15f, 0.15f, 0.15f], true));
         mario.AddClip(new Track("Jump", [jump], [1f], false));
+        mario.AddClip(new Track("Skid", [skid], [1f], true));
         mario.Play("Idle");
 
         return mario;
