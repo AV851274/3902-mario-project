@@ -14,6 +14,7 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
 
     private IPlayer player;
+    private bool isSwimming;
     private ISprite fireballSprite;
     private IItem item;
     private IBlock block;
@@ -45,21 +46,8 @@ public class Game1 : Game
         ResetGame();
     }
 
-    //TODO: I THINK THIS IS GOING TO NEED TO MOVE SOON ResetGame()
     public void ResetGame()
     {
-        var player1 = new SwimmingPlayer(spriteFactory,new Vector2(100, 100));
-        var player1 = new Player(spriteFactory, new Vector2(100, 100));
-        player1.SummonFireball +=
-            (position, direction) => {
-                float flip = direction == Direction.Left ? -1f : 1f;
-                var velocity = new Vector2(850f * flip, 0);
-                projectiles.Add(
-                    new Fireball(fireballSprite, position + new Vector2(20 * flip, 2f), velocity, 1f));
-            };
-        this.player = player1;
-
-
         fireballSprite = spriteFactory.CreateFireBallSprite();
         projectiles.Clear();
 
@@ -70,8 +58,44 @@ public class Game1 : Game
             new Turtle(spriteFactory.CreateTurtleSprite(), new Vector2(600, 392))
         });
 
+        CreateMario(false, new Vector2(100, 100));
+    }
+
+    // Keys 1-6: switch between regular and swimming Mario, then set his size
+    public void ChangeMario(bool swimming, MarioPower power)
+    {
+        if (swimming != isSwimming)
+        {
+            CreateMario(swimming, player.Position);
+        }
+
+        switch (power)
+        {
+            case MarioPower.Small: player.BecomeSmall(); break;
+            case MarioPower.Big: player.BecomeBig(); break;
+            case MarioPower.Fire: player.BecomeFire(); break;
+        }
+    }
+
+    private void CreateMario(bool swimming, Vector2 position)
+    {
+        isSwimming = swimming;
+        player = swimming
+            ? new SwimmingPlayer(spriteFactory, position)
+            : new Player(spriteFactory, position);
+        player.SummonFireball += SpawnFireball;
+
+        // Controllers hold on to the player, so they're rebuilt whenever Mario is replaced
         keyboardController = new KeyboardController(this, player, item, block, enemies);
         mouseController = new MouseController(player);
+    }
+
+    private void SpawnFireball(Vector2 position, Direction direction)
+    {
+        float flip = direction == Direction.Left ? -1f : 1f;
+        var velocity = new Vector2(850f * flip, 0);
+        projectiles.Add(
+            new Fireball(fireballSprite, position + new Vector2(20 * flip, 2f), velocity, 1f));
     }
 
     protected override void Update(GameTime gameTime)
@@ -87,21 +111,6 @@ public class Game1 : Game
         enemies.Update(gameTime);
         item.Update(gameTime);
         UpdateProjectiles(gameTime);
-
-        // if (!player.IsOnGround)
-        // {
-        //     playerSprite.Play("Jump");
-        // }
-        // else if (player.IsMoving)
-        // {
-        //     playerSprite.Play("Run");
-        // }
-        // else
-        // {
-        //     playerSprite.Play("Idle");
-        // }
-
-        //playerSprite.UpdateAnimation(gameTime);
 
         base.Update(gameTime);
     }

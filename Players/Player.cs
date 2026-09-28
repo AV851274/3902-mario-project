@@ -171,9 +171,4 @@ public class Player : IPlayer
 
         powerState.Sprite.UpdateAnimation(gameTime);
     }
-
-    public void Draw (SpriteBatch spriteBatch)
-    {
-        //Fill with what Sam did
-    }
 }

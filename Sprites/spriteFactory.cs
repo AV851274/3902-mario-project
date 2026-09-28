@@ -18,7 +18,7 @@ public class SpriteFactory
     public void LoadTextures(ContentManager content)
     {
         marioTexture = content.Load<Texture2D>("mario");
-        marioSwimmingTexture = content.Load<Texture2D>("mariogif");
+        marioSwimmingTexture = content.Load<Texture2D>("Mariogif");
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
@@ -103,10 +103,8 @@ public class SpriteFactory
 
         return qBlock;
     }
+
     //PLAYER SPRITES
-
-    public ISprite CreatePlayerSprite()
-
     public ISprite CreateSmallMarioSprite()
 
     {
@@ -139,10 +137,10 @@ public class SpriteFactory
             new Rectangle(180, 120, 16, 32),                   // CHECK: fire idle
             [
                 new Rectangle(150, 120, 16, 32),               // CHECK: fire run frames
-                new Rectangle(150, 120, 16, 32),
-                new Rectangle(150, 120, 16, 32)
+                new Rectangle(125, 120, 16, 32),
+                new Rectangle(100, 120, 16, 32)
             ],
-            new Rectangle(0, 0, 16, 32));                  // CHECK: fire jump
+            new Rectangle(25, 120, 16, 32));                  // CHECK: fire jump
     }
 
     private ISprite CreateMarioSprite(Rectangle idle, Rectangle[] run, Rectangle jump)

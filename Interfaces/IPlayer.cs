@@ -1,10 +1,11 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Game2D.Animation;
-using Microsoft.Xna.Framework.Graphics;
 
 public interface IPlayer
 {
+    event Action<Vector2, Direction> SummonFireball;
     Vector2 Position { get; }
     bool IsMoving { get; }
     Direction FacingDirection { get; }
@@ -22,5 +23,4 @@ public interface IPlayer
     void BecomeFire();
     void Draw(SpriteBatch spriteBatch);
     void Update(GameTime gameTime);
-    void Draw(SpriteBatch spriteBatch);
 }

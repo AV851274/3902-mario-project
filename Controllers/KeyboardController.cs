@@ -22,9 +22,12 @@ public class KeyboardController : IController
             { Keys.P, new NextEnemyCommand(enemies) },
             { Keys.Q, new QuitCommand(game) },
             { Keys.R, new ResetCommand(game) },
-            { Keys.D1, new SmallMarioCommand(player) },
-            { Keys.D2, new BigMarioCommand(player) },
-            { Keys.D3, new FireMarioCommand(player) },
+            { Keys.D1, new ChangeMarioCommand(game, false, MarioPower.Small) },
+            { Keys.D2, new ChangeMarioCommand(game, false, MarioPower.Big) },
+            { Keys.D3, new ChangeMarioCommand(game, false, MarioPower.Fire) },
+            { Keys.D4, new ChangeMarioCommand(game, true, MarioPower.Small) },
+            { Keys.D5, new ChangeMarioCommand(game, true, MarioPower.Big) },
+            { Keys.D6, new ChangeMarioCommand(game, true, MarioPower.Fire) },
         };
 
         previousState = Keyboard.GetState();
