@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,22 +9,22 @@ using Game2D.Interfaces;
 public class SpriteFactory
 {
     private Texture2D marioTexture;
-    private Texture2D marioSwimmingTexture;
+    private Texture2D marioGifTexture;
     private Texture2D itemTexture;
     private Texture2D blockTexture;
     private Texture2D enemyTexture;
     private Texture2D tileSet;
-    private Texture2D fireballTexture;
+    // private Texture2D fireballTexture;
 
     public void LoadTextures(ContentManager content)
     {
         marioTexture = content.Load<Texture2D>("mario");
-        marioSwimmingTexture = content.Load<Texture2D>("Mariogif");
+        marioGifTexture = content.Load<Texture2D>("Mariogif");
         itemTexture = content.Load<Texture2D>("itemsAndBlocks");
         blockTexture = content.Load<Texture2D>("itemsAndBlocks");
         enemyTexture = content.Load<Texture2D>("enemies");
         tileSet = content.Load<Texture2D>("tileset");
-        fireballTexture = content.Load<Texture2D>("orange_fireball");
+        // fireballTexture = content.Load<Texture2D>("orange_fireball");
     }
 
     public List<ISprite> CreateItemSprites()
@@ -109,38 +110,38 @@ public class SpriteFactory
 
     {
         return CreateMarioSprite(
-            new Rectangle(180, 0, 16, 22),                 // idle (your current one)
+            new Rectangle(180, 0, 16, 22), // idle (your current one)
             [
                 new Rectangle(149, 0, 15, 16),
                 new Rectangle(120, 0, 13, 16),
                 new Rectangle(88, 0, 17, 16)
             ],
-            new Rectangle(26, 0, 20, 16));                 // jump
+            new Rectangle(26, 0, 20, 16)); // jump
     }
 
     public ISprite CreateBigMarioSprite()
     {
         return CreateMarioSprite(
-            new Rectangle(180, 50, 16, 34),                   // CHECK: big idle
+            new Rectangle(180, 50, 16, 34), // CHECK: big idle
             [
-                new Rectangle(150, 50, 16, 32),               // CHECK: big run frames
+                new Rectangle(150, 50, 16, 32), // CHECK: big run frames
                 new Rectangle(120, 50, 16, 32),
                 new Rectangle(90, 50, 16, 32)
             ],
-            new Rectangle(28, 50, 16, 32));                  // CHECK: big jump
+            new Rectangle(28, 50, 16, 32)); // CHECK: big jump
     }
 
     public ISprite CreateFireMarioSprite()
     {
         // Same shapes as Big Mario, just the white/red rows of the sheet
         return CreateMarioSprite(
-            new Rectangle(180, 120, 16, 32),                   // CHECK: fire idle
+            new Rectangle(180, 120, 16, 32), // CHECK: fire idle
             [
-                new Rectangle(150, 120, 16, 32),               // CHECK: fire run frames
+                new Rectangle(150, 120, 16, 32), // CHECK: fire run frames
                 new Rectangle(125, 120, 16, 32),
                 new Rectangle(100, 120, 16, 32)
             ],
-            new Rectangle(25, 120, 16, 32));                  // CHECK: fire jump
+            new Rectangle(25, 120, 16, 32)); // CHECK: fire jump
     }
 
     private ISprite CreateMarioSprite(Rectangle idle, Rectangle[] run, Rectangle jump)
@@ -155,21 +156,21 @@ public class SpriteFactory
         return mario;
     }
 
-        public ISprite CreateSmallSwimmingMarioSprite()
+    public ISprite CreateSmallSwimmingMarioSprite()
     {
         return CreateSwimmingMarioSprite(
-            new Rectangle(6, 7, 12, 16),                     // stand
+            new Rectangle(6, 7, 12, 16), // stand
             [
-                new Rectangle(21, 8, 13, 15),                // walk
+                new Rectangle(21, 8, 13, 15), // walk
                 new Rectangle(38, 7, 15, 16),
                 new Rectangle(57, 7, 11, 16)
             ],
             [
-                new Rectangle(124, 6, 13, 15),               // float
+                new Rectangle(124, 6, 13, 15), // float
                 new Rectangle(140, 6, 13, 15)
             ],
             [
-                new Rectangle(140, 6, 13, 15),               // swim stroke
+                new Rectangle(140, 6, 13, 15), // swim stroke
                 new Rectangle(156, 6, 13, 15),
                 new Rectangle(173, 6, 13, 15),
                 new Rectangle(189, 6, 13, 15)
@@ -179,18 +180,18 @@ public class SpriteFactory
     public ISprite CreateBigSwimmingMarioSprite()
     {
         return CreateSwimmingMarioSprite(
-            new Rectangle(5, 60, 16, 32),                     // stand
+            new Rectangle(5, 60, 16, 32), // stand
             [
-                new Rectangle(30, 60, 16, 32),                 // walk
+                new Rectangle(30, 60, 16, 32), // walk
                 new Rectangle(50, 60, 16, 32),
                 new Rectangle(70, 60, 16, 32)
             ],
             [
-                new Rectangle(160, 60, 16, 32),                 // float
+                new Rectangle(160, 60, 16, 32), // float
                 new Rectangle(180, 60, 16, 32)
             ],
             [
-                new Rectangle(200, 60, 16, 32),                 // swim stroke
+                new Rectangle(200, 60, 16, 32), // swim stroke
                 new Rectangle(220, 59, 16, 32),
                 new Rectangle(240, 60, 16, 32),
                 new Rectangle(260, 60, 16, 32)
@@ -200,27 +201,28 @@ public class SpriteFactory
     public ISprite CreateFireSwimmingMarioSprite()
     {
         return CreateSwimmingMarioSprite(
-            new Rectangle(5, 100, 16, 32),                     // stand
+            new Rectangle(5, 100, 16, 32), // stand
             [
-                new Rectangle(30, 100, 16, 32),                 // walk
+                new Rectangle(30, 100, 16, 32), // walk
                 new Rectangle(48, 100, 16, 32),
                 new Rectangle(70, 100, 16, 32)
             ],
             [
-                new Rectangle(175, 95, 16, 32),                 // float
+                new Rectangle(175, 95, 16, 32), // float
                 new Rectangle(195, 95, 16, 32)
             ],
             [
-                new Rectangle(215, 95, 16, 32),                 // swim stroke
+                new Rectangle(215, 95, 16, 32), // swim stroke
                 new Rectangle(235, 95, 16, 32),
                 new Rectangle(255, 95, 16, 32),
                 new Rectangle(275, 95, 16, 32)
             ]);
     }
 
-    private ISprite CreateSwimmingMarioSprite(Rectangle stand, Rectangle[] walk, Rectangle[] floatFrames, Rectangle[] swim)
+    private ISprite CreateSwimmingMarioSprite(Rectangle stand, Rectangle[] walk, Rectangle[] floatFrames,
+        Rectangle[] swim)
     {
-        AnimationController mario = new AnimationController(marioSwimmingTexture, Vector2.Zero, 2.5f);
+        AnimationController mario = new AnimationController(marioGifTexture, Vector2.Zero, 2.5f);
 
         mario.AddClip(new Track("Stand", [stand], [1f], false));
         mario.AddClip(new Track("Walk", walk, [0.3f, 0.3f, 0.3f], true));
@@ -278,5 +280,20 @@ public class SpriteFactory
     }
 
     public ISprite CreateFireBallSprite()
-        => new StaticSprite(fireballTexture, new Rectangle(0, 0, 32, 32), 1);
+    {
+        AnimationController fireball = new AnimationController(marioGifTexture, Vector2.Zero, 4f);
+        fireball.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(3, 135, 16, 16),
+                    new Rectangle(17, 135, 16, 16),
+                    new Rectangle(33, 135, 16, 16),
+                    new Rectangle(46, 135, 16, 16),
+                ],
+                Enumerable.Repeat(0.12f, 4).ToArray(),
+                true)
+        );
+        return fireball;
+    }
 }

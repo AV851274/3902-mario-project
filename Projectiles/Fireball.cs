@@ -33,12 +33,12 @@ public class Fireball : IProjectile
         }
 
         Position += Velocity * deltaTime;
-
+        sprite.Play("Idle");
         sprite.UpdateAnimation(gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        sprite.Draw(spriteBatch, Position);
+        sprite.Draw(spriteBatch, Position );
     }
 }
