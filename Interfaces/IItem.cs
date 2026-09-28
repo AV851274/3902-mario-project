@@ -5,6 +5,7 @@ public interface IItem
 {
 
     Vector2 Position { get; }
+    string CurrentItemName { get; }
 
     void Update(GameTime gameTime);
 

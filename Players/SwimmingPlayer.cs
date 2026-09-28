@@ -140,21 +140,18 @@ public class SwimmingPlayer : IPlayer
         float deltaTime =
             (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-        velocity.Y += Gravity * deltaTime;
-        if (velocity.Y > FallMaxSpeed)
-        {
-            velocity.Y = FallMaxSpeed;
-        }
-
-        position += velocity * deltaTime;
+        isOnGround = GravityPhysics.Apply(
+            ref position,
+            ref velocity,
+            deltaTime,
+            Gravity,
+            GroundY,
+            FallMaxSpeed);
 
         jumpTimer += deltaTime;
 
-        if (position.Y >= GroundY)
+        if (isOnGround)
         {
-            position.Y = GroundY;
-            velocity.Y = 0;
-            isOnGround = true;
             MoveMaxSpeed = WalkMaxSpeed;
         }
 
