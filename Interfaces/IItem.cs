@@ -15,6 +15,4 @@ public interface IItem
 
     void prevSprite();
 
-    //TODO: Next sprint, add effects like fire powerup, star powerup, etc. Lack of collisions makes this fine for now.
-
 }
