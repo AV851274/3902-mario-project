@@ -130,7 +130,8 @@ public class SpriteFactory
                 new Rectangle(90, 50, 16, 32)
             ],
             new Rectangle(28, 50, 20, 32),  //big jump
-            new Rectangle(325, 50, 20, 32));  //big skid
+            new Rectangle(325, 50, 20, 32),   //big skid
+            new Rectangle(0, 47, 16, 34));    // CHECK: big crouch
     }
 
     public ISprite CreateFireMarioSprite()
@@ -144,10 +145,11 @@ public class SpriteFactory
                 new Rectangle(100, 120, 20, 32)
             ],
             new Rectangle(25, 120, 20, 32),  //fire jump
-            new Rectangle(335, 120, 20, 32));  //fire skid
+            new Rectangle(335, 120, 20, 32),   //fire skid
+            new Rectangle(0, 117, 16, 34));    // CHECK: fire crouch
     }
 
-    private ISprite CreateMarioSprite(Rectangle idle, Rectangle[] run, Rectangle jump, Rectangle skid)
+    private ISprite CreateMarioSprite(Rectangle idle, Rectangle[] run, Rectangle jump, Rectangle skid, Rectangle? crouch = null)
     {
         AnimationController mario = new AnimationController(marioTexture, Vector2.Zero, 2.5f);
 
@@ -155,6 +157,13 @@ public class SpriteFactory
         mario.AddClip(new Track("Run", run, [0.15f, 0.15f, 0.15f], true));
         mario.AddClip(new Track("Jump", [jump], [1f], false));
         mario.AddClip(new Track("Skid", [skid], [1f], true));
+
+        // Only Big and Fire Mario can crouch
+        if (crouch.HasValue)
+        {
+            mario.AddClip(new Track("Crouch", [crouch.Value], [1f], true));
+        }
+
         mario.Play("Idle");
 
         return mario;

@@ -81,6 +81,11 @@ public class SwimmingPlayer : IPlayer
         jumpTimer = 0f;
     }
 
+    public void Crouch()
+    {
+        // Can't crouch while swimming
+    }
+
     public void Dash()
     {
         velocity.X = 600f * (facingDirection == Direction.Right ? 1f : -1f);

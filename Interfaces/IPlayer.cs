@@ -14,6 +14,7 @@ public interface IPlayer
     void MoveRight();
     void StopMoving();
     void Jump();
+    void Crouch();
     void Dash();
     void DashLeft();
     void DashRight();
