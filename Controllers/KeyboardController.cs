@@ -14,7 +14,8 @@ public class KeyboardController : IController
         DashL,
         DashR,
         StopMoving,
-        Attack
+        Attack,
+        Crouch
     }
 
     private Dictionary<Keys, ICommand> pressCommands;
@@ -48,7 +49,8 @@ public class KeyboardController : IController
             { PlayerActions.DashL, new PlayerDashCommand(player, Direction.Left) },
             { PlayerActions.DashR, new PlayerDashCommand(player, Direction.Right) },
             { PlayerActions.StopMoving, new PlayerStopMovingCommand(player) },
-            { PlayerActions.Attack, new PlayerAttackCommand(player) }
+            { PlayerActions.Attack, new PlayerAttackCommand(player) },
+            { PlayerActions.Crouch, new PlayerCrouchCommand(player) }
         };
 
 
@@ -90,6 +92,9 @@ public class KeyboardController : IController
 
         if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
             playerCommands[PlayerActions.Jump].Execute();
+
+        if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
+            playerCommands[PlayerActions.Crouch].Execute();
 
         if (keyboardState.IsKeyDown(Keys.F) && !previousState.IsKeyDown(Keys.F))
             playerCommands[PlayerActions.Attack].Execute();

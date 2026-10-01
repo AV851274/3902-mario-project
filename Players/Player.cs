@@ -17,6 +17,8 @@ public class Player : IPlayer
     private const float GroundY = 400f;
     private bool isOnGround;
     private bool isSkidding = false;
+    private bool crouchHeld = false;    // set by the controller each frame S is held
+    private bool isCrouching = false;
     private Direction facingDirection = Direction.Right;
 
     public event Action<Vector2, Direction> SummonFireball;
@@ -37,6 +39,12 @@ public class Player : IPlayer
 
     public void MoveLeft()
     {
+        if (isCrouching)
+        {
+            StopMoving();   // can't walk while crouched, just slide to a stop
+            return;
+        }
+
         isSkidding = isOnGround && velocity.X > 0;
 
         if (isSkidding)
@@ -53,6 +61,12 @@ public class Player : IPlayer
 
     public void MoveRight()
     {
+        if (isCrouching)
+        {
+            StopMoving();   // can't walk while crouched, just slide to a stop
+            return;
+        }
+
         isSkidding = isOnGround && velocity.X < 0;
 
         if (isSkidding)
@@ -94,6 +108,11 @@ public class Player : IPlayer
         }
     }
 
+    public void Crouch()
+    {
+        crouchHeld = true;
+    }
+
     public void Dash()
     {
         velocity.X = 600f * (facingDirection == Direction.Right ? 1f : -1f);
@@ -101,6 +120,12 @@ public class Player : IPlayer
 
     public void DashLeft()
     {
+        if (isCrouching)
+        {
+            StopMoving();   // can't walk while crouched, just slide to a stop
+            return;
+        }
+
         isSkidding = isOnGround && velocity.X > 0;
 
         if (isSkidding)
@@ -117,6 +142,12 @@ public class Player : IPlayer
 
     public void DashRight()
     {
+        if (isCrouching)
+        {
+            StopMoving();   // can't walk while crouched, just slide to a stop
+            return;
+        }
+
         isSkidding = isOnGround && velocity.X < 0;
 
         if (isSkidding)
@@ -191,9 +222,16 @@ public class Player : IPlayer
 
         isOnGround = GravityPhysics.Apply(ref position, ref velocity, deltaTime, Gravity, GroundY);
 
+        isCrouching = crouchHeld && isOnGround && powerState.marioPower != MarioPower.Small;
+        crouchHeld = false;   // the controller sets it again next frame if S is still held
+
         if (!isOnGround)
         {
             powerState.Sprite.Play("Jump");
+        }
+        else if (isCrouching)
+        {
+            powerState.Sprite.Play("Crouch");
         }
         else if (isSkidding)
         {
