@@ -1,0 +1,21 @@
+Code Review of AnimationController.cs by Samuel Chandler
+Code authored by: Micheal Sidoti
+Day of Code Review: 9/30/2026
+Sprint 2
+
+Minutes spent on this review: 30
+
+
+Readability: 9/10
+
+- A smaller file <150 lines of Code
+- Logic is simple and clean
+- Methods are short and sweet nothing too long
+  passing onto the next quickly
+- Track and Direction naming is a bit vague
+
+Maintainability/Quality: 7/10
+- Magic strings as const names, could use const names
+- Error if the clip length is <=0 there will be an error
+- Applicable on many different places within code, an incredibly
+  handy method to allow for quick animations to be drawn
