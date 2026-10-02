@@ -18,12 +18,12 @@ public class Block : IBlock
         Position = position;
     }
 
-    public void nextSprite()
+    public void NextSprite()
     {
         currentSpriteIndex = (currentSpriteIndex + 1) % sprites.Count;
     }
 
-    public void prevSprite()
+    public void PrevSprite()
     {
         currentSpriteIndex = (currentSpriteIndex - 1 + sprites.Count) % sprites.Count;
     }

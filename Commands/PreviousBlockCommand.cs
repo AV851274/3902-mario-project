@@ -13,6 +13,6 @@ public class PreviousBlockCommand : ICommand
 
     public void Execute()
     {
-        block.prevSprite();
+        block.PrevSprite();
     }
 }
