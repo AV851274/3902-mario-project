@@ -293,7 +293,7 @@ public class SpriteFactory
         return turtle;
     }
 
-    public ISprite CreateFireBallSprite()
+    public ISprite CreateFireballSprite()
     {
         AnimationController fireball = new AnimationController(marioGifTexture, Vector2.Zero, 4f);
         fireball.AddClip(
