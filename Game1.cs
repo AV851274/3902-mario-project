@@ -4,9 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Game2D.Animation;
-using Game2D.Interfaces;
 
-namespace Monogame;
+namespace Mario;
 
 public class Game1 : Game
 {
