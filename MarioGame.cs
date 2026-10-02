@@ -17,8 +17,8 @@ namespace Mario;
 
 public class MarioGame : Game
 {
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
+    private GraphicsDeviceManager graphics;
+    private SpriteBatch spriteBatch;
 
     private IPlayer player;
 
@@ -35,7 +35,7 @@ public class MarioGame : Game
 
     public MarioGame()
     {
-        _graphics = new GraphicsDeviceManager(this);
+        graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -47,7 +47,7 @@ public class MarioGame : Game
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        spriteBatch = new SpriteBatch(GraphicsDevice);
 
         spriteFactory = new SpriteFactory();
         spriteFactory.LoadTextures(Content);
@@ -134,19 +134,19 @@ public class MarioGame : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        _spriteBatch.Begin();
+        spriteBatch.Begin();
 
-        player.Draw(_spriteBatch);
+        player.Draw(spriteBatch);
 
-        item.Draw(_spriteBatch);
-        enemies.Draw(_spriteBatch);
-        block.Draw(_spriteBatch);
+        item.Draw(spriteBatch);
+        enemies.Draw(spriteBatch);
+        block.Draw(spriteBatch);
         foreach (var projectile in projectiles)
         {
-            projectile.Draw(_spriteBatch);
+            projectile.Draw(spriteBatch);
         }
 
-        _spriteBatch.End();
+        spriteBatch.End();
 
         base.Draw(gameTime);
     }
