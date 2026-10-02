@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace Mario;
 
-public class Game1 : Game
+public class MarioGame : Game
 {
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
@@ -33,7 +33,7 @@ public class Game1 : Game
     private SpriteFactory spriteFactory;
     private List<IProjectile> projectiles = [];
 
-    public Game1()
+    public MarioGame()
     {
         _graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";

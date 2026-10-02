@@ -5,9 +5,9 @@ namespace Mario.Commands;
 
 public class QuitCommand : ICommand
 {
-    private Game1 game;
+    private MarioGame game;
 
-    public QuitCommand(Game1 game)
+    public QuitCommand(MarioGame game)
     {
         this.game = game;
     }

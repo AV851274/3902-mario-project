@@ -28,7 +28,7 @@ public class KeyboardController : IController
     private Dictionary<PlayerActions, ICommand> playerCommands;
     private KeyboardState previousState;
 
-    public KeyboardController(Game1 game, IPlayer player, IItem item, IBlock block, EnemyCycler enemies)
+    public KeyboardController(MarioGame game, IPlayer player, IItem item, IBlock block, EnemyCycler enemies)
     {
         pressCommands = new Dictionary<Keys, ICommand> {
             { Keys.T, new PreviousBlockCommand(block) },
