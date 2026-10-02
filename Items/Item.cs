@@ -8,6 +8,7 @@ public class Item : IItem
     //A good portion of this is temporary, as a lot of functionality will be changed in later sprints.
 
     private const float MushroomSpeed = 100f;
+    private const float StarBounceSpeed = 400f;
     private const float Gravity = 1000f;
     private const float GroundY = 400f;
     private List<ISprite> sprites;
@@ -43,7 +44,23 @@ public class Item : IItem
 
     public void Update(GameTime gameTime)
     {
-        if (CurrentItemName is "Mushroom" or "Star")
+        if (CurrentItemName == "Star")
+        {
+            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (velocity.X == 0f)
+            {
+                velocity.X = MushroomSpeed;
+            }
+
+            BouncingPhysics.Apply(
+                ref position,
+                ref velocity,
+                deltaTime,
+                Gravity,
+                GroundY,
+                StarBounceSpeed);
+        }
+        else if (CurrentItemName == "Mushroom")
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             velocity.X = MushroomSpeed;
