@@ -1,3 +1,7 @@
+using Mario.Interfaces;
+
+namespace Mario.Commands;
+
 public class PreviousBlockCommand : ICommand
 {
     private IBlock block;

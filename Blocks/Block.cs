@@ -1,7 +1,9 @@
-using System.Collections.Generic;
+using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Game2D.Interfaces;
+using System.Collections.Generic;
+
+namespace Mario.Blocks;
 
 public class Block : IBlock
 {

@@ -1,2 +1,10 @@
-﻿using var game = new Mario.Game1();
-game.Run();
+namespace Mario;
+
+internal static class Program
+{
+    private static void Main()
+    {
+        using var game = new Game1();
+        game.Run();
+    }
+}

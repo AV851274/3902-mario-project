@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
 
+namespace Mario.Physics;
+
 public static class GravityPhysics
 {
     public static bool Apply(

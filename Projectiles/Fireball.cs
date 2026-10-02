@@ -1,6 +1,8 @@
-using Game2D.Interfaces;
+using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
+namespace Mario.Projectiles;
 
 public class Fireball : IProjectile
 {

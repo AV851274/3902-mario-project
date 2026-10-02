@@ -1,4 +1,8 @@
 using Mario;
+using Mario.Interfaces;
+using Mario.Players;
+
+namespace Mario.Commands;
 
 public class ChangeMarioCommand : ICommand
 {

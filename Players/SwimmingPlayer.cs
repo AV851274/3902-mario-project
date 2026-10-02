@@ -1,8 +1,13 @@
-using System;
+using Mario.Animation;
+using Mario.Interfaces;
+using Mario.Physics;
+using Mario.Players.PlayerStates;
+using Mario.Sprites;
 using Microsoft.Xna.Framework;
-using Game2D.Animation;
-using Game2D.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+
+namespace Mario.Players;
 
 public class SwimmingPlayer : IPlayer
 {

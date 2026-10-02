@@ -1,104 +1,103 @@
-using System.Collections.Generic;
+using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Game2D.Interfaces;
+using System.Collections.Generic;
 
-namespace Game2D.Animation
+namespace Mario.Animation;
+
+public class AnimationController : ISprite
 {
-    public class AnimationController : ISprite
+    /// <summary>
+    /// Plays back a set of named AnimationClips against a single spritesheet texture.
+    /// Unlike a single-strip animator, this holds a whole clip library keyed by name
+    /// (e.g. "WalkDown", "IdleUp", "Hover") so one entity can switch between many
+    /// animations without swapping textures or classes.
+    /// </summary>
+    private Texture2D spriteSheet;
+    private Dictionary<string, Track> clips;
+    private Vector2 origin;
+    private float scale;
+
+    private Track currentClip;
+    private int frameIndex;
+    private float timeInFrameSeconds;
+
+    public AnimationController(Texture2D spriteSheet, Vector2 origin, float scale)
     {
-        /// <summary>
-        /// Plays back a set of named AnimationClips against a single spritesheet texture.
-        /// Unlike a single-strip animator, this holds a whole clip library keyed by name
-        /// (e.g. "WalkDown", "IdleUp", "Hover") so one entity can switch between many
-        /// animations without swapping textures or classes.
-        /// </summary>
-        private Texture2D spriteSheet;
-        private Dictionary<string, Track> clips;
-        private Vector2 origin;
-        private float scale;
+        this.spriteSheet = spriteSheet;
+        this.origin = origin;
+        this.scale = scale;
+        clips = new Dictionary<string, Track>();
+        currentClip = null;
+        frameIndex = 0;
+        timeInFrameSeconds = 0f;
+    }
 
-        private Track currentClip;
-        private int frameIndex;
-        private float timeInFrameSeconds;
+    public void AddClip(Track clip)
+    {
+        clips.Add(clip.Name, clip);
+    }
 
-        public AnimationController(Texture2D spriteSheet, Vector2 origin, float scale)
+    public void Play(string clipName)
+    {
+        if (currentClip != null && currentClip.Name == clipName)
         {
-            this.spriteSheet = spriteSheet;
-            this.origin = origin;
-            this.scale = scale;
-            clips = new Dictionary<string, Track>();
-            currentClip = null;
-            frameIndex = 0;
-            timeInFrameSeconds = 0f;
+            return;
         }
 
-        public void AddClip(Track clip)
+        Track clip;
+        bool found = clips.TryGetValue(clipName, out clip);
+        if (!found)
         {
-            clips.Add(clip.Name, clip);
+            return;
         }
 
-        public void Play(string clipName)
+        currentClip = clip;
+        frameIndex = 0;
+        timeInFrameSeconds = 0f;
+    }
+
+    public void UpdateAnimation(GameTime gameTime)
+    {
+        if (currentClip == null)
         {
-            if (currentClip != null && currentClip.Name == clipName)
-            {
-                return;
-            }
-
-            Track clip;
-            bool found = clips.TryGetValue(clipName, out clip);
-            if (!found)
-            {
-                return;
-            }
-
-            currentClip = clip;
-            frameIndex = 0;
-            timeInFrameSeconds = 0f;
+            return;
         }
 
-        public void UpdateAnimation(GameTime gameTime)
+        timeInFrameSeconds = timeInFrameSeconds + (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        while (timeInFrameSeconds >= currentClip.GetFrameDuration(frameIndex))
         {
-            if (currentClip == null)
+            timeInFrameSeconds = timeInFrameSeconds - currentClip.GetFrameDuration(frameIndex);
+            frameIndex = frameIndex + 1;
+
+            if (frameIndex >= currentClip.FrameCount)
             {
-                return;
-            }
-
-            timeInFrameSeconds = timeInFrameSeconds + (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            while (timeInFrameSeconds >= currentClip.GetFrameDuration(frameIndex))
-            {
-                timeInFrameSeconds = timeInFrameSeconds - currentClip.GetFrameDuration(frameIndex);
-                frameIndex = frameIndex + 1;
-
-                if (frameIndex >= currentClip.FrameCount)
+                if (currentClip.IsLooping)
                 {
-                    if (currentClip.IsLooping)
-                    {
-                        frameIndex = 0;
-                    }
-                    else
-                    {
-                        frameIndex = currentClip.FrameCount - 1;
-                    }
+                    frameIndex = 0;
+                }
+                else
+                {
+                    frameIndex = currentClip.FrameCount - 1;
                 }
             }
         }
+    }
 
-        public void Draw(
-            SpriteBatch spriteBatch,
-            Vector2 position,
-            float rotation = 0f,
-            SpriteEffects effects = SpriteEffects.None)
+    public void Draw(
+        SpriteBatch spriteBatch,
+        Vector2 position,
+        float rotation = 0f,
+        SpriteEffects effects = SpriteEffects.None)
+    {
+        if (currentClip == null)
         {
-            if (currentClip == null)
-            {
-                return;
-            }
-
-            Rectangle sourceRectangle = currentClip.GetFrame(frameIndex);
-
-            spriteBatch.Draw(spriteSheet, position, sourceRectangle, Color.White, rotation, origin, scale, effects, 0f);
+            return;
         }
+
+        Rectangle sourceRectangle = currentClip.GetFrame(frameIndex);
+
+        spriteBatch.Draw(spriteSheet, position, sourceRectangle, Color.White, rotation, origin, scale, effects, 0f);
     }
 }

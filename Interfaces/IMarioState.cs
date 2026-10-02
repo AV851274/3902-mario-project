@@ -1,5 +1,7 @@
+using Mario.Players;
 using Microsoft.Xna.Framework;
-using Game2D.Interfaces;
+
+namespace Mario.Interfaces;
 
 public interface IMarioState
 {

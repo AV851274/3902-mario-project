@@ -1,5 +1,8 @@
+using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+
+namespace Mario.Controllers;
 
 // TODO: mouse dash
 public class MouseController : IController

@@ -1,4 +1,7 @@
 using Mario;
+using Mario.Interfaces;
+
+namespace Mario.Commands;
 
 public class ResetCommand : ICommand
 {

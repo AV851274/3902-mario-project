@@ -1,5 +1,8 @@
+using Mario.Interfaces;
+using Mario.Sprites;
 using Microsoft.Xna.Framework;
-using Game2D.Interfaces;
+
+namespace Mario.Players.PlayerStates;
 
 public class SwimSmallMarioState : IMarioState
 {

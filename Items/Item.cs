@@ -1,7 +1,10 @@
-using System.Collections.Generic;
+using Mario.Interfaces;
+using Mario.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Game2D.Interfaces;
+using System.Collections.Generic;
+
+namespace Mario.Items;
 
 public class Item : IItem
 {

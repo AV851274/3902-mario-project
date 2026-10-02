@@ -1,8 +1,14 @@
-using System.Collections.Generic;
-using Game2D.Animation;
+using Mario;
+using Mario.Animation;
+using Mario.Commands;
+using Mario.Enemies;
+using Mario.Interfaces;
+using Mario.Players;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Mario;
+using System.Collections.Generic;
+
+namespace Mario.Controllers;
 
 public class KeyboardController : IController
 {
