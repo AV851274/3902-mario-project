@@ -1,7 +1,9 @@
-using System;
+using Mario.Animation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Game2D.Animation;
+using System;
+
+namespace Mario.Interfaces;
 
 public interface IPlayer
 {

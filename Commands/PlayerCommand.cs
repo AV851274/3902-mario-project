@@ -1,3 +1,7 @@
+using Mario.Interfaces;
+
+namespace Mario.Commands;
+
 public abstract class PlayerCommand : ICommand
 {
     protected IPlayer player;

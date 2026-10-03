@@ -1,10 +1,12 @@
-using System.Collections.Generic;
-using System.Linq;
+using Mario.Animation;
+using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Game2D.Animation;
-using Game2D.Interfaces;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Mario.Sprites;
 
 public class SpriteFactory
 {
@@ -291,7 +293,7 @@ public class SpriteFactory
         return turtle;
     }
 
-    public ISprite CreateFireBallSprite()
+    public ISprite CreateFireballSprite()
     {
         AnimationController fireball = new AnimationController(marioGifTexture, Vector2.Zero, 4f);
         fireball.AddClip(

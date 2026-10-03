@@ -1,8 +1,14 @@
-using System.Collections.Generic;
-using Game2D.Animation;
+using Mario;
+using Mario.Animation;
+using Mario.Commands;
+using Mario.Enemies;
+using Mario.Interfaces;
+using Mario.Players;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Monogame;
+using System.Collections.Generic;
+
+namespace Mario.Controllers;
 
 public class KeyboardController : IController
 {
@@ -22,7 +28,7 @@ public class KeyboardController : IController
     private Dictionary<PlayerActions, ICommand> playerCommands;
     private KeyboardState previousState;
 
-    public KeyboardController(Game1 game, IPlayer player, IItem item, IBlock block, EnemyCycler enemies)
+    public KeyboardController(MarioGame game, IPlayer player, IItem item, IBlock block, EnemyCycler enemies)
     {
         pressCommands = new Dictionary<Keys, ICommand> {
             { Keys.T, new PreviousBlockCommand(block) },

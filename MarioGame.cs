@@ -1,17 +1,24 @@
-﻿using System;
+using Mario.Animation;
+using Mario.Blocks;
+using Mario.Controllers;
+using Mario.Enemies;
+using Mario.Interfaces;
+using Mario.Items;
+using Mario.Players;
+using Mario.Projectiles;
+using Mario.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
-using Game2D.Animation;
-using Game2D.Interfaces;
 
-namespace Monogame;
+namespace Mario;
 
-public class Game1 : Game
+public class MarioGame : Game
 {
-    private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
+    private GraphicsDeviceManager graphics;
+    private SpriteBatch spriteBatch;
 
     private IPlayer player;
 
@@ -26,9 +33,9 @@ public class Game1 : Game
     private SpriteFactory spriteFactory;
     private List<IProjectile> projectiles = [];
 
-    public Game1()
+    public MarioGame()
     {
-        _graphics = new GraphicsDeviceManager(this);
+        graphics = new GraphicsDeviceManager(this);
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -40,7 +47,7 @@ public class Game1 : Game
 
     protected override void LoadContent()
     {
-        _spriteBatch = new SpriteBatch(GraphicsDevice);
+        spriteBatch = new SpriteBatch(GraphicsDevice);
 
         spriteFactory = new SpriteFactory();
         spriteFactory.LoadTextures(Content);
@@ -97,7 +104,7 @@ public class Game1 : Game
         float flip = direction == Direction.Left ? -1f : 1f;
         var velocity = new Vector2(850f * flip, 0);
         projectiles.Add(new Fireball(
-            spriteFactory.CreateFireBallSprite(), // new animation contoller for each fireball
+            spriteFactory.CreateFireballSprite(), // new animation contoller for each fireball
             position + new Vector2(25 * flip, -25f),
             velocity,
             1f,
@@ -127,19 +134,19 @@ public class Game1 : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        _spriteBatch.Begin();
+        spriteBatch.Begin();
 
-        player.Draw(_spriteBatch);
+        player.Draw(spriteBatch);
 
-        item.Draw(_spriteBatch);
-        enemies.Draw(_spriteBatch);
-        block.Draw(_spriteBatch);
+        item.Draw(spriteBatch);
+        enemies.Draw(spriteBatch);
+        block.Draw(spriteBatch);
         foreach (var projectile in projectiles)
         {
-            projectile.Draw(_spriteBatch);
+            projectile.Draw(spriteBatch);
         }
 
-        _spriteBatch.End();
+        spriteBatch.End();
 
         base.Draw(gameTime);
     }

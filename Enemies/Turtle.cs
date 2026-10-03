@@ -1,7 +1,10 @@
+using Mario.Animation;
+using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Game2D.Interfaces;
-using Game2D.Animation;
+
+namespace Mario.Enemies;
+
 //IDENTICAL CODE FOR NOW, WILL BE BETTER WITH DEATH ANIMATION AND COLLISION DETECTION
 public class Turtle : IEnemy
 {

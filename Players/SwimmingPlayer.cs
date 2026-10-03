@@ -1,8 +1,13 @@
-using System;
+using Mario.Animation;
+using Mario.Interfaces;
+using Mario.Physics;
+using Mario.Players.PlayerStates;
+using Mario.Sprites;
 using Microsoft.Xna.Framework;
-using Game2D.Animation;
-using Game2D.Interfaces;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+
+namespace Mario.Players;
 
 public class SwimmingPlayer : IPlayer
 {
@@ -14,7 +19,7 @@ public class SwimmingPlayer : IPlayer
     private const float SwimMaxSpeed = 100f;
     private const float FallMaxSpeed = 100f;
     private const float WalkMaxSpeed = 50f;
-    private float MoveMaxSpeed = 200f;
+    private float moveMaxSpeed = 200f;
     private const float DashMaxSpeed = 200f;
     private const float JumpSpeed = 75f;
     private float jumpTimer = 0.61f;
@@ -39,7 +44,7 @@ public class SwimmingPlayer : IPlayer
 
     public void MoveLeft()
     {
-        if (velocity.X > -MoveMaxSpeed)
+        if (velocity.X > -moveMaxSpeed)
         {
             velocity.X -= MoveAcceleration;
         }
@@ -49,7 +54,7 @@ public class SwimmingPlayer : IPlayer
 
     public void MoveRight()
     {
-        if (velocity.X < MoveMaxSpeed)
+        if (velocity.X < moveMaxSpeed)
         {
             velocity.X += MoveAcceleration;
         }
@@ -77,7 +82,7 @@ public class SwimmingPlayer : IPlayer
     {
         velocity.Y = -JumpSpeed;
         isOnGround = false;
-        MoveMaxSpeed = SwimMaxSpeed;
+        moveMaxSpeed = SwimMaxSpeed;
         jumpTimer = 0f;
     }
 
@@ -157,7 +162,7 @@ public class SwimmingPlayer : IPlayer
 
         if (isOnGround)
         {
-            MoveMaxSpeed = WalkMaxSpeed;
+            moveMaxSpeed = WalkMaxSpeed;
         }
 
         if (jumpTimer < 0.4f)

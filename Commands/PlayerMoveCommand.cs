@@ -1,4 +1,7 @@
-using Game2D.Animation;
+using Mario.Animation;
+using Mario.Interfaces;
+
+namespace Mario.Commands;
 
 public class PlayerMoveCommand : PlayerCommand
 {

@@ -1,7 +1,9 @@
-using System.Collections.Generic;
+using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Game2D.Interfaces;
+using System.Collections.Generic;
+
+namespace Mario.Blocks;
 
 public class Block : IBlock
 {
@@ -16,12 +18,12 @@ public class Block : IBlock
         Position = position;
     }
 
-    public void nextSprite()
+    public void NextSprite()
     {
         currentSpriteIndex = (currentSpriteIndex + 1) % sprites.Count;
     }
 
-    public void prevSprite()
+    public void PrevSprite()
     {
         currentSpriteIndex = (currentSpriteIndex - 1 + sprites.Count) % sprites.Count;
     }

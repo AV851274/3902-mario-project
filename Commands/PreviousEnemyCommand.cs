@@ -1,3 +1,8 @@
+using Mario.Enemies;
+using Mario.Interfaces;
+
+namespace Mario.Commands;
+
 public class PreviousEnemyCommand : ICommand
 {
     private EnemyCycler enemies;

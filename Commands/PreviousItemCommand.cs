@@ -1,3 +1,7 @@
+using Mario.Interfaces;
+
+namespace Mario.Commands;
+
 public class PreviousItemCommand : ICommand
 {
     private IItem item;

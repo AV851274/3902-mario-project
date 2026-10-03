@@ -1,3 +1,7 @@
+using Mario.Interfaces;
+
+namespace Mario.Commands;
+
 public class PlayerCrouchCommand : PlayerCommand
 {
     public PlayerCrouchCommand(IPlayer player) : base(player)

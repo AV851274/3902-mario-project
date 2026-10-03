@@ -1,10 +1,13 @@
-using Monogame;
+using Mario;
+using Mario.Interfaces;
+
+namespace Mario.Commands;
 
 public class ResetCommand : ICommand
 {
-    private Game1 game;
+    private MarioGame game;
 
-    public ResetCommand(Game1 game)
+    public ResetCommand(MarioGame game)
     {
         this.game = game;
     }

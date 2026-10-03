@@ -1,6 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+namespace Mario.Interfaces;
+
 public interface IBlock
 {
     Vector2 Position { get; }
@@ -9,9 +11,9 @@ public interface IBlock
 
     void Draw(SpriteBatch spriteBatch);
 
-    void nextSprite();
+    void NextSprite();
 
-    void prevSprite();
+    void PrevSprite();
 
     //TODO: Collision next sprint, Bump(), Break(), etc.)
 }

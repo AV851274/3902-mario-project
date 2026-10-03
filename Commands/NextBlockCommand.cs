@@ -1,3 +1,7 @@
+using Mario.Interfaces;
+
+namespace Mario.Commands;
+
 public class NextBlockCommand : ICommand
 {
     private IBlock block;
@@ -9,6 +13,6 @@ public class NextBlockCommand : ICommand
 
     public void Execute()
     {
-        block.nextSprite();
+        block.NextSprite();
     }
 }
