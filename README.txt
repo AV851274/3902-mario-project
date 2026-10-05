@@ -1,6 +1,6 @@
 CURRENT SPRINT: #2
 
-Current features:
+Current features (With Controls):
 
 | Key | Action |
 |-----|--------|
@@ -10,13 +10,20 @@ Current features:
 | F | Shoot fireball (Fire Mario only) |
 | E | Damage Mario |
 | O / P | Cycle enemies |
-| K | "Stomp" enemies
+| K | "Stomp" enemies |
 | T / Y | Cycle blocks |
 | U / I | Cycle items |
-| Q / R | Quit / Reset
+| Q / R | Quit / Reset |
 Animations for all sprites that require such
+Multiple blocks that can be cycled
+Multiple Items that can be cycled
+All mario types
+Three enemies that behave accordingly
+Gravity and Water physics
+Proper mario movement
 
-Our current "bug" is that the acceleration and physics behind Mario could be a bit smoother. Alongside proper sizing of enemies.
+Our current "bug" is the sizing of enemies according to mario. As some are a little too small, alongside a strange graphical error with
+swimming mario but only if hes facing right.
 
 Credit for Other Mario Sprites:
 This sprite:
@@ -30,8 +37,6 @@ http://www.spritecow.com/
 
 
 ## ✅ Roslyn check
-
-I verified the project with `dotnet build` in the workspace. The result was:
 
 - Build succeeded
 - No compiler errors were reported
@@ -47,3 +52,5 @@ SPRINT 2 REVIEW:
 Sam - Overall Sprint 2 was a bit of an eye opener for the team. I think that we started slow and rocky, without much of a plan in mind
 which really hurt the performance at first. But slowly the team gathered and understood what needed to be done. Which vastly improved
 production of Sprint 2. Tasked were split relatively evenly with teammates offering to take on work with little pushing.
+
+CODE REVIEW LIVES WITHIN "CODE REVIEW" FOLDER
