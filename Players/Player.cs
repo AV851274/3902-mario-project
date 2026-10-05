@@ -26,7 +26,7 @@ public class Player : IPlayer
     private bool isSkidding = false;
     private bool crouchHeld = false; // set by the controller each frame S is held
     private bool isCrouching = false;
-    private float timeSinceThrow = 0;
+    private float timeSinceThrow = float.PositiveInfinity;
     private Direction facingDirection = Direction.Right;
 
     public event Action<Vector2, Direction> SummonFireball;
