@@ -62,9 +62,16 @@ public class MarioGame : Game
 
         item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
         block = new Block(spriteFactory.CreateBlockSprites(), new Vector2(250, 200));
+        var hammerBro = new HammerBro(
+            spriteFactory.CreateHammerBroSprite(),
+            new Vector2(600, 392));
+
+        hammerBro.SummonHammer += SpawnHammer;
+
         enemies = new EnemyCycler(new List<IEnemy> {
             new Goomba(spriteFactory.CreateGoombaSprite(), new Vector2(600, 408)),
-            new Turtle(spriteFactory.CreateTurtleSprite(), new Vector2(600, 392))
+            new Turtle(spriteFactory.CreateTurtleSprite(), new Vector2(600, 392)),
+            hammerBro
         });
 
         CreateMario(false, new Vector2(100, 100));
@@ -110,6 +117,20 @@ public class MarioGame : Game
             1f,
             1000f,
             400f
+        ));
+    }
+
+    private void SpawnHammer(Vector2 position, Direction direction)
+    {
+        float directionSign = direction == Direction.Left ? -1f : 1f;
+
+        projectiles.Add(new Hammer(
+            spriteFactory.CreateHammerSprite(),
+            position + new Vector2(20f * directionSign, -20f),
+            new Vector2(250f * directionSign, -350f),
+            3f,
+            1000f,
+            600f
         ));
     }
 

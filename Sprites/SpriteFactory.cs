@@ -292,6 +292,44 @@ public class SpriteFactory
 
         return turtle;
     }
+    public ISprite CreateHammerBroSprite()
+    {
+        AnimationController hammerBro = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+
+
+        hammerBro.AddClip(new Track(
+            "Idle",
+            [
+                new Rectangle(0, 182, 16, 24),
+                new Rectangle(18, 182, 16, 24), 
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        // hammerBro.AddClip(new Track(
+            // "Charge",
+            // [
+            //     new Rectangle(0, 182, 16, 24),
+            //     new Rectangle(18, 182, 16, 24), 
+            //     new Rectangle(37, 182, 16, 24), 
+            //     new Rectangle(55, 182, 16, 24), 
+            // ],
+            // [0.1f, 0.1f, 0.1f, 0.1f],
+            // true));
+
+        hammerBro.AddClip(new Track(
+            "HammerThrow",
+            [
+                new Rectangle(37, 182, 16, 24), 
+                new Rectangle(55, 182, 16, 24), 
+            ],
+            [0.2f, 0.2f],
+            false));
+        
+        hammerBro.Play("Idle");
+
+        return hammerBro;
+    }
 
     public ISprite CreateFireballSprite()
     {
@@ -309,5 +347,23 @@ public class SpriteFactory
                 true)
         );
         return fireball;
+    }
+
+    public ISprite CreateHammerSprite()
+    {
+        AnimationController hammer = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+        hammer.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(1, 78, 16, 16),
+                    new Rectangle(18, 78, 16, 16),
+                    new Rectangle(36, 78, 16, 16),
+                    new Rectangle(54, 78, 16, 16),
+                ],
+                Enumerable.Repeat(0.12f, 4).ToArray(),
+                true)
+        );
+        return hammer;
     }
 }
