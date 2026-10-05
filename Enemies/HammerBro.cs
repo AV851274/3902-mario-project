@@ -27,7 +27,7 @@ public class HammerBro : IEnemy
     private float velocityX = -WalkSpeed;
     private float leftBound;
     private float rightBound;
-    private bool isStomped = false;
+    private bool isStomped;
 
     private float rotation = 0f;
 

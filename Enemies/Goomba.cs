@@ -19,7 +19,7 @@ public class Goomba : IEnemy
     private float velocityX = -WalkSpeed;
     private float leftBound;
     private float rightBound;
-    private bool isStomped = false;
+    private bool isStomped;
 
     public Vector2 Position
     {

@@ -42,6 +42,11 @@ http://www.spritecow.com/
 - No compiler errors were reported
 - The project in `Monogame.csproj` is currently compiling cleanly through Roslyn
 
+Code Review Generalized: 0 ERRORS 109 analyzer warnings
+After running a code check, there were many minor errors within the code. Nothing that broke the code but more
+stylistic decisions. Like setting booleans = false when you can just create them and they auto set false. We cleaned up many
+of these small issues, with some warnings being too vague and unnecesary of a change.
+
 
 The team used AI agents to help handle bug fixing and to help wrap our heads around the tasks at hand. Claude Code played a role
 in reviewing code errors and cleaning up the project as well. Making sure to not let it go wild as the team needed to understand
