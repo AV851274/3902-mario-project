@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Game2D.Interfaces;
-using Game2D.Animation;
+using Mario.Interfaces;
+using Mario.Animation;
 using System;
 
 public enum HammerBroState
@@ -10,6 +10,7 @@ public enum HammerBroState
     Thrown,
     Stuck
 }
+
 public class HammerBro : IEnemy
 {
     private const float WalkSpeed = 60f;
@@ -52,7 +53,7 @@ public class HammerBro : IEnemy
         leftBound = initialPosition.X - patrolDistance;
         rightBound = initialPosition.X + patrolDistance;
     }
-    
+
 
     public void Draw(SpriteBatch spriteBatch)
     {
@@ -60,7 +61,7 @@ public class HammerBro : IEnemy
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
-            sprite.Draw(spriteBatch, position, effects: effects);
+        sprite.Draw(spriteBatch, position, effects: effects);
     }
 
     public void Update(GameTime gameTime)
@@ -75,13 +76,15 @@ public class HammerBro : IEnemy
                 sprite.Play("HammerThrow");
                 ThrowHammer();
             }
+
             if (isOnGround && Random.Shared.NextDouble() < 0.02) // 2% chance to jump each frame
             {
                 velocityY = JumpSpeed;
                 isOnGround = false;
             }
 
-            if (Random.Shared.NextDouble() < 0.05) // 5% chance to switch moving direction each frame without changin the facing direction
+            if (Random.Shared.NextDouble() <
+                0.05) // 5% chance to switch moving direction each frame without changin the facing direction
             {
                 velocityX = -velocityX;
             }
@@ -94,7 +97,7 @@ public class HammerBro : IEnemy
                 velocityY = 0f;
                 isOnGround = true;
             }
-            
+
             position.X += velocityX * deltaTime;
 
             //TURN TURTLE AROUND WHEN IT HITS THE EDGE OF ITS PATROL AREA
@@ -111,7 +114,8 @@ public class HammerBro : IEnemy
             state = HammerBroState.Idle;
             throwElapsed = 0;
             sprite.Play("Idle");
-        } else
+        }
+        else
         {
             throwElapsed += deltaTime;
         }
