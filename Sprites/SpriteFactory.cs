@@ -207,14 +207,14 @@ public class SpriteFactory
                 new Rectangle(74, 62, 14, 31)
             ],
             [
-                new Rectangle(162, 61, 14, 30), // float
-                new Rectangle(179, 62, 16, 29)
+                new Rectangle(160, 60, 16, 32), // float
+                new Rectangle(179, 61, 16, 32)
             ],
             [
-                new Rectangle(179, 62, 16, 29), // swim stroke
-                new Rectangle(201, 62, 14, 30),
-                new Rectangle(220, 61, 16, 29),
-                new Rectangle(241, 60, 16, 30)
+                new Rectangle(179, 61, 16, 32), // swim stroke
+                new Rectangle(199, 61, 16, 32),
+                new Rectangle(220, 60, 16, 32),
+                new Rectangle(241, 59, 16, 32)
             ]);
     }
 
@@ -228,14 +228,14 @@ public class SpriteFactory
                 new Rectangle(92, 98, 14, 31)
             ],
             floatFrames: [
-                new Rectangle(177, 96, 14, 30), // float
-                new Rectangle(194, 97, 16, 29)
+                new Rectangle(175, 95, 16, 32), // float
+                new Rectangle(194, 96, 16, 32)
             ],
             swim: [
-                new Rectangle(194, 97, 16, 29), // swim stroke
-                new Rectangle(216, 97, 14, 30),
-                new Rectangle(235, 96, 16, 29),
-                new Rectangle(256, 95, 16, 30)
+                new Rectangle(194, 96, 16, 32), // swim stroke
+                new Rectangle(214, 96, 16, 32),
+                new Rectangle(235, 95, 16, 32),
+                new Rectangle(256, 94, 16, 32)
             ],
             throwP: new Rectangle(173, 95, 20, 32) // throw
         );
