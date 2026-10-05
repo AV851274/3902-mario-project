@@ -25,7 +25,9 @@ public class SwimmingPlayer : IPlayer
     private float jumpTimer = 0.61f;
     private const float Gravity = 200f;
     private const float GroundY = 400f;
+    private const float ThrowAnimationTime = 0.3f;
     private bool isOnGround;
+    private float timeSinceThrow = float.PositiveInfinity;
     private Direction facingDirection = Direction.Right;
     public event Action<Vector2, Direction> SummonFireball;
     public Vector2 Position => position;
@@ -111,6 +113,7 @@ public class SwimmingPlayer : IPlayer
         if (powerState.CanShootFireball)
         {
             SummonFireball?.Invoke(position, facingDirection);
+            timeSinceThrow = 0f;
         }
     }
 
@@ -150,6 +153,8 @@ public class SwimmingPlayer : IPlayer
         float deltaTime =
             (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+        timeSinceThrow += deltaTime;
+
         isOnGround = GravityPhysics.Apply(
             ref position,
             ref velocity,
@@ -165,7 +170,11 @@ public class SwimmingPlayer : IPlayer
             moveMaxSpeed = WalkMaxSpeed;
         }
 
-        if (jumpTimer < 0.4f)
+        if (timeSinceThrow < ThrowAnimationTime)
+        {
+            powerState.Sprite.Play("Throw");
+        }
+        else if (jumpTimer < 0.4f)
         {
             powerState.Sprite.Play("Swim");
         }

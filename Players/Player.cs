@@ -21,10 +21,12 @@ public class Player : IPlayer
     private const float JumpSpeed = 450f;
     private const float Gravity = 1000f;
     private const float GroundY = 400f;
+    private const float ThrowAnimationTime = 0.3f;
     private bool isOnGround;
     private bool isSkidding = false;
-    private bool crouchHeld = false;    // set by the controller each frame S is held
+    private bool crouchHeld = false; // set by the controller each frame S is held
     private bool isCrouching = false;
+    private float timeSinceThrow = float.PositiveInfinity;
     private Direction facingDirection = Direction.Right;
 
     public event Action<Vector2, Direction> SummonFireball;
@@ -47,7 +49,7 @@ public class Player : IPlayer
     {
         if (isCrouching)
         {
-            StopMoving();   // can't walk while crouched, just slide to a stop
+            StopMoving(); // can't walk while crouched, just slide to a stop
             return;
         }
 
@@ -69,7 +71,7 @@ public class Player : IPlayer
     {
         if (isCrouching)
         {
-            StopMoving();   // can't walk while crouched, just slide to a stop
+            StopMoving(); // can't walk while crouched, just slide to a stop
             return;
         }
 
@@ -128,7 +130,7 @@ public class Player : IPlayer
     {
         if (isCrouching)
         {
-            StopMoving();   // can't walk while crouched, just slide to a stop
+            StopMoving(); // can't walk while crouched, just slide to a stop
             return;
         }
 
@@ -150,7 +152,7 @@ public class Player : IPlayer
     {
         if (isCrouching)
         {
-            StopMoving();   // can't walk while crouched, just slide to a stop
+            StopMoving(); // can't walk while crouched, just slide to a stop
             return;
         }
 
@@ -173,6 +175,7 @@ public class Player : IPlayer
         if (powerState.CanShootFireball)
         {
             SummonFireball?.Invoke(position, facingDirection);
+            timeSinceThrow = 0f;
         }
     }
 
@@ -226,14 +229,20 @@ public class Player : IPlayer
         float deltaTime =
             (float)gameTime.ElapsedGameTime.TotalSeconds;
 
+        timeSinceThrow += deltaTime;
+
         isOnGround = GravityPhysics.Apply(ref position, ref velocity, deltaTime, Gravity, GroundY);
 
         isCrouching = crouchHeld && isOnGround && powerState.marioPower != MarioPower.Small;
-        crouchHeld = false;   // the controller sets it again next frame if S is still held
+        crouchHeld = false; // the controller sets it again next frame if S is still held
 
         if (!isOnGround)
         {
             powerState.Sprite.Play("Jump");
+        }
+        else if (timeSinceThrow < ThrowAnimationTime)
+        {
+            powerState.Sprite.Play("Throw");
         }
         else if (isCrouching)
         {
