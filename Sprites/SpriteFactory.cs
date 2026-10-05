@@ -133,7 +133,7 @@ public class SpriteFactory
             ],
             new Rectangle(28, 50, 20, 32), //big jump
             new Rectangle(325, 50, 20, 32), //big skid
-            new Rectangle(0, 47, 16, 34)); // CHECK: big crouch
+            new Rectangle(0, 47, 16, 34)); //  big crouch
     }
 
     public ISprite CreateFireMarioSprite()
@@ -148,8 +148,8 @@ public class SpriteFactory
             ],
             jump: new Rectangle(25, 120, 20, 32), //fire jump
             skid: new Rectangle(335, 120, 20, 32), //fire skid
-            crouch: new Rectangle(0, 117, 16, 34), // CHECK: fire crouch
-            throwP: new Rectangle(24, 122, 20, 32)
+            crouch: new Rectangle(0, 117, 16, 34), // fire crouch
+            throwP: new Rectangle(77, 122, 20, 32) // Throwing pose
         );
     }
 
@@ -237,7 +237,7 @@ public class SpriteFactory
                 new Rectangle(235, 96, 16, 29),
                 new Rectangle(256, 95, 16, 30)
             ],
-            throwP: new Rectangle(173, 95, 20, 32)
+            throwP: new Rectangle(173, 95, 20, 32) // throw
         );
     }
 
