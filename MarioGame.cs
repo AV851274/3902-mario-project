@@ -112,7 +112,7 @@ public class MarioGame : Game
         var velocity = new Vector2(850f * flip, 0);
         projectiles.Add(new Fireball(
             spriteFactory.CreateFireballSprite(), // new animation contoller for each fireball
-            position + new Vector2(25 * flip, -25f),
+            position + new Vector2(25 * flip, -50f),
             velocity,
             1f,
             1000f,
