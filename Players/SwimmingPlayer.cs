@@ -170,17 +170,17 @@ public class SwimmingPlayer : IPlayer
             moveMaxSpeed = WalkMaxSpeed;
         }
 
-        if (jumpTimer < 0.4f)
+        if (timeSinceThrow < ThrowAnimationTime)
+        {
+            powerState.Sprite.Play("Throw");
+        }
+        else if (jumpTimer < 0.4f)
         {
             powerState.Sprite.Play("Swim");
         }
         else if (!isOnGround)
         {
             powerState.Sprite.Play("Float");
-        }
-        else if (timeSinceThrow < ThrowAnimationTime)
-        {
-            powerState.Sprite.Play("Throw");
         }
         else if (IsMoving)
         {
