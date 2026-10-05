@@ -22,8 +22,7 @@ Three enemies that behave accordingly
 Gravity and Water physics
 Proper mario movement
 
-Our current "bug" is the sizing of enemies according to mario. As some are a little too small, alongside a strange graphical error with
-swimming mario but only if hes facing right.
+Our current "bug" is the sizing of enemies according to mario. As some are a little too small.
 
 Credit for Other Mario Sprites:
 This sprite:
