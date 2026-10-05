@@ -15,7 +15,7 @@ public enum HammerBroState
 
 public class HammerBro : IEnemy
 {
-    private const float WalkSpeed = 60f;
+    private const float WalkSpeed = 30f;
     private const float JumpSpeed = -500f;
     private const float Gravity = 1000f;
 
@@ -25,8 +25,6 @@ public class HammerBro : IEnemy
     private float groundY;
     private bool isOnGround = true;
     private float velocityX = -WalkSpeed;
-    private float leftBound;
-    private float rightBound;
     private bool isStomped;
 
     private float rotation = 0f;
@@ -54,8 +52,6 @@ public class HammerBro : IEnemy
         this.sprite = sprite;
         position = initialPosition;
         groundY = initialPosition.Y;
-        leftBound = initialPosition.X - patrolDistance;
-        rightBound = initialPosition.X + patrolDistance;
     }
 
 
@@ -105,12 +101,6 @@ public class HammerBro : IEnemy
 
             position.X += velocityX * deltaTime;
 
-            //TURN TURTLE AROUND WHEN IT HITS THE EDGE OF ITS PATROL AREA
-            if (position.X <= leftBound || position.X >= rightBound)
-            {
-                velocityX = -velocityX;
-                facingDirection = velocityX < 0 ? Direction.Left : Direction.Right;
-            }
         } else
         {
             position.Y += velocityY * deltaTime;
