@@ -1,0 +1,25 @@
+Code Review of Item.cs by Brannon Hill
+
+Code authored by: Sam Chandler (Built the class structure) & Michael Sidoti (Built Animation Controller Functionality)
+(Addtional Sprites implemented by others)
+Day of Code Review: 10/05/2026
+Sprint 2
+
+Minutes spent on this review: 40 minutes
+
+Readability: 9/10
+Sprite Factory is an extremely robust and useful class for the scope of Sprint 2. 
+As someone who used this class to implement the hammer bro and edit koopa and goomba,
+it was really easy to modify to any number of changes. The amount of 'new Rectangle(?, ?, ?, ?)'
+used can make Readability a little harder to grasp especially when many sprites in mario are 
+reused in different animations. 
+
+Maintainability/Quality: 9/10
+Easy to add new enemies, items, and any other sprites to the game as well as linking
+their animations. Right now this class has about 3 responsibilities. Locate the sprite 
+information from the png, Link the sprite animations to form a clip, and set the starting
+animation/sprite of the object. The only Maintainability problem with this is some rectangles 
+are being created multiple times for different purposes, so if we had to change the spritesheet,
+it would be hard to catch all the cases in testing. For the scope of sprint 2 this is perfectly 
+fine and a small refactor at the beginning of sprint 3 should be easy enough to implement because of
+how clean the code is currently. 

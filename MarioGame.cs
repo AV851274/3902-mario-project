@@ -155,7 +155,7 @@ public class MarioGame : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        spriteBatch.Begin();
+        spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
 
         player.Draw(spriteBatch);
 
