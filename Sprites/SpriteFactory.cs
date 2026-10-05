@@ -261,11 +261,15 @@ public class SpriteFactory
             ],
             [0.2f, 0.2f],
             true));
-        // goomba.AddClip(new Track(
-        //     "Stomped",
-        //     [new Rectangle(32, 0, 16, 8)],
-        //     [1f],
-        //     false));
+
+        goomba.AddClip(new Track(
+            "Stomped",
+            [
+                new Rectangle(0, 16, 16, 16),
+            ],
+            [0.2f],
+            false));
+    
         goomba.Play("Walk");
 
         return goomba;
@@ -283,11 +287,13 @@ public class SpriteFactory
             ],
             [0.2f, 0.2f],
             true));
-        // turtle.AddClip(new Track(
-        //     "Stomped",
-        //     [new Rectangle(32, 0, 16, 8)],
-        //     [1f],
-        //     false));
+
+        turtle.AddClip(new Track(
+            "Stomped",
+            [new Rectangle(72, 111, 16, 24)],
+            [1f],
+            false));
+
         turtle.Play("Walk");
 
         return turtle;
@@ -306,6 +312,13 @@ public class SpriteFactory
             [0.2f, 0.2f],
             true));
 
+        hammerBro.AddClip(new Track(
+            "Stomped",
+            [
+                new Rectangle(0, 182, 16, 24),
+            ],
+            [0.2f],
+            false));
         // hammerBro.AddClip(new Track(
             // "Charge",
             // [

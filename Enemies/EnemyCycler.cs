@@ -25,6 +25,11 @@ public class EnemyCycler
         currentIndex = (currentIndex - 1 + enemies.Count) % enemies.Count;
     }
 
+    public void StompCurrent()
+    {
+        enemies[currentIndex].Stomp();
+    }
+
     public void Update(GameTime gameTime)
     {
         enemies[currentIndex].Update(gameTime);

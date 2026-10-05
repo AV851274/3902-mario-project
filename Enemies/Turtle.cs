@@ -17,6 +17,8 @@ public class Turtle : IEnemy
     private float rightBound;
     private bool isStomped = false;
 
+    private bool isKicked = false;
+
     private Direction facingDirection = Direction.Left;
 
     public Direction FacingDirection
@@ -48,7 +50,7 @@ public class Turtle : IEnemy
 
     public void Update(GameTime gameTime)
     {
-        if (!isStomped)
+        if (!isStomped || isKicked)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             position.X += velocityX * deltaTime;
@@ -64,9 +66,18 @@ public class Turtle : IEnemy
         sprite.UpdateAnimation(gameTime);
     }
 
-    // public void Stomp()
-    // {
-    //     isStomped = true;
-    //     sprite.Play("Stomped");
-    // }
+    public void Stomp()
+    {
+        if (!isStomped)
+        {
+            isStomped = true;
+            sprite.Play("Stomped");
+        } else if (!isKicked) {
+            isKicked = true;
+            velocityX = 4 * WalkSpeed * (facingDirection == Direction.Left ? -1 : 1);
+        } else
+        {
+            isKicked = false;
+        }
+    }
 }

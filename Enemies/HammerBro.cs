@@ -27,6 +27,8 @@ public class HammerBro : IEnemy
     private float rightBound;
     private bool isStomped = false;
 
+    private float rotation = 0f;
+
     private Direction facingDirection = Direction.Left;
 
     public Direction FacingDirection
@@ -61,7 +63,8 @@ public class HammerBro : IEnemy
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
-        sprite.Draw(spriteBatch, position, effects: effects);
+
+        sprite.Draw(spriteBatch, position, rotation, effects: effects);
     }
 
     public void Update(GameTime gameTime)
@@ -106,6 +109,10 @@ public class HammerBro : IEnemy
                 velocityX = -velocityX;
                 facingDirection = velocityX < 0 ? Direction.Left : Direction.Right;
             }
+        } else
+        {
+            position.Y += velocityY * deltaTime;
+            velocityY += Gravity * deltaTime;
         }
 
 
@@ -123,11 +130,15 @@ public class HammerBro : IEnemy
         sprite.UpdateAnimation(gameTime);
     }
 
-    // public void Stomp()
-    // {
-    //     isStomped = true;
-    //     sprite.Play("Stomped");
-    // }
+    public void Stomp()
+    {
+        if (isStomped)
+            return;
+        
+        sprite.Play("Stomped");
+        rotation = 180f;
+        isStomped = true;
+    }
 
     public void ThrowHammer()
     {

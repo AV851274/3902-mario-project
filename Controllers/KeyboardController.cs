@@ -37,6 +37,7 @@ public class KeyboardController : IController
             { Keys.I, new NextItemCommand(item) },
             { Keys.O, new PreviousEnemyCommand(enemies) },
             { Keys.P, new NextEnemyCommand(enemies) },
+            { Keys.K, new StompEnemyCommand(enemies) },
             { Keys.Q, new QuitCommand(game) },
             { Keys.R, new ResetCommand(game) },
             { Keys.E, new PlayerTakeDamageCommand(player) },
