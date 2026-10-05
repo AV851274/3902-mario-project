@@ -10,6 +10,7 @@ Current features:
 | F | Shoot fireball (Fire Mario only) |
 | E | Damage Mario |
 | O / P | Cycle enemies |
+| K | "Stomp" enemies
 | T / Y | Cycle blocks |
 | U / I | Cycle items |
 | Q / R | Quit / Reset
