@@ -2,6 +2,8 @@ using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+namespace Mario.Projectiles;
+
 public class Hammer : IProjectile
 {
     private ISprite sprite;

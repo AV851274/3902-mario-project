@@ -20,7 +20,6 @@ public class SwimmingPlayer : IPlayer
     private const float FallMaxSpeed = 100f;
     private const float WalkMaxSpeed = 50f;
     private float moveMaxSpeed = 200f;
-    private const float DashMaxSpeed = 200f;
     private const float JumpSpeed = 75f;
     private float jumpTimer = 0.61f;
     private const float Gravity = 200f;

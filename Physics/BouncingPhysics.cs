@@ -1,5 +1,7 @@
 using Microsoft.Xna.Framework;
 
+namespace Mario.Physics;
+
 public static class BouncingPhysics
 {
     public static void Apply(
