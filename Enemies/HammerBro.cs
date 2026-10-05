@@ -4,6 +4,8 @@ using Mario.Interfaces;
 using Mario.Animation;
 using System;
 
+namespace Mario.Enemies;
+
 public enum HammerBroState
 {
     Idle,

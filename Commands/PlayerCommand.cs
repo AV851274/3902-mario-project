@@ -6,7 +6,7 @@ public abstract class PlayerCommand : ICommand
 {
     protected IPlayer player;
 
-    public PlayerCommand(IPlayer player)
+    protected PlayerCommand(IPlayer player)
     {
         this.player = player;
     }
