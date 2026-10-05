@@ -11,7 +11,7 @@ public interface IEnemy
 
     void Draw(SpriteBatch spriteBatch);
 
-    //void Stomp();
+    void Stomp();
 
     //TODO: Collision next sprint (hit by fireball, shell, etc.)
 }

@@ -10,6 +10,12 @@ public class Goomba : IEnemy
 
     private ISprite sprite;
     private Vector2 position;
+
+    private float rotation = 0f;
+
+    private const float Gravity = 1000f;
+
+    private float velocityY;
     private float velocityX = -WalkSpeed;
     private float leftBound;
     private float rightBound;
@@ -30,14 +36,14 @@ public class Goomba : IEnemy
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        sprite.Draw(spriteBatch, position);
+        sprite.Draw(spriteBatch, position, rotation);
     }
 
     public void Update(GameTime gameTime)
     {
+        float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (!isStomped)
         {
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             position.X += velocityX * deltaTime;
 
             //TURN GOOMBA AROUND WHEN IT HITS THE EDGE OF ITS PATROL AREA
@@ -45,14 +51,22 @@ public class Goomba : IEnemy
             {
                 velocityX = -velocityX;
             }
+        } else
+        {
+            position.Y += velocityY * deltaTime;
+            velocityY += Gravity * deltaTime;
         }
 
         sprite.UpdateAnimation(gameTime);
     }
 
-    // public void Stomp()
-    // {
-    //     isStomped = true;
-    //     sprite.Play("Stomped");
-    // }
+    public void Stomp()
+    {
+        if (isStomped)
+            return;
+        
+        sprite.Play("Stomped");
+        rotation = MathHelper.ToRadians(180f);
+        isStomped = true;
+    }
 }
