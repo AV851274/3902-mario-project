@@ -16,7 +16,7 @@ public class StaticSprite : ISprite
         this.sourceRectangle = sourceRectangle;
         this.scale = scale;
     }
-
+ 
     public void UpdateAnimation(GameTime gameTime)
     {
         // Static sprites do not have any update logic for now
