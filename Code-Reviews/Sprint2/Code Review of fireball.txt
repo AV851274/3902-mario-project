@@ -1,0 +1,24 @@
+Code Review of Fireball.cs by Aakash Vatti  
+Code authored by: Zhenxiang Ning
+Day of Code Review: 10/05/2026  
+Sprint 2  
+
+Minutes spent on this review: 30
+
+Readability: 9/10
+
+- Fireball.cs is a small file and is overall very easy to understand.
+- Variable names such as Position, Velocity, lifeTime, gravity, and groundY make it clear what information is being stored and how the fireball moves.
+- Update() follows a straightforward order: update the lifetime, apply gravity, update the position, check for a bounce, and then update the sprite.
+- The bouncing logic is especially simple to follow. When the fireball reaches groundY, its Y velocity is reversed while its X velocity stays the same.
+- One small readability improvement would be moving some of the logic in Update() into separate methods. For example, the lifetime check and ground collision/bounce logic could each be their own method. This is not really necessary with the current size of the class, but it could help if more functionality is added later.
+
+Maintainability/Quality: 8/10
+
+- The class has a clear responsibility: controlling the movement, lifetime, animation, and drawing of a fireball.
+- Using ISprite makes the projectile independent of a specific sprite implementation, which makes it easier to change its appearance or animation later.
+- Important movement values such as gravity, lifetime, ground height, initial position, and velocity are passed into the constructor instead of being hard coded. This makes the class flexible and easier to reuse.
+- One possible issue is that the fireball always assumes groundY is the surface it should bounce against. If the level later contains platforms, blocks, pipes, or other surfaces at different heights, this class would need additional collision handling.
+- The bounce also reverses the entire Y velocity without losing any speed. This means the fireball will continue bouncing at roughly the same strength unless another part of the game changes its velocity. If different bounce behavior is wanted later, it may be useful to have a bounce strength or damping value.
+- sprite.Play("Idle") is called during every Update(). Since "Idle" is a string, changing the animation name would require finding and changing the string here. A constant or a dedicated animation name could make this slightly easier to maintain.
+- Also gravity is currently harded coded into the class vs having a gravity/physics class affect it.
