@@ -7,9 +7,6 @@
     <TieredCompilation>false</TieredCompilation>
     <AssemblyName>Mario</AssemblyName>
     <RootNamespace>Mario</RootNamespace>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <AnalysisLevel>latest</AnalysisLevel>
-    <AnalysisMode>All</AnalysisMode>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
