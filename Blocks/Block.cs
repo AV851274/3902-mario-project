@@ -1,40 +1,29 @@
 using Mario.Interfaces;
+using Mario.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 
 namespace Mario.Blocks;
 
 public class Block : IBlock
 {
-    private List<ISprite> sprites;
-    private int currentSpriteIndex = 0;
+    private ISprite sprite;
 
     public Vector2 Position { get; private set; }
 
-    public Block(List<ISprite> sprites, Vector2 position)
+    public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position)
     {
-        this.sprites = sprites;
+        sprite = spriteFactory.CreateBlockSprite(type);
         Position = position;
-    }
-
-    public void NextSprite()
-    {
-        currentSpriteIndex = (currentSpriteIndex + 1) % sprites.Count;
-    }
-
-    public void PrevSprite()
-    {
-        currentSpriteIndex = (currentSpriteIndex - 1 + sprites.Count) % sprites.Count;
     }
 
     public void Update(GameTime gameTime)
     {
-        sprites[currentSpriteIndex].UpdateAnimation(gameTime);
+        sprite.UpdateAnimation(gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        sprites[currentSpriteIndex].Draw(spriteBatch, Position);
+        sprite.Draw(spriteBatch, Position);
     }
 }

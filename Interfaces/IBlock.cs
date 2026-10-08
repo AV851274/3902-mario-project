@@ -11,9 +11,5 @@ public interface IBlock
 
     void Draw(SpriteBatch spriteBatch);
 
-    void NextSprite();
-
-    void PrevSprite();
-
     //TODO: Collision next sprint, Bump(), Break(), etc.)
 }
