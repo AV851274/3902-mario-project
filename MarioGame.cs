@@ -60,8 +60,8 @@ public class MarioGame : Game
         // fireballSprite = spriteFactory.CreateFireBallSprite();
         projectiles.Clear();
 
-        item = new Item(spriteFactory.CreateItemSprites(), new Vector2(400, 200));
-        block = new Block(spriteFactory.CreateBlockSprites(), new Vector2(250, 200));
+        item = new Item(spriteFactory, ItemType.Mushroom, new Vector2(400, 200));
+        block = new Block(spriteFactory, BlockType.Question, new Vector2(250, 200));
         var hammerBro = new HammerBro(
             spriteFactory.CreateHammerBroSprite(),
             new Vector2(600, 392));
@@ -102,7 +102,7 @@ public class MarioGame : Game
         player.SummonFireball += SpawnFireball;
 
         // Controllers hold on to the player, so they're rebuilt whenever Mario is replaced
-        keyboardController = new KeyboardController(this, player, item, block, enemies);
+        keyboardController = new KeyboardController(this, player, enemies);
         mouseController = new MouseController(player);
     }
 

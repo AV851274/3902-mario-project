@@ -1,9 +1,11 @@
 using Mario.Animation;
+using Mario.Blocks;
 using Mario.Interfaces;
+using Mario.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace Mario.Sprites;
@@ -29,13 +31,15 @@ public class SpriteFactory
         // fireballTexture = content.Load<Texture2D>("orange_fireball");
     }
 
-    public List<ISprite> CreateItemSprites()
+    public ISprite CreateItemSprite(ItemType type)
     {
-        return new List<ISprite> {
-            new StaticSprite(itemTexture, new Rectangle(0, 8, 16, 16)), // mushroom
-            new StaticSprite(itemTexture, new Rectangle(32, 8, 16, 16)), // fire flower
-            CreateCoinSprite(),
-            CreateStarSprite(),
+        return type switch
+        {
+            ItemType.Mushroom => new StaticSprite(itemTexture, new Rectangle(0, 8, 16, 16)),
+            ItemType.FireFlower => new StaticSprite(itemTexture, new Rectangle(32, 8, 16, 16)),
+            ItemType.Coin => CreateCoinSprite(),
+            ItemType.Star => CreateStarSprite(),
+            _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }
 
@@ -77,19 +81,21 @@ public class SpriteFactory
         return star;
     }
 
-    public List<ISprite> CreateBlockSprites()
+    public ISprite CreateBlockSprite(BlockType type)
     {
-        return new List<ISprite> {
-            new StaticSprite(tileSet, new Rectangle(17, 16, 16, 16)), // brick
-            CreateQuestionBlockSprites(), // Question block animated
-            new StaticSprite(blockTexture, new Rectangle(180, 116, 16, 16)), // blue brick
-            new StaticSprite(blockTexture, new Rectangle(180, 332, 16, 16)), // grey block
-            new StaticSprite(tileSet, new Rectangle(0, 16, 16, 16)), // Ground block
-            new StaticSprite(tileSet, new Rectangle(349, 78, 16, 16)), // :Hit: question block
+        return type switch
+        {
+            BlockType.Brick => new StaticSprite(tileSet, new Rectangle(17, 16, 16, 16)),
+            BlockType.Question => CreateQuestionBlockSprite(),
+            BlockType.UsedQuestion => new StaticSprite(tileSet, new Rectangle(349, 78, 16, 16)),
+            BlockType.Ground => new StaticSprite(tileSet, new Rectangle(0, 16, 16, 16)),
+            BlockType.BlueBrick => new StaticSprite(blockTexture, new Rectangle(180, 116, 16, 16)),
+            BlockType.GreyBlock => new StaticSprite(blockTexture, new Rectangle(180, 332, 16, 16)),
+            _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }
 
-    public ISprite CreateQuestionBlockSprites()
+    private ISprite CreateQuestionBlockSprite()
     {
         AnimationController qBlock = new AnimationController(tileSet, Vector2.Zero, 3f);
 
