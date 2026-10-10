@@ -20,7 +20,7 @@ public class Player : IPlayer
     private const float MoveMaxSpeed = 200f;
     private const float JumpSpeed = 450f;
     private const float Gravity = 1000f;
-    private const float GroundY = 400f;
+    private const float GroundY = 377f;
     private const float ThrowAnimationTime = 0.3f;
     private bool isOnGround;
     private bool isSkidding = false;

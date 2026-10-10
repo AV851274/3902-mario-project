@@ -13,6 +13,8 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using Mario.GameStates;
+using Mario.Levels;
+using Mario.Camera;
 
 namespace Mario;
 
@@ -31,6 +33,8 @@ public class MarioGame : Game
     private IController mouseController;
     private SpriteFactory spriteFactory;
     private GameState gameState = new GameState();
+    private Camera2D camera = new Camera2D();
+    private int levelWidth;
 
     public MarioGame()
     {
@@ -58,13 +62,16 @@ public class MarioGame : Game
     public void ResetGame()
     {
         gameState.Reset();
+        camera = new Camera2D();
         // fireballSprite = spriteFactory.CreateFireBallSprite();
 
         gameState.Items.Add(
             new Item(spriteFactory, ItemType.Mushroom, new Vector2(400, 200)));
 
-        gameState.Blocks.Add(
-            new Block(spriteFactory, BlockType.Question, new Vector2(250, 200)));
+        var level = LevelLoader.LoadLevel("Levels/level1.csv", gameState, spriteFactory);
+
+        Vector2 marioSpawn = level.spawn;
+        levelWidth = level.width;
 
         var hammerBro = new HammerBro(
             spriteFactory.CreateHammerBroSprite(),
@@ -86,7 +93,7 @@ public class MarioGame : Game
 
         enemies = new EnemyCycler(gameState.Enemies);
 
-        CreateMario(false, new Vector2(100, 100));
+        CreateMario(false, marioSpawn);
     }
 
 
@@ -159,6 +166,7 @@ public class MarioGame : Game
         keyboardController.Update(gameTime);
         //mouseController.Update(gameTime);
         player.Update(gameTime);
+        camera.Follow(player.Position, GraphicsDevice.Viewport.Width, levelWidth);
         foreach (IItem currentItem in gameState.Items){
             currentItem.Update(gameTime);
         }
@@ -175,7 +183,14 @@ public class MarioGame : Game
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
-        spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointClamp);
+        spriteBatch.Begin(
+            SpriteSortMode.Deferred,
+            null,
+            SamplerState.PointClamp,
+            null,
+            null,
+            null,
+            camera.Transform);
 
         player.Draw(spriteBatch);
 
