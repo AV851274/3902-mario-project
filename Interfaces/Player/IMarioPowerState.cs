@@ -6,7 +6,7 @@ namespace Mario.Interfaces.Player;
 public interface IMarioPowerState
 {
     bool CanShootFireball { get; }
-    Vector2 DrawOffset { get; }
-    MarioPower PowerState { get; }
+    bool CanCrouch { get; }
+    MarioPower Power { get; }
     MarioPower TakeDamage();
 }

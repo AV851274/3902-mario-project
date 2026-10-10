@@ -26,6 +26,17 @@ public class SwimmingPlayerBody : IPlayerBodyAction, IPhysicsBody
     public Direction FacingDirection { get; private set; } = Direction.Right;
     public bool IsSwimming => !IsOnGround && timeSinceStroke < StrokeAnimationTime;
 
+    public SwimmingPlayerBody()
+    {
+    }
+
+    public SwimmingPlayerBody(IPhysicsBody body)
+    {
+        Position = body.Position;
+        Velocity = body.Velocity;
+        IsOnGround = body.IsOnGround;
+    }
+
     public void Move(Direction direction)
     {
         pendingDirection = direction;

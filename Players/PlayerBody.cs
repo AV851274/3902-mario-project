@@ -28,6 +28,17 @@ public class PlayerBody : IPlayerBodyAction, IPhysicsBody
     public Direction FacingDirection { get; private set; } = Direction.Right;
     public bool HasGravity => true;
 
+    public PlayerBody()
+    {
+    }
+
+    public PlayerBody(IPhysicsBody body)
+    {
+        Position = body.Position;
+        Velocity = body.Velocity;
+        IsOnGround = body.IsOnGround;
+    }
+
     public void Move(Direction direction)
     {
         pendingDirection = direction;
