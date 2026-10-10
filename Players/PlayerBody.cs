@@ -1,12 +1,11 @@
 using System;
 using Mario.Animation;
 using Mario.Interfaces;
-using Mario.Interfaces.Player;
 using Microsoft.Xna.Framework;
 
 namespace Mario.Players;
 
-public class PlayerBody : IPlayerBodyAction, IPhysicsBody
+public class PlayerBody : PlayerBodyBase
 {
     //--------consts-------------------------------
     private const float MoveAcceleration = 300f;
@@ -19,33 +18,25 @@ public class PlayerBody : IPlayerBodyAction, IPhysicsBody
     private bool dashHeld;
     private bool crouchHeld;
 
-    public Vector2 Position { get; set; }
-    public Vector2 Velocity { get; set; }
     private Direction? pendingDirection;
-    public bool IsOnGround { get; set; }
     public bool IsSkidding { get; set; }
     public bool IsCrouching { get; private set; }
-    public Direction FacingDirection { get; private set; } = Direction.Right;
-    public bool HasGravity => true;
 
     public PlayerBody()
     {
     }
 
-    public PlayerBody(IPhysicsBody body)
+    public PlayerBody(IPhysicsBody body) : base(body)
     {
-        Position = body.Position;
-        Velocity = body.Velocity;
-        IsOnGround = body.IsOnGround;
     }
 
-    public void Move(Direction direction)
+    public override void Move(Direction direction)
     {
         pendingDirection = direction;
         dashHeld = false;
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         IsCrouching = crouchHeld && IsOnGround;
@@ -88,13 +79,13 @@ public class PlayerBody : IPlayerBodyAction, IPhysicsBody
         crouchHeld = false;
     }
 
-    public void Stop()
+    public override void Stop()
     {
         pendingDirection = null;
         dashHeld = false;
     }
 
-    public void Jump()
+    public override void Jump()
     {
         if (!IsOnGround)
             return;
@@ -106,13 +97,13 @@ public class PlayerBody : IPlayerBodyAction, IPhysicsBody
         IsSkidding = false;
     }
 
-    public void Dash(Direction direction)
+    public override void Dash(Direction direction)
     {
         pendingDirection = direction;
         dashHeld = true;
     }
 
-    public void Crouch()
+    public override void Crouch()
     {
         crouchHeld = true;
     }

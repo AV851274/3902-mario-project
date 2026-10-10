@@ -20,14 +20,15 @@ public class Player : IPlayer
     private sealed record Appearance(ISprite Sprite, Vector2 Offset);
 
     private readonly Dictionary<AppearanceKey, Appearance> appearancesTable;
-    private IPhysicsBody body;
+    private PlayerBodyBase body;
     private Appearance appearance;
     private float timeSinceThrow = float.PositiveInfinity;
     private Direction facingDirection = Direction.Right;
     private bool isSwimming;
+    private bool attackPressed;
 
 
-    public IPlayerBodyAction BodyAction => body as IPlayerBodyAction;
+    public IPlayerBodyAction BodyAction => body;
     public IMarioPowerState MarioPowerState { get; private set; } = MarioPowerStateFactory.Create(MarioPower.Small);
     public Vector2 Position => body.Position;
     public event Action<Vector2, Direction> SummonFireball;
@@ -88,21 +89,18 @@ public class Player : IPlayer
     public void Crouch()
     {
         if (MarioPowerState.CanCrouch)
-            BodyAction.Crouch();
+            body.Crouch();
     }
 
     public void Attack()
     {
-        if (!MarioPowerState.CanShootFireball)
-            return;
-
-        SummonFireball?.Invoke(Position, facingDirection);
-        timeSinceThrow = 0f;
+        attackPressed = true;
     }
 
     public void Update(GameTime gameTime)
     {
-        BodyAction.Update(gameTime);
+        body.Update(gameTime);
+        facingDirection = body.FacingDirection;
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         timeSinceThrow += deltaTime;
 
@@ -122,10 +120,19 @@ public class Player : IPlayer
         body.Position = position;
         body.Velocity = velocity;
 
+        // Attack
+        if (attackPressed && MarioPowerState.CanShootFireball)
+        {
+            SummonFireball?.Invoke(Position, facingDirection);
+            timeSinceThrow = 0f;
+        }
+
+        attackPressed = false;
+
+
         string animation;
         if (body is SwimmingPlayerBody swimmingBody)
         {
-            facingDirection = swimmingBody.FacingDirection;
             if (timeSinceThrow < ThrowAnimationTime)
                 animation = "Throw";
             else if (swimmingBody.IsSwimming)
@@ -140,7 +147,6 @@ public class Player : IPlayer
         else
         {
             var groundBody = (PlayerBody)body;
-            facingDirection = groundBody.FacingDirection;
             if (!body.IsOnGround)
                 animation = "Jump";
             else if (timeSinceThrow < ThrowAnimationTime)
