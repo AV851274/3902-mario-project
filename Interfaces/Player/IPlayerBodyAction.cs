@@ -1,15 +1,14 @@
 using Mario.Animation;
-using Mario.Players;
+using Microsoft.Xna.Framework;
 
 namespace Mario.Interfaces.Player;
 
-public interface IPlayerAction
+public interface IPlayerBodyAction
 {
     public void Move(Direction direction);
     public void Stop();
     public void Jump();
     public void Dash(Direction direction);
     void Crouch();
-    void Attack();
-    void TakeDamage();
+    void Update(GameTime gameTime);
 }

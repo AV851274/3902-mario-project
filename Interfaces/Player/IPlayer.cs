@@ -7,6 +7,6 @@ namespace Mario.Interfaces.Player;
 
 public interface IPlayer: IGameObject
 {
-    IPlayerAction Action { get; }
+    IPlayerBodyAction BodyAction { get; }
     IMarioPowerState MarioPowerState { get; }
 }
