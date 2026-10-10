@@ -1,3 +1,4 @@
+using Mario.Interfaces.Player;
 using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;

@@ -1,18 +1,12 @@
-using Mario.Interfaces;
-using Mario.Sprites;
-using Microsoft.Xna.Framework;
+using Mario.Interfaces.Player;
 
 namespace Mario.Players.PlayerStates;
 
-public class SmallMarioState : IMarioState
+public class SmallMarioState : IMarioPowerState
 {
-    public ISprite Sprite { get; }
     public bool CanShootFireball => false;
-    public Vector2 DrawOffset => Vector2.Zero;
-    public MarioPower marioPower => MarioPower.Small;
+    public bool CanCrouch => false;
+    public MarioPower Power => MarioPower.Small;
 
-    public SmallMarioState(SpriteFactory spriteFactory)
-    {
-        Sprite = spriteFactory.CreateSmallMarioSprite();
-    }
+    public MarioPower TakeDamage() => MarioPower.Dead;
 }

@@ -1,3 +1,4 @@
+using Mario.Interfaces.Player;
 using Mario.Animation;
 using Mario.Blocks;
 using Mario.Controllers;
@@ -25,7 +26,6 @@ public class MarioGame : Game
 
     private IPlayer player;
 
-    private bool isSwimming;
 
     // private ISprite fireballSprite;
     private EnemyCycler enemies;
@@ -100,31 +100,16 @@ public class MarioGame : Game
     // Keys 1-6: switch between regular and swimming Mario, then set his size
     public void ChangeMario(bool swimming, MarioPower power)
     {
-        if (swimming != isSwimming)
-        {
-            CreateMario(swimming, player.Position);
-        }
-
-        switch (power)
-        {
-            case MarioPower.Small: player.BecomeSmall(); break;
-            case MarioPower.Big: player.BecomeBig(); break;
-            case MarioPower.Fire: player.BecomeFire(); break;
-        }
+        player.SetSwimming(swimming);
+        player.SetPower(power);
     }
 
     private void CreateMario(bool swimming, Vector2 position)
     {
-        isSwimming = swimming;
-        player = swimming
-            ? new SwimmingPlayer(spriteFactory, position)
-            : new Player(spriteFactory, position);
-        
+        player = new Player(spriteFactory, position);
+        player.SetSwimming(swimming);
         gameState.Player = player;
-
         player.SummonFireball += SpawnFireball;
-
-        // Controllers hold on to the player, so they're rebuilt whenever Mario is replaced
         keyboardController = new KeyboardController(this, player, enemies);
         mouseController = new MouseController(player);
     }
