@@ -62,6 +62,7 @@ public class Player : IPlayer
             body = new SwimmingPlayerBody(body);
         else
             body = new PlayerBody(body);
+        body.Velocity = Vector2.Zero;
         isSwimming = swimming;
         RefreshSprite();
     }
@@ -117,7 +118,7 @@ public class Player : IPlayer
         }
 
         body.IsOnGround = GravityPhysics.Apply(ref position, ref velocity,
-            deltaTime, gravity, 377f, maxFallSpeed);
+            deltaTime, gravity, 400f, maxFallSpeed);
         body.Position = position;
         body.Velocity = velocity;
 
