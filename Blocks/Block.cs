@@ -10,6 +10,7 @@ public class Block : IBlock
     private ISprite sprite;
 
     public Vector2 Position { get; private set; }
+    public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, 48, 48);
 
     public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position)
     {

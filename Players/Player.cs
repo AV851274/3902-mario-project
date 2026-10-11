@@ -32,6 +32,42 @@ public class Player : IPlayer
     public IMarioPowerState MarioPowerState { get; private set; } = MarioPowerStateFactory.Create(MarioPower.Small);
     public Vector2 Position => body.Position;
     public event Action<Vector2, Direction> SummonFireball;
+    public Vector2 Velocity
+    {
+        get => body.Velocity;
+        set => body.Velocity = value;
+    }
+
+    public bool IsOnGround
+    {
+        get => body.IsOnGround;
+        set => body.IsOnGround = value;
+    }
+
+    public void SetPosition(Vector2 position)
+    {
+        body.Position = position;
+    }
+    public Rectangle Bounds
+    {
+        get
+        {
+            bool isSmall = MarioPowerState.Power == MarioPower.Small;
+
+            int width = 36;
+            int height = isSmall ? 48 : 88;
+
+            int x = (int)Position.X;
+            int y = (int)Position.Y;
+
+            if (!isSmall)
+            {
+                y -= 40;
+            }
+
+            return new Rectangle(x, y, width, height);
+        }
+    }
 
 
     public Player(SpriteFactory factory, Vector2 position)
@@ -108,15 +144,16 @@ public class Player : IPlayer
         Vector2 position = body.Position;
         Vector2 velocity = body.Velocity;
         float gravity = 1000f;
-        float? maxFallSpeed = null;
+        float maxFallSpeed = 0f;
         if (isSwimming)
         {
             gravity = 200f;
             maxFallSpeed = 100f;
         }
 
-        body.IsOnGround = GravityPhysics.Apply(ref position, ref velocity,
-            deltaTime, gravity, 400f, maxFallSpeed);
+        GravityPhysics.Apply(ref position, ref velocity, deltaTime, gravity, maxFallSpeed);
+
+        body.IsOnGround = false;
         body.Position = position;
         body.Velocity = velocity;
 
@@ -128,9 +165,11 @@ public class Player : IPlayer
         }
 
         attackPressed = false;
-
-
+    }
+    public void UpdateAnimation(GameTime gameTime)
+    {
         string animation;
+
         if (body is SwimmingPlayerBody swimmingBody)
         {
             if (timeSinceThrow < ThrowAnimationTime)
@@ -139,7 +178,7 @@ public class Player : IPlayer
                 animation = "Swim";
             else if (!body.IsOnGround)
                 animation = "Float";
-            else if (velocity.X != 0f)
+            else if (body.Velocity.X != 0f)
                 animation = "Walk";
             else
                 animation = "Stand";
@@ -147,6 +186,7 @@ public class Player : IPlayer
         else
         {
             var groundBody = (PlayerBody)body;
+
             if (!body.IsOnGround)
                 animation = "Jump";
             else if (timeSinceThrow < ThrowAnimationTime)
@@ -155,7 +195,7 @@ public class Player : IPlayer
                 animation = "Crouch";
             else if (groundBody.IsSkidding)
                 animation = "Skid";
-            else if (velocity.X != 0f)
+            else if (body.Velocity.X != 0f)
                 animation = "Run";
             else
                 animation = "Idle";
@@ -171,6 +211,13 @@ public class Player : IPlayer
         if (isSwimming)
             flip = facingDirection == Direction.Left;
         SpriteEffects effects = flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        appearance.Sprite.Draw(spriteBatch, Position + appearance.Offset, effects: effects);
+        Vector2 drawPosition = Position + appearance.Offset;
+
+        if (appearance.Sprite is AnimationController animation)
+        {
+            drawPosition.Y = Bounds.Bottom - animation.CurrentFrameHeight;
+        }
+
+        appearance.Sprite.Draw(spriteBatch, drawPosition, effects: effects);
     }
 }

@@ -6,6 +6,7 @@ namespace Mario.Interfaces;
 public interface IBlock: IGameObject
 {
     Vector2 Position { get; }
-
+    Rectangle Bounds { get; }
     //TODO: Collision next sprint, Bump(), Break(), etc.)
+    
 }
