@@ -118,7 +118,7 @@ public class SpriteFactory
 
     {
         return CreateMarioSprite(
-            new Rectangle(180, 0, 16, 22), // idle
+            new Rectangle(180, 0, 16, 16), // idle
             [
                 new Rectangle(149, 0, 15, 16),
                 new Rectangle(120, 0, 13, 16),

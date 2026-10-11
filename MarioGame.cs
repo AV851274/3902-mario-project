@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using Mario.GameStates;
 using Mario.Levels;
 using Mario.Camera;
+using Mario.Physics;
 
 namespace Mario;
 
@@ -150,8 +151,25 @@ public class MarioGame : Game
 
         keyboardController.Update(gameTime);
         //mouseController.Update(gameTime);
+
+        // Save Mario's position before moving
+        Rectangle previousBounds = player.Bounds;
+
+        // Update Mario's movement and gravity
         player.Update(gameTime);
+
+        // Resolve collisions with walls
+        CollisionManager.ResolvePlayerWallCollisions(player, gameState.Blocks, previousBounds);
+        // Resolve collisions with ceilings
+        CollisionManager.ResolvePlayerCeilingCollisions(player, gameState.Blocks, previousBounds);
+        // Resolve collisions with blocks
+        CollisionManager.ResolvePlayerBlockCollisions(player, gameState.Blocks, previousBounds);
+        
+        player.UpdateAnimation(gameTime);
+
+        // Update camera
         camera.Follow(player.Position, GraphicsDevice.Viewport.Width, levelWidth);
+
         foreach (IItem currentItem in gameState.Items){
             currentItem.Update(gameTime);
         }

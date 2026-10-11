@@ -32,6 +32,16 @@ public class AnimationController : ISprite
         frameIndex = 0;
         timeInFrameSeconds = 0f;
     }
+    public float CurrentFrameHeight
+    {
+        get
+        {
+            if (currentClip == null)
+                return 0f;
+
+            return currentClip.GetFrame(frameIndex).Height * scale;
+        }
+    }
 
     public void AddClip(Track clip)
     {
