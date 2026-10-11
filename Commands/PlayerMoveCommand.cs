@@ -1,3 +1,4 @@
+using Mario.Interfaces.Player;
 using Mario.Animation;
 using Mario.Interfaces;
 
@@ -14,9 +15,6 @@ public class PlayerMoveCommand : PlayerCommand
 
     public override void Execute()
     {
-        if (direction == Direction.Left)
-            player.MoveLeft();
-        else
-            player.MoveRight();
+        player.BodyAction.Move(direction);
     }
 }

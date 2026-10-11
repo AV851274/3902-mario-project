@@ -3,13 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Mario.Interfaces;
 
-public interface IEnemy
+public interface IEnemy : IGameObject
 {
     Vector2 Position { get; }
-
-    void Update(GameTime gameTime);
-
-    void Draw(SpriteBatch spriteBatch);
 
     void Stomp();
 

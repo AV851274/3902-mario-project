@@ -1,3 +1,4 @@
+using Mario.Interfaces.Player;
 using Mario.Interfaces;
 
 namespace Mario.Commands;
@@ -10,6 +11,6 @@ public class PlayerStopMovingCommand : PlayerCommand
 
     public override void Execute()
     {
-        player.StopMoving();
+        player.BodyAction.Stop();
     }
 }

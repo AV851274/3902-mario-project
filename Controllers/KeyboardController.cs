@@ -1,3 +1,4 @@
+using Mario.Interfaces.Player;
 using Mario;
 using Mario.Animation;
 using Mario.Commands;

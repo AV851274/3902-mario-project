@@ -1,3 +1,4 @@
+using Mario.Interfaces.Player;
 using Mario.Animation;
 using Mario.Interfaces;
 
@@ -14,9 +15,6 @@ public class PlayerDashCommand : PlayerCommand
 
     public override void Execute()
     {
-        if (direction == Direction.Left)
-            player.DashLeft();
-        else
-            player.DashRight();
+        player.BodyAction.Dash(direction);
     }
 }
