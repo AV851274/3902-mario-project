@@ -40,6 +40,8 @@ public class MarioGame : Game
     public MarioGame()
     {
         graphics = new GraphicsDeviceManager(this);
+        graphics.PreferredBackBufferWidth = 1280;
+        graphics.PreferredBackBufferHeight = 768;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
