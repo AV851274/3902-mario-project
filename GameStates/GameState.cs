@@ -13,6 +13,7 @@ public class GameState
     public List<IItem> Items { get; } = new();
     public List<IEnemy> Enemies { get; } = new();
     public List<IProjectile> Projectiles { get; } = new();
+    public List<IGameObject> Background { get; } = new();
 
     public void Reset()
     {
@@ -21,5 +22,6 @@ public class GameState
         Items.Clear();
         Enemies.Clear();
         Projectiles.Clear();
+        Background.Clear();
     }
 }

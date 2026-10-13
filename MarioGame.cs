@@ -197,6 +197,10 @@ public class MarioGame : Game
             null,
             camera.Transform);
 
+        foreach (IGameObject backgroundObject in gameState.Background) {
+            backgroundObject.Draw(spriteBatch);
+        }
+
         player.Draw(spriteBatch);
 
         foreach (IItem currentItem in gameState.Items){

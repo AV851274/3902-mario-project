@@ -6,6 +6,7 @@ using Mario.Sprites;
 using Microsoft.Xna.Framework;
 using Mario.Enemies;
 using Mario.Items;
+using Mario.Background;
 
 namespace Mario.Levels;
 
@@ -75,6 +76,15 @@ public class LevelLoader
                         break;
                     case "st":
                         gameState.Items.Add(new Item(spriteFactory, ItemType.Star, position));
+                        break;
+                    case "cl":
+                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud, position));
+                        break;
+                    case "bh":
+                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, position));
+                        break;
+                    case "sh":
+                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallHill, position));
                         break;
 
                     default:
