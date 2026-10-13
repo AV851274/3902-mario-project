@@ -5,6 +5,7 @@ using Mario.GameStates;
 using Mario.Sprites;
 using Microsoft.Xna.Framework;
 using Mario.Enemies;
+using Mario.Items;
 
 namespace Mario.Levels;
 
@@ -62,6 +63,18 @@ public class LevelLoader
                         break;
                     case ".":
                     case "":
+                        break;
+                                        case "m":
+                        gameState.Items.Add(new Item(spriteFactory, ItemType.Mushroom, position));
+                        break;
+                    case "f":
+                        gameState.Items.Add(new Item(spriteFactory, ItemType.FireFlower, position));
+                        break;
+                    case "c":
+                        gameState.Items.Add(new Item(spriteFactory, ItemType.Coin, position));
+                        break;
+                    case "s":
+                        gameState.Items.Add(new Item(spriteFactory, ItemType.Star, position));
                         break;
 
                     default:

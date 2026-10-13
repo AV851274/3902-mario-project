@@ -164,6 +164,9 @@ public class MarioGame : Game
         CollisionManager.ResolvePlayerCeilingCollisions(player, gameState.Blocks, previousBounds);
         // Resolve collisions with blocks
         CollisionManager.ResolvePlayerBlockCollisions(player, gameState.Blocks, previousBounds);
+        // Resolve collisions with items
+        CollisionManager.ResolvePlayerItemCollisions(player, gameState.Items);
+        gameState.Items.RemoveAll(item => item.IsCollected);
         
         player.UpdateAnimation(gameTime);
 

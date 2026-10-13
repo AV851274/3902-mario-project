@@ -40,6 +40,17 @@ public static class CollisionManager
             }
         }
     }
+
+    public static void ResolvePlayerItemCollisions(IPlayer player, List<IItem> items)
+    {
+        foreach (IItem item in items)
+        {
+            if (!item.IsCollected && player.Bounds.Intersects(item.Bounds))
+            {
+                item.Collect(player);
+            }
+        }
+    }
     public static void ResolvePlayerWallCollisions(IPlayer player, List<IBlock> blocks, Rectangle previousBounds)
     {
         foreach (IBlock block in blocks)
