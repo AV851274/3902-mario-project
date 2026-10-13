@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
+using Mario.Background;
 
 namespace Mario.Sprites;
 
@@ -29,6 +30,17 @@ public class SpriteFactory
         enemyTexture = content.Load<Texture2D>("enemies");
         tileSet = content.Load<Texture2D>("tileset");
         // fireballTexture = content.Load<Texture2D>("orange_fireball");
+    }
+
+        public ISprite CreateBackgroundSprite(BackgroundType type)
+    {
+        return type switch
+        {
+            BackgroundType.Cloud => new StaticSprite(tileSet, new Rectangle(623, 608, 48, 30)),
+            BackgroundType.BigHill => new StaticSprite(tileSet, new Rectangle(110, 740, 82, 35)),
+            BackgroundType.SmallHill => new StaticSprite(tileSet, new Rectangle(198, 756, 50, 20)),
+            _ => throw new ArgumentOutOfRangeException(nameof(type))
+        };
     }
 
     public ISprite CreateItemSprite(ItemType type)
