@@ -64,16 +64,16 @@ public class LevelLoader
                     case ".":
                     case "":
                         break;
-                                        case "m":
+                    case "mu":
                         gameState.Items.Add(new Item(spriteFactory, ItemType.Mushroom, position));
                         break;
-                    case "f":
+                    case "fi":
                         gameState.Items.Add(new Item(spriteFactory, ItemType.FireFlower, position));
                         break;
-                    case "c":
+                    case "co":
                         gameState.Items.Add(new Item(spriteFactory, ItemType.Coin, position));
                         break;
-                    case "s":
+                    case "st":
                         gameState.Items.Add(new Item(spriteFactory, ItemType.Star, position));
                         break;
 
