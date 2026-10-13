@@ -66,9 +66,6 @@ public class MarioGame : Game
         camera = new Camera2D();
         // fireballSprite = spriteFactory.CreateFireBallSprite();
 
-        gameState.Items.Add(
-            new Item(spriteFactory, ItemType.Mushroom, new Vector2(400, 200)));
-
         var level = LevelLoader.LoadLevel("Levels/level1.csv", gameState, spriteFactory);
 
         Vector2 marioSpawn = level.spawn;
