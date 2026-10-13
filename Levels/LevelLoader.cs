@@ -86,6 +86,12 @@ public class LevelLoader
                     case "sh":
                         gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallHill, position));
                         break;
+                    case "sb":
+                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallBush, position));
+                        break;
+                    case "bb":
+                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, position));
+                        break;
 
                     default:
                         throw new FormatException(
