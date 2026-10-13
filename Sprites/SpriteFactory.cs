@@ -39,6 +39,8 @@ public class SpriteFactory
             BackgroundType.Cloud => new StaticSprite(tileSet, new Rectangle(623, 608, 48, 30)),
             BackgroundType.BigHill => new StaticSprite(tileSet, new Rectangle(110, 740, 82, 35)),
             BackgroundType.SmallHill => new StaticSprite(tileSet, new Rectangle(198, 756, 50, 20)),
+            BackgroundType.SmallBush => new StaticSprite(tileSet, new Rectangle(200, 700, 43, 20)),
+            BackgroundType.BigBush => new StaticSprite(tileSet, new Rectangle(120, 700, 64, 20)),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }

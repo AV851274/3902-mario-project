@@ -4,5 +4,7 @@ public enum BackgroundType
 {
     Cloud,
     BigHill,
-    SmallHill
+    SmallHill,
+    SmallBush,
+    BigBush
 }
