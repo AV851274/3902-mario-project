@@ -73,17 +73,17 @@ public class MarioGame : Game
 
         var hammerBro = new HammerBro(
             spriteFactory.CreateHammerBroSprite(),
-            new Vector2(600, 392));
+            new Vector2(600, 384));
 
         hammerBro.SummonHammer += SpawnHammer;
 
         var goomba = new Goomba(
             spriteFactory.CreateGoombaSprite(),
-            new Vector2(600, 408));
+            new Vector2(600, 384));
 
         var turtle = new Turtle(
             spriteFactory.CreateTurtleSprite(),
-            new Vector2(600, 392));
+            new Vector2(600, 384));
 
         gameState.Enemies.Add(goomba);
         gameState.Enemies.Add(turtle);

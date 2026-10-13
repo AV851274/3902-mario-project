@@ -12,7 +12,7 @@ public class PlayerBody : PlayerBodyBase
     private const float StopAcceleration = 600f;
     private const float TurnAcceleration = 900f;
     private const float MoveMaxSpeed = 200f;
-    private const float JumpSpeed = 450f;
+    private const float JumpSpeed = 550f;
     //---------------------------------------------
 
     private bool dashHeld;

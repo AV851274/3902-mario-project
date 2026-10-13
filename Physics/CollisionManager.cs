@@ -115,6 +115,7 @@ public static class CollisionManager
             if (hittingCeiling)
             {
                 float newY = blockBounds.Bottom;
+                block.Hit();
 
                 if (playerBounds.Height > 48)
                 {
