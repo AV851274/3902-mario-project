@@ -41,6 +41,41 @@ public static class CollisionManager
         }
     }
 
+        public static void ResolveItemWallCollisions(IItem item, List<IBlock> blocks, Rectangle previousBounds)
+    {
+        foreach (IBlock block in blocks)
+        {
+            Rectangle itemBounds = item.Bounds;
+            Rectangle blockBounds = block.Bounds;
+
+            bool verticalOverlap =
+                itemBounds.Bottom > blockBounds.Top &&
+                itemBounds.Top < blockBounds.Bottom;
+
+            bool hitLeftSide =
+                verticalOverlap &&
+                previousBounds.Right <= blockBounds.Left &&
+                itemBounds.Right > blockBounds.Left;
+
+            bool hitRightSide =
+                verticalOverlap &&
+                previousBounds.Left >= blockBounds.Right &&
+                itemBounds.Left < blockBounds.Right;
+
+            if (hitLeftSide)
+            {
+                item.BounceOffWall(blockBounds.Left - itemBounds.Width);
+                break;
+            }
+
+            if (hitRightSide)
+            {
+                item.BounceOffWall(blockBounds.Right);
+                break;
+            }
+        }
+    }
+
     public static void ResolvePlayerItemCollisions(IPlayer player, List<IItem> items)
     {
         foreach (IItem item in items)

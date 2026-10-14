@@ -22,6 +22,7 @@ public class Item : IItem
     private ItemType type;
     private Vector2 position;
     private Vector2 velocity;
+    private float direction = 1f;
 
     public Vector2 Position => position;
 
@@ -77,10 +78,7 @@ public class Item : IItem
 
         if (type == ItemType.Star)
         {
-            if (velocity.X == 0f)
-            {
-                velocity.X = MushroomSpeed;
-            }
+            velocity.X = direction * MushroomSpeed;
 
             BouncingPhysics.Apply(
                 ref position,
@@ -92,7 +90,7 @@ public class Item : IItem
         }
         else if (type == ItemType.Mushroom)
         {
-            velocity.X = MushroomSpeed;
+            velocity.X = direction * MushroomSpeed;
             GravityPhysics.Apply(ref position, ref velocity, deltaTime, Gravity);
             if (position.Y >= GroundY)
             {   
@@ -102,6 +100,11 @@ public class Item : IItem
         }
 
         sprite.UpdateAnimation(gameTime);
+    }
+    public void BounceOffWall(float newX)
+    {
+        position.X = newX;
+        direction = -direction;
     }
 
     public void Draw(SpriteBatch spriteBatch)

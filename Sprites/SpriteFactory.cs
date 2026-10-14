@@ -105,6 +105,10 @@ public class SpriteFactory
             BlockType.Ground => new StaticSprite(tileSet, new Rectangle(0, 16, 16, 16)),
             BlockType.BlueBrick => new StaticSprite(blockTexture, new Rectangle(180, 116, 16, 16)),
             BlockType.GreyBlock => new StaticSprite(blockTexture, new Rectangle(180, 332, 16, 16)),
+            BlockType.PipeTopLeft => new StaticSprite(tileSet, new Rectangle(119, 196, 16, 16)),
+            BlockType.PipeTopRight => new StaticSprite(tileSet, new Rectangle(136, 196, 16, 16)),
+            BlockType.PipeLeft => new StaticSprite(tileSet, new Rectangle(119, 213, 16, 16)),
+            BlockType.PipeRight => new StaticSprite(tileSet, new Rectangle(136, 213, 16, 16)),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }

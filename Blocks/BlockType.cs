@@ -7,5 +7,9 @@ public enum BlockType
     UsedQuestion,
     Ground,
     BlueBrick,
-    GreyBlock
+    GreyBlock,
+    PipeTopLeft,
+    PipeTopRight,
+    PipeLeft,
+    PipeRight
 }

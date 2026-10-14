@@ -92,6 +92,18 @@ public class LevelLoader
                     case "bb":
                         gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, position));
                         break;
+                    case "PL":
+                        gameState.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopLeft, position));
+                        break;
+                    case "PR":
+                        gameState.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopRight, position));
+                        break;
+                    case "pl":
+                        gameState.Blocks.Add(new Block(spriteFactory, BlockType.PipeLeft, position));
+                        break;
+                    case "pr":
+                        gameState.Blocks.Add(new Block(spriteFactory, BlockType.PipeRight, position));
+                        break;
 
                     default:
                         throw new FormatException(

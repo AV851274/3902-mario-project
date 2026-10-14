@@ -172,8 +172,11 @@ public class MarioGame : Game
         // Update camera
         camera.Follow(player.Position, GraphicsDevice.Viewport.Width, levelWidth);
 
-        foreach (IItem currentItem in gameState.Items){
+        foreach (IItem currentItem in gameState.Items)
+        {
+            Rectangle previousItemBounds = currentItem.Bounds;
             currentItem.Update(gameTime);
+            CollisionManager.ResolveItemWallCollisions(currentItem, gameState.Blocks, previousItemBounds);
         }
         foreach (IBlock currentBlock in gameState.Blocks){
             currentBlock.Update(gameTime);

@@ -10,4 +10,5 @@ public interface IItem: IGameObject
     Rectangle Bounds { get; }
     bool IsCollected { get; }
     void Collect(IPlayer player);
+    void BounceOffWall(float newX);
 }

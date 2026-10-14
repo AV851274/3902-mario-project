@@ -1,0 +1,84 @@
+SPRINT 3 - STILL NEEDED
+
+1) New blocks, placed into the map from level1.csv
+   [ ] Cloud blocks
+       - Mario can stand on them
+       - Disappear after a short delay once Mario lands on them
+       - Add a BlockType, a sprite in SpriteFactory, and a CSV code in LevelLoader
+   [ ] Pipes
+       - Solid on top and sides (Mario lands on them and can't walk through)
+       - Pipe top and pipe body pieces so pipes can be different heights
+       - Add BlockTypes, sprites in SpriteFactory, and CSV codes in LevelLoader
+   [ ] Moving platforms (up / down)
+       - Move up and down between two heights
+       - Mario rides along when standing on one
+       - Add a BlockType or class, a sprite, and a CSV code in LevelLoader
+   [ ] Place all new blocks into level1.csv
+
+2) Enemies: gravity, block collision, and player collision (stomping)
+   [ ] Gravity for all enemies (Goomba, Koopa, Hammer Bro)
+       - Always fall, so they can walk off ledges
+   [ ] Enemy <-> block collision
+       - Land on top of blocks (fixes the Goomba floating too high)
+       - Turn around when walking into a wall/block (replaces the patrol bounds)
+   [ ] Enemy <-> player collision
+       - Mario landing on top of an enemy = Stomp() and Mario bounces up
+       - Mario touching an enemy from the side = Mario takes damage
+   [ ] Enemies placed from level1.csv only (remove the hard-coded ones in MarioGame.ResetGame)
+
+
+====================================================================
+BEYOND TODAY - REST OF SPRINT 3
+====================================================================
+
+3) Rooms / level segments (required by the rubric)
+   [ ] Split the level into multiple rooms/screens, each in its own CSV file (room1.csv, room2.csv, ...)
+   [ ] Keep a list of rooms and load/clear objects when switching rooms
+   [ ] Include an "artificial" test room that has every object type (all blocks, items, enemies, Mario)
+   [ ] Mouse controller switches rooms: left click = previous room, right click = next room
+       (MouseController is currently all commented out)
+
+4) Remaining collisions (rubric: "all types of collisions")
+   [ ] Item <-> block: mushroom/star land on blocks and turn around at walls (then remove GroundY from Item)
+   [ ] Fireball <-> enemy: fireball kills the enemy and disappears
+   [ ] Fireball <-> block: bounces on blocks instead of a fixed ground height, disappears when hitting a wall
+   [ ] Hammer <-> Mario: Hammer Bro's hammer damages Mario
+   [ ] Kicked Koopa shell <-> other enemies: shell knocks them out
+   [ ] Shared collision code: CollisionManager repeats the same overlap logic for player/enemy/item;
+       consider one helper that works for any object with Bounds
+
+5) Blocks
+   [ ] Question blocks release their item when hit (mushroom / fire flower / coin), item info read from the CSV
+   [ ] Big/Fire Mario breaks bricks when hitting them from below (Small Mario only bumps them)
+   [ ] Bushes in the background (big + small), placed from the CSV
+   [ ] Background sprites aligned to the ground (hill rectangles 48 / 32 px tall so their bottoms touch the ground)
+
+6) Mario
+   [ ] Death: Small Mario taking damage should die (Player.SetPower currently ignores MarioPower.Dead)
+       -> death animation, then reset the room
+   [ ] Brief invincibility (flashing) after taking damage so one enemy can't hit twice in a row
+   [ ] Star power: star item makes Mario invincible for a few seconds (currently the star does nothing)
+   [ ] Falling off the bottom of the level = death
+   [ ] Attack also on Z and N (spec key mapping), keep F
+
+7) Game info
+   [ ] Coin counter in GameState that goes up when a coin is collected
+   [ ] (Optional) Simple HUD showing coins, can wait for Sprint 4
+
+8) Clean up dev/test code
+   [ ] Remove O / P enemy cycling and K stomp keys, plus EnemyCycler, once enemies come from the CSV
+   [ ] Remove the commented-out code (old fireball sprite in MarioGame, commented Stomped clips, etc.)
+   [ ] Even out level CSV rows (some rows have 104 cells, others 106)
+   [ ] (Optional) GamepadController class - rubric suggests it but it's not required
+
+9) Documentation and process (graded)
+   [ ] README: update the controls table (remove T/Y/U/I, add mouse room switching, crouch, dash, arrow keys)
+   [ ] README: list known bugs AND deviations from the original game (e.g. star does nothing yet),
+       otherwise they can be marked as bugs
+   [ ] Code analysis: table of every analyzer warning -> fixed or suppressed + reason
+       (optionally an .editorconfig with the suppressions)
+   [ ] Code reviews in Code-Reviews/Sprint3: every member does 1 readability + 1 maintainability review
+       and has their own code reviewed
+   [ ] Sprint reflection based on the burndown chart (team write-up, not just one person)
+   [ ] Task board: backlog items + tasks with estimates, kept up to date; meet with grader
+   [ ] Functionality check-in on Carmen (aim for 2/3 of features)
