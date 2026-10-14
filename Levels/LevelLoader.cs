@@ -62,6 +62,18 @@ public class LevelLoader
                                 spriteFactory.CreateGoombaSprite(),
                                 position));
                         break;
+                    case "K":
+                        gameState.Enemies.Add(
+                            new Turtle(
+                                spriteFactory.CreateTurtleSprite(),
+                                position));
+                        break;
+                    case "H":
+                        gameState.Enemies.Add(
+                            new HammerBro(
+                                spriteFactory.CreateHammerBroSprite(),
+                                position));
+                        break;
                     case ".":
                     case "":
                         break;

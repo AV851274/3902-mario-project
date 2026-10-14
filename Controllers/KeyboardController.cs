@@ -2,7 +2,6 @@ using Mario.Interfaces.Player;
 using Mario;
 using Mario.Animation;
 using Mario.Commands;
-using Mario.Enemies;
 using Mario.Interfaces;
 using Mario.Players;
 using Microsoft.Xna.Framework;
@@ -29,12 +28,9 @@ public class KeyboardController : IController
     private Dictionary<PlayerActions, ICommand> playerCommands;
     private KeyboardState previousState;
 
-    public KeyboardController(MarioGame game, IPlayer player, EnemyCycler enemies)
+    public KeyboardController(MarioGame game, IPlayer player)
     {
         pressCommands = new Dictionary<Keys, ICommand> {
-            { Keys.O, new PreviousEnemyCommand(enemies) },
-            { Keys.P, new NextEnemyCommand(enemies) },
-            { Keys.K, new StompEnemyCommand(enemies) },
             { Keys.Q, new QuitCommand(game) },
             { Keys.R, new ResetCommand(game) },
             { Keys.E, new PlayerTakeDamageCommand(player) },
