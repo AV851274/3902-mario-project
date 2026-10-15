@@ -68,7 +68,7 @@ public class MarioGame : Game
         camera = new Camera2D();
         // fireballSprite = spriteFactory.CreateFireBallSprite();
 
-        var level = LevelLoader.LoadLevel("Levels/level1.csv", gameState, spriteFactory);
+        var level = LevelLoader.LoadLevel("Game/Levels/level1.csv", gameState, spriteFactory);
 
         Vector2 marioSpawn = level.spawn;
         levelWidth = level.width;

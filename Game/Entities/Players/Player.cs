@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Mario.Animation;
 using Mario.Interfaces;
 using Mario.Interfaces.Player;
-using Mario.Physics;
 using Mario.Players.PlayerStates;
 using Mario.Sprites;
 using Microsoft.Xna.Framework;
@@ -136,26 +135,10 @@ public class Player : IPlayer
     public void Update(GameTime gameTime)
     {
         body.Update(gameTime);
+        body.IsOnGround = false;
         facingDirection = body.FacingDirection;
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         timeSinceThrow += deltaTime;
-
-        // TODO: Temporary integration until the shared physics engine is available.
-        Vector2 position = body.Position;
-        Vector2 velocity = body.Velocity;
-        float gravity = 1000f;
-        float maxFallSpeed = 0f;
-        if (isSwimming)
-        {
-            gravity = 200f;
-            maxFallSpeed = 100f;
-        }
-
-        GravityPhysics.Apply(ref position, ref velocity, deltaTime, gravity, maxFallSpeed);
-
-        body.IsOnGround = false;
-        body.Position = position;
-        body.Velocity = velocity;
 
         // Attack
         if (attackPressed && MarioPowerState.CanShootFireball)

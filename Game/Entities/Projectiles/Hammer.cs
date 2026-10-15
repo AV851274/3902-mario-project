@@ -1,4 +1,7 @@
 using Mario.Interfaces;
+using Mario.Physics;
+using Mario.Physics.Aspects;
+using Mario.Physics.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,22 +12,26 @@ public class Hammer : IProjectile
     private ISprite sprite;
     private float lifeTime;
     private float elapsedTime = 0f;
-    private float gravity;
     private float deathY;
+    private readonly PhysicsController physicsController;
+    private PhysicsState physicsState;
 
-    public Vector2 Position { get; private set; }
+    public Vector2 Position => physicsState.Position;
     public bool Active { get; private set; }
-    public Vector2 Velocity { get; private set; }
+    public Vector2 Velocity => physicsState.Velocity;
 
 
     public Hammer(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime, float gravity, float deathY)
     {
         this.sprite = sprite;
-        this.Position = position;
+        physicsState = new PhysicsState(position, velocity);
         this.lifeTime = lifeTime;
-        this.Velocity = velocity;
-        this.gravity = gravity;
         this.deathY = deathY;
+        physicsController = new PhysicsController
+        {
+            GravityPhysics = new GravityPhysics(gravity),
+            MovementPhysics = new MovementPhysics()
+        };
         Active = true;
     }
 
@@ -38,8 +45,7 @@ public class Hammer : IProjectile
             return;
         }
 
-        Velocity += new Vector2(0, gravity * deltaTime);
-        Position += Velocity * deltaTime;
+        physicsController.Update(ref physicsState, deltaTime);
         if (Position.Y >= deathY)
         {
             Active = false;

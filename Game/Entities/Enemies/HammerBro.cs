@@ -2,6 +2,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mario.Interfaces;
 using Mario.Animation;
+using Mario.Physics;
+using Mario.Physics.Aspects;
+using Mario.Physics.State;
 using System;
 
 namespace Mario.Enemies;
@@ -20,11 +23,10 @@ public class HammerBro : IEnemy
     private const float Gravity = 1000f;
 
     private ISprite sprite;
-    private Vector2 position;
-    private float velocityY;
+    private PhysicsState physicsState;
     private float groundY;
-    private bool isOnGround = true;
-    private float velocityX = -WalkSpeed;
+    private readonly PhysicsController physicsController;
+    private readonly HorizontalVelocityPhysics horizontalMovement;
     private bool isStomped;
 
     private float rotation = 0f;
@@ -38,7 +40,7 @@ public class HammerBro : IEnemy
 
     public Vector2 Position
     {
-        get { return position; }
+        get { return physicsState.Position; }
     }
 
     public event Action<Vector2, Direction> SummonHammer;
@@ -50,8 +52,15 @@ public class HammerBro : IEnemy
     public HammerBro(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
     {
         this.sprite = sprite;
-        position = initialPosition;
+        physicsState = new PhysicsState(initialPosition, Vector2.Zero, isOnGround: true);
         groundY = initialPosition.Y;
+        horizontalMovement = new HorizontalVelocityPhysics(-WalkSpeed);
+        physicsController = new PhysicsController
+        {
+            HorizontalVelocityPhysics = horizontalMovement,
+            GravityPhysics = new GravityPhysics(Gravity),
+            MovementPhysics = new MovementPhysics()
+        };
     }
 
 
@@ -62,7 +71,7 @@ public class HammerBro : IEnemy
             : SpriteEffects.None;
 
 
-        sprite.Draw(spriteBatch, position, rotation, effects: effects);
+        sprite.Draw(spriteBatch, physicsState.Position, rotation, effects: effects);
     }
 
     public void Update(GameTime gameTime)
@@ -78,33 +87,30 @@ public class HammerBro : IEnemy
                 ThrowHammer();
             }
 
-            if (isOnGround && Random.Shared.NextDouble() < 0.02) // 2% chance to jump each frame
+            if (physicsState.IsOnGround && Random.Shared.NextDouble() < 0.02) // 2% chance to jump each frame
             {
-                velocityY = JumpSpeed;
-                isOnGround = false;
+                physicsState.Velocity = new Vector2(physicsState.Velocity.X, JumpSpeed);
+                physicsState.IsOnGround = false;
             }
 
             if (Random.Shared.NextDouble() <
                 0.05) // 5% chance to switch moving direction each frame without changin the facing direction
             {
-                velocityX = -velocityX;
+                horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
             }
 
-            velocityY += Gravity * deltaTime;
-            position.Y += velocityY * deltaTime;
-            if (position.Y >= groundY)
-            {
-                position.Y = groundY;
-                velocityY = 0f;
-                isOnGround = true;
-            }
-
-            position.X += velocityX * deltaTime;
-
-        } else
+        }
+        else
         {
-            position.Y += velocityY * deltaTime;
-            velocityY += Gravity * deltaTime;
+            horizontalMovement.VelocityX = 0f;
+        }
+
+        physicsController.Update(ref physicsState, deltaTime);
+        if (physicsState.Position.Y >= groundY)
+        {
+            physicsState.Position = new Vector2(physicsState.Position.X, groundY);
+            physicsState.Velocity = new Vector2(physicsState.Velocity.X, 0f);
+            physicsState.IsOnGround = true;
         }
 
 
@@ -130,10 +136,11 @@ public class HammerBro : IEnemy
         sprite.Play("Stomped");
         rotation = 180f;
         isStomped = true;
+        horizontalMovement.VelocityX = 0f;
     }
 
     public void ThrowHammer()
     {
-        SummonHammer?.Invoke(position, facingDirection);
+        SummonHammer?.Invoke(physicsState.Position, facingDirection);
     }
 }
