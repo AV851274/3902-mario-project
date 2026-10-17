@@ -5,7 +5,7 @@ SPRINT 3 - STILL NEEDED
        - Mario can stand on them
        - Disappear after a short delay once Mario lands on them
        - Add a BlockType, a sprite in SpriteFactory, and a CSV code in LevelLoader
-   [ ] Pipes
+   [DONE] Pipes
        - Solid on top and sides (Mario lands on them and can't walk through)
        - Pipe top and pipe body pieces so pipes can be different heights
        - Add BlockTypes, sprites in SpriteFactory, and CSV codes in LevelLoader
@@ -27,9 +27,6 @@ SPRINT 3 - STILL NEEDED
    [ ] Enemies placed from level1.csv only (remove the hard-coded ones in MarioGame.ResetGame)
 
 
-====================================================================
-BEYOND TODAY - REST OF SPRINT 3
-====================================================================
 
 3) Rooms / level segments (required by the rubric)
    [ ] Split the level into multiple rooms/screens, each in its own CSV file (room1.csv, room2.csv, ...)
@@ -39,7 +36,7 @@ BEYOND TODAY - REST OF SPRINT 3
        (MouseController is currently all commented out)
 
 4) Remaining collisions (rubric: "all types of collisions")
-   [ ] Item <-> block: mushroom/star land on blocks and turn around at walls (then remove GroundY from Item)
+   [DONE] Item <-> block: mushroom/star land on blocks and turn around at walls (then remove GroundY from Item)
    [ ] Fireball <-> enemy: fireball kills the enemy and disappears
    [ ] Fireball <-> block: bounces on blocks instead of a fixed ground height, disappears when hitting a wall
    [ ] Hammer <-> Mario: Hammer Bro's hammer damages Mario

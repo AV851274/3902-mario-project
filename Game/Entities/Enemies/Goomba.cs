@@ -10,9 +10,9 @@ namespace Mario.Enemies;
 public class Goomba : IEnemy
 {
     private const float WalkSpeed = 60f;
+    private const int Size = 32;
 
     private ISprite sprite;
-    private float rotation = 0f;
 
     private readonly PhysicsController physicsController;
     private readonly HorizontalVelocityPhysics horizontalMovement;
@@ -27,12 +27,16 @@ public class Goomba : IEnemy
         get { return physicsState.Position; }
     }
 
+    public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, Size, Size);
+    public bool IsDefeated => isStomped;
+    public bool CanHurtPlayer => !isStomped;
+
     public Goomba(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
     {
         this.sprite = sprite;
         physicsState = new PhysicsState(initialPosition, Vector2.Zero);
         horizontalMovement = new HorizontalVelocityPhysics(-WalkSpeed);
-        gravityPhysics = new GravityPhysics(gravity: 1000f) { Enabled = false };
+        gravityPhysics = new GravityPhysics(gravity: 1000f);
         physicsController = new PhysicsController
         {
             HorizontalVelocityPhysics = horizontalMovement,
@@ -45,7 +49,8 @@ public class Goomba : IEnemy
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        sprite.Draw(spriteBatch, physicsState.Position, rotation);
+        SpriteEffects effects = isStomped ? SpriteEffects.FlipVertically : SpriteEffects.None;
+        sprite.Draw(spriteBatch, Position, effects: effects);
     }
 
     public void Update(GameTime gameTime)
@@ -57,7 +62,8 @@ public class Goomba : IEnemy
             {
                 horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
             }
-        } else
+        }
+        else
         {
             horizontalMovement.VelocityX = 0f;
         }
@@ -72,8 +78,23 @@ public class Goomba : IEnemy
             return;
         
         sprite.Play("Stomped");
-        rotation = MathHelper.ToRadians(180f);
         isStomped = true;
-        gravityPhysics.Enabled = true;
+        horizontalMovement.VelocityX = 0f;
+    }
+
+    public void LandOn(float groundTop)
+    {
+        if (isStomped)
+            return;
+
+        physicsState.Position = new Vector2(physicsState.Position.X, groundTop - Size);
+        physicsState.Velocity = new Vector2(physicsState.Velocity.X, 0f);
+        physicsState.IsOnGround = true;
+    }
+
+    public void BounceOffWall(float newX)
+    {
+        physicsState.Position = new Vector2(newX, physicsState.Position.Y);
+        horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
     }
 }

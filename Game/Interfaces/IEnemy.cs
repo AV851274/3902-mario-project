@@ -6,8 +6,15 @@ namespace Mario.Interfaces;
 public interface IEnemy : IGameObject
 {
     Vector2 Position { get; }
+    Rectangle Bounds { get; }
+
+    // Defeated enemies are ignored by collisions (e.g. a stomped Goomba falling off screen)
+    bool IsDefeated { get; }
+
+    // Whether touching this enemy from the side damages Mario (a resting Koopa shell doesn't)
+    bool CanHurtPlayer { get; }
 
     void Stomp();
-
-    //TODO: Collision next sprint (hit by fireball, shell, etc.)
+    void LandOn(float groundTop);
+    void BounceOffWall(float newX);
 }

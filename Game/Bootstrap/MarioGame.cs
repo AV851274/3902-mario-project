@@ -26,10 +26,10 @@ public class MarioGame : Game
     private SpriteBatch spriteBatch;
 
     private IPlayer player;
+    private EnemyCycler enemies;
 
 
     // private ISprite fireballSprite;
-    private EnemyCycler enemies;
     private IController keyboardController;
     private IController mouseController;
     private SpriteFactory spriteFactory;
@@ -72,26 +72,16 @@ public class MarioGame : Game
 
         Vector2 marioSpawn = level.spawn;
         levelWidth = level.width;
-
-        var hammerBro = new HammerBro(
-            spriteFactory.CreateHammerBroSprite(),
-            new Vector2(600, 384));
-
-        hammerBro.SummonHammer += SpawnHammer;
-
-        var goomba = new Goomba(
-            spriteFactory.CreateGoombaSprite(),
-            new Vector2(600, 384));
-
-        var turtle = new Turtle(
-            spriteFactory.CreateTurtleSprite(),
-            new Vector2(600, 384));
-
-        gameState.Enemies.Add(goomba);
-        gameState.Enemies.Add(turtle);
-        gameState.Enemies.Add(hammerBro);
-
         enemies = new EnemyCycler(gameState.Enemies);
+
+        // Hammer Bros announce their throws; spawn the hammer projectile when they do
+        foreach (IEnemy enemy in gameState.Enemies)
+        {
+            if (enemy is HammerBro hammerBro)
+            {
+                hammerBro.SummonHammer += SpawnHammer;
+            }
+        }
 
         CreateMario(false, marioSpawn);
     }
@@ -181,7 +171,19 @@ public class MarioGame : Game
         foreach (IBlock currentBlock in gameState.Blocks){
             currentBlock.Update(gameTime);
         }
-        enemies.Update(gameTime);
+        foreach (IEnemy enemy in gameState.Enemies)
+        {
+            Rectangle previousEnemyBounds = enemy.Bounds;
+            enemy.Update(gameTime);
+            CollisionManager.ResolveEnemyBlockCollisions(enemy, gameState.Blocks, previousEnemyBounds);
+        }
+
+        // Stomp enemies Mario lands on, take damage from the rest
+        CollisionManager.ResolvePlayerEnemyCollisions(player, gameState.Enemies, previousBounds);
+
+        // Defeated enemies fall off the bottom of the level; remove them once they're far below
+        gameState.Enemies.RemoveAll(enemy => enemy.Position.Y > 1000f);
+
         UpdateProjectiles(gameTime);
 
         base.Update(gameTime);
@@ -212,7 +214,10 @@ public class MarioGame : Game
         foreach (IBlock currentBlock in gameState.Blocks){
             currentBlock.Draw(spriteBatch);
         }
-        enemies.Draw(spriteBatch);
+        foreach (IEnemy enemy in gameState.Enemies)
+        {
+            enemy.Draw(spriteBatch);
+        }
         foreach (var projectile in gameState.Projectiles)
         {
             projectile.Draw(spriteBatch);

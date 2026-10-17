@@ -17,16 +17,35 @@ public class EnemyCycler
 
     public void Next()
     {
+        if (enemies.Count == 0)
+        {
+            currentIndex = 0;
+            return;
+        }
+
         currentIndex = (currentIndex + 1) % enemies.Count;
     }
 
     public void Previous()
     {
+        if (enemies.Count == 0)
+        {
+            currentIndex = 0;
+            return;
+        }
+
         currentIndex = (currentIndex - 1 + enemies.Count) % enemies.Count;
     }
 
     public void StompCurrent()
     {
+        if (enemies.Count == 0)
+        {
+            currentIndex = 0;
+            return;
+        }
+
+        currentIndex %= enemies.Count;
         enemies[currentIndex].Stomp();
     }
 

@@ -21,15 +21,14 @@ public class HammerBro : IEnemy
     private const float WalkSpeed = 30f;
     private const float JumpSpeed = -500f;
     private const float Gravity = 1000f;
+    private const int Width = 32;
+    private const int Height = 48;
 
     private ISprite sprite;
     private PhysicsState physicsState;
-    private float groundY;
     private readonly PhysicsController physicsController;
     private readonly HorizontalVelocityPhysics horizontalMovement;
     private bool isStomped;
-
-    private float rotation = 0f;
 
     private Direction facingDirection = Direction.Left;
 
@@ -43,17 +42,20 @@ public class HammerBro : IEnemy
         get { return physicsState.Position; }
     }
 
+    public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+    public bool IsDefeated => isStomped;
+    public bool CanHurtPlayer => !isStomped;
+
     public event Action<Vector2, Direction> SummonHammer;
 
     private HammerBroState state = HammerBroState.Idle;
     private float throwElapsed;
     private const float HammerThrowDuration = 0.4f;
 
-    public HammerBro(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
+    public HammerBro(ISprite sprite, Vector2 initialPosition)
     {
         this.sprite = sprite;
         physicsState = new PhysicsState(initialPosition, Vector2.Zero, isOnGround: true);
-        groundY = initialPosition.Y;
         horizontalMovement = new HorizontalVelocityPhysics(-WalkSpeed);
         physicsController = new PhysicsController
         {
@@ -70,8 +72,12 @@ public class HammerBro : IEnemy
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
+        if (isStomped)
+        {
+            effects = SpriteEffects.FlipVertically;
+        }
 
-        sprite.Draw(spriteBatch, physicsState.Position, rotation, effects: effects);
+        sprite.Draw(spriteBatch, Position, effects: effects);
     }
 
     public void Update(GameTime gameTime)
@@ -106,13 +112,6 @@ public class HammerBro : IEnemy
         }
 
         physicsController.Update(ref physicsState, deltaTime);
-        if (physicsState.Position.Y >= groundY)
-        {
-            physicsState.Position = new Vector2(physicsState.Position.X, groundY);
-            physicsState.Velocity = new Vector2(physicsState.Velocity.X, 0f);
-            physicsState.IsOnGround = true;
-        }
-
 
         if (state == HammerBroState.Thrown && throwElapsed >= HammerThrowDuration)
         {
@@ -132,11 +131,29 @@ public class HammerBro : IEnemy
     {
         if (isStomped)
             return;
-        
+
         sprite.Play("Stomped");
-        rotation = 180f;
         isStomped = true;
         horizontalMovement.VelocityX = 0f;
+    }
+
+    public void LandOn(float groundTop)
+    {
+        // A stomped Hammer Bro falls through the floor and off the screen
+        if (isStomped)
+        {
+            return;
+        }
+
+        physicsState.Position = new Vector2(physicsState.Position.X, groundTop - Height);
+        physicsState.Velocity = new Vector2(physicsState.Velocity.X, 0f);
+        physicsState.IsOnGround = true;
+    }
+
+    public void BounceOffWall(float newX)
+    {
+        physicsState.Position = new Vector2(newX, physicsState.Position.Y);
+        horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
     }
 
     public void ThrowHammer()
