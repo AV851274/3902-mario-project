@@ -1,4 +1,4 @@
-using Mario;
+using Mario.Bootstrap;
 using Mario.Interfaces;
 
 namespace Mario.Commands;

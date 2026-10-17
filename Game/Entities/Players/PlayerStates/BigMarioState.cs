@@ -1,6 +1,6 @@
 using Mario.Interfaces.Player;
 
-namespace Mario.Players.PlayerStates;
+namespace Mario.Entities.Players.PlayerStates;
 
 public class BigMarioState : IMarioPowerState
 {

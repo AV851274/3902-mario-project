@@ -7,7 +7,7 @@ using Mario.Physics.Aspects;
 using Mario.Physics.State;
 using System;
 
-namespace Mario.Enemies;
+namespace Mario.Entities.Enemies;
 
 public enum HammerBroState
 {

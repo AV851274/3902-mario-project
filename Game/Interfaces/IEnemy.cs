@@ -11,7 +11,7 @@ public interface IEnemy : IGameObject
     // Defeated enemies are ignored by collisions (e.g. a stomped Goomba falling off screen)
     bool IsDefeated { get; }
 
-    // Whether touching this enemy from the side damages Mario (a resting Koopa shell doesn't)
+    // Whether touching this enemy from the side damages Mario.Bootstrap (a resting Koopa shell doesn't)
     bool CanHurtPlayer { get; }
 
     void Stomp();

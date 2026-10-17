@@ -1,9 +1,9 @@
 using Mario.Interfaces;
-using Mario.Sprites;
+using Mario.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Mario.Background;
+namespace Mario.Entities.Background;
 
 public class BackgroundObject : IGameObject
 {

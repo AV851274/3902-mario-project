@@ -2,13 +2,13 @@ using Mario.Interfaces;
 using Mario.Physics;
 using Mario.Physics.Aspects;
 using Mario.Physics.State;
-using Mario.Sprites;
+using Mario.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mario.Players;
+using Mario.Entities.Players;
 using Mario.Interfaces.Player;
 
-namespace Mario.Items;
+namespace Mario.Entities.Items;
 
 public class Item : IItem
 {
@@ -96,7 +96,7 @@ public class Item : IItem
         }
         else if (type == ItemType.FireFlower)
         {
-            // Like the original: Small Mario only grows to Big from a flower
+            // Like the original: Small Mario.Bootstrap only grows to Big from a flower
             if (power == MarioPower.Small)
             {
                 player.SetPower(MarioPower.Big);

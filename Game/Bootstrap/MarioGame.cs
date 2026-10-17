@@ -1,24 +1,24 @@
 using Mario.Interfaces.Player;
 using Mario.Animation;
-using Mario.Blocks;
+using Mario.Entities.Blocks;
 using Mario.Controllers;
-using Mario.Enemies;
+using Mario.Entities.Enemies;
 using Mario.Interfaces;
-using Mario.Items;
-using Mario.Players;
-using Mario.Projectiles;
-using Mario.Sprites;
+using Mario.Entities.Items;
+using Mario.Entities.Players;
+using Mario.Entities.Projectiles;
+using Mario.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using Mario.GameStates;
+using Mario.State;
 using Mario.Levels;
-using Mario.Camera;
+using Mario.Rendering.Camera;
 using Mario.Physics;
 
-namespace Mario;
+namespace Mario.Bootstrap;
 
 public class MarioGame : Game
 {

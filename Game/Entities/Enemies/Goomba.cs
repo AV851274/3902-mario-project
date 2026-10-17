@@ -5,7 +5,7 @@ using Mario.Physics.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Mario.Enemies;
+namespace Mario.Entities.Enemies;
 
 public class Goomba : IEnemy
 {

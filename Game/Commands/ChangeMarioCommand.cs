@@ -1,6 +1,6 @@
-using Mario;
+using Mario.Bootstrap;
 using Mario.Interfaces;
-using Mario.Players;
+using Mario.Entities.Players;
 
 namespace Mario.Commands;
 

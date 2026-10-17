@@ -1,6 +1,6 @@
 using System;
 using Mario.Animation;
-using Mario.Players;
+using Mario.Entities.Players;
 using Microsoft.Xna.Framework;
 
 namespace Mario.Interfaces.Player;

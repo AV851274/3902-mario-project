@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Mario.Enemies;
+namespace Mario.Entities.Enemies;
 
 public class EnemyCycler
 {

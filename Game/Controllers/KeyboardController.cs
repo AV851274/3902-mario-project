@@ -1,10 +1,10 @@
 using Mario.Interfaces.Player;
-using Mario;
+using Mario.Bootstrap;
 using Mario.Animation;
 using Mario.Commands;
-using Mario.Enemies;
+using Mario.Entities.Enemies;
 using Mario.Interfaces;
-using Mario.Players;
+using Mario.Entities.Players;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;

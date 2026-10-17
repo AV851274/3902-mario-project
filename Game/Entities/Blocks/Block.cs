@@ -1,10 +1,10 @@
 using System;
 using Mario.Interfaces;
-using Mario.Sprites;
+using Mario.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Mario.Blocks;
+namespace Mario.Entities.Blocks;
 
 public class Block : IBlock
 {

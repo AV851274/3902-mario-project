@@ -1,4 +1,4 @@
-namespace Mario;
+namespace Mario.Bootstrap;
 
 public static class Program
 {

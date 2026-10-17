@@ -5,7 +5,7 @@ using Mario.Physics;
 using Mario.Physics.State;
 using Microsoft.Xna.Framework;
 
-namespace Mario.Players;
+namespace Mario.Entities.Players;
 
 public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
 {

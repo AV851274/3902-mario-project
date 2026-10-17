@@ -2,7 +2,7 @@ using Mario.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Mario.Sprites;
+namespace Mario.Rendering.Sprites;
 
 public class StaticSprite : ISprite
 {

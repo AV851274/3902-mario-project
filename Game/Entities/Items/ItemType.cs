@@ -1,4 +1,4 @@
-namespace Mario.Items;
+namespace Mario.Entities.Items;
 
 public enum ItemType
 {

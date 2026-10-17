@@ -3,7 +3,7 @@ using Mario.Interfaces;
 using System.Collections.Generic;
 
 
-namespace Mario.GameStates;
+namespace Mario.State;
 
 public class GameState
 {

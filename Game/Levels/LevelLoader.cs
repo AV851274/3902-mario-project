@@ -1,12 +1,12 @@
 using System;
 using System.IO;
-using Mario.Blocks;
-using Mario.GameStates;
-using Mario.Sprites;
+using Mario.Entities.Blocks;
+using Mario.State;
+using Mario.Rendering.Sprites;
 using Microsoft.Xna.Framework;
-using Mario.Enemies;
-using Mario.Items;
-using Mario.Background;
+using Mario.Entities.Enemies;
+using Mario.Entities.Items;
+using Mario.Entities.Background;
 
 namespace Mario.Levels;
 

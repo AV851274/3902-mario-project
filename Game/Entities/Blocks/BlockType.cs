@@ -1,4 +1,4 @@
-namespace Mario.Blocks;
+namespace Mario.Entities.Blocks;
 
 public enum BlockType
 {

@@ -1,15 +1,15 @@
 using Mario.Animation;
-using Mario.Blocks;
+using Mario.Entities.Blocks;
 using Mario.Interfaces;
-using Mario.Items;
+using Mario.Entities.Items;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
-using Mario.Background;
+using Mario.Entities.Background;
 
-namespace Mario.Sprites;
+namespace Mario.Rendering.Sprites;
 
 public class SpriteFactory
 {
@@ -189,7 +189,7 @@ public class SpriteFactory
         if (throwP.HasValue)
             mario.AddClip(new Track("Throw", [throwP.Value], [1f], false));
 
-        // Only Big and Fire Mario can crouch
+        // Only Big and Fire Mario.Bootstrap can crouch
         if (crouch.HasValue)
         {
             mario.AddClip(new Track("Crouch", [crouch.Value], [1f], true));

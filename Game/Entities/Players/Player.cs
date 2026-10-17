@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using Mario.Animation;
 using Mario.Interfaces;
 using Mario.Interfaces.Player;
-using Mario.Players.PlayerStates;
-using Mario.Sprites;
+using Mario.Entities.Players.PlayerStates;
+using Mario.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Mario.Players;
+namespace Mario.Entities.Players;
 
 public class Player : IPlayer
 {

@@ -1,4 +1,4 @@
-using Mario.Enemies;
+using Mario.Entities.Enemies;
 using Mario.Interfaces;
 
 namespace Mario.Commands;

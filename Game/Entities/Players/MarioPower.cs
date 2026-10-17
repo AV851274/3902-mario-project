@@ -1,4 +1,4 @@
-namespace Mario.Players;
+namespace Mario.Entities.Players;
 
 public enum MarioPower
 {

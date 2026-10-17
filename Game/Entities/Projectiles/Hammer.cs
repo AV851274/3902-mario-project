@@ -5,7 +5,7 @@ using Mario.Physics.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Mario.Projectiles;
+namespace Mario.Entities.Projectiles;
 
 public class Hammer : IProjectile
 {

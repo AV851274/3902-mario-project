@@ -5,7 +5,7 @@ using Mario.Physics;
 using Mario.Physics.Aspects;
 using Microsoft.Xna.Framework;
 
-namespace Mario.Players;
+namespace Mario.Entities.Players;
 
 public class SwimmingPlayerBody : PlayerBodyBase
 {
