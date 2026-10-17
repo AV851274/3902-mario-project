@@ -25,6 +25,45 @@ Proper mario movement
 
 Our current "bug" is the sizing of enemies according to mario. As some are a little too small.
 
+## Physics
+
+## Project organization
+
+Runtime source is grouped under `Game/` by responsibility:
+
+- `Entities/` contains players, enemies, items, projectiles, blocks, and background objects.
+- `Interfaces/` contains shared contracts.
+- `Physics/` contains the controller, aspects, interfaces, and physics state.
+- `Animation/`, `Controllers/`, and `Commands/` contain animation and input handling.
+- `Rendering/` contains camera and sprite code.
+- `Levels/`, `State/`, and `Bootstrap/` contain level loading/data, game state, and the game entry point.
+
+Content assets and project files remain at the repository root because the MonoGame content pipeline
+and build configuration use those paths. `Code-Reviews/` remains separate from runtime code.
+
+## Physics
+
+Moving entities use a `PhysicsController` configured with the aspects they need. The physics
+implementation is organized into `Game/Physics/Aspects`, `Game/Physics/Interfaces`, and
+`Game/Physics/State`.
+Aspect constructor arguments hold settings specific to each entity. For example, an entity that
+needs gravity, movement integration, and a custom bounce
+height can be configured as:
+
+```csharp
+var physics = new PhysicsController
+{
+    GravityPhysics = new GravityPhysics(gravity: 1000f),
+    MovementPhysics = new MovementPhysics(),
+    JumpingPhysics = new JumpingPhysics(jumpSpeed: 550f),
+    BouncingPhysics = new BouncingPhysics(bounceHeight: 80f)
+};
+```
+
+Aspects are applied in a consistent order. Gravity updates velocity, movement integrates that
+velocity into position, and bouncing resolves contact with its configured ground.
+Player movement uses the same controller with configurable horizontal movement and gravity aspects.
+
 Credit for Other Mario Sprites:
 This sprite:
 https://www.mariouniverse.com/wp-content/img/sprites/nes/smb/mario-2.gif
@@ -64,4 +103,4 @@ There were many commits to this sprint (84 to be exact), not all were reviewed b
 the major changes were asked upon to be reviewed to ensure the code is clean and proper. This is reflected in the code review not for each
 pull request but for the overall file and class that resides.
 
-CODE REVIEW LIVES WITHIN "CODE REVIEW" FOLDER
+Code reviews live in the `Code-Reviews/` folder.

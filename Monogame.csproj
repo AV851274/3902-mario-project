@@ -25,7 +25,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Update="Levels\**\*.csv">
+    <None Update="Game\Levels\**\*.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
