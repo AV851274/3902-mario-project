@@ -1,26 +1,25 @@
-using Mario.Interfaces.Player;
-using Mario.Animation;
-using Mario.Entities.Blocks;
-using Mario.Controllers;
-using Mario.Entities.Enemies;
-using Mario.Interfaces;
-using Mario.Entities.Items;
-using Mario.Entities.Players;
-using Mario.Entities.Projectiles;
-using Mario.Rendering.Sprites;
+using Mario.Game.Interfaces.Player;
+using Mario.Game.Animation;
+using Mario.Game.Controllers;
+using Mario.Game.Entities.Enemies;
+using Mario.Game.Interfaces;
+
+using Mario.Game.Entities.Players;
+using Mario.Game.Entities.Projectiles;
+using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using Mario.State;
-using Mario.Levels;
-using Mario.Rendering.Camera;
-using Mario.Physics;
+using Mario.Game.State;
+using Mario.Game.Levels;
+using Mario.Game.Rendering.Camera;
+using Mario.Game.Physics;
 
-namespace Mario.Bootstrap;
+namespace Mario.Game;
 
-public class MarioGame : Game
+public class MarioGame : Microsoft.Xna.Framework.Game
 {
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
@@ -156,7 +155,7 @@ public class MarioGame : Game
         // Resolve collisions with items
         CollisionManager.ResolvePlayerItemCollisions(player, gameState.Items);
         gameState.Items.RemoveAll(item => item.IsCollected);
-        
+
         player.UpdateAnimation(gameTime);
 
         // Update camera
@@ -168,7 +167,8 @@ public class MarioGame : Game
             currentItem.Update(gameTime);
             CollisionManager.ResolveItemWallCollisions(currentItem, gameState.Blocks, previousItemBounds);
         }
-        foreach (IBlock currentBlock in gameState.Blocks){
+        foreach (IBlock currentBlock in gameState.Blocks)
+        {
             currentBlock.Update(gameTime);
         }
         foreach (IEnemy enemy in gameState.Enemies)
@@ -202,16 +202,19 @@ public class MarioGame : Game
             null,
             camera.Transform);
 
-        foreach (IGameObject backgroundObject in gameState.Background) {
+        foreach (IGameObject backgroundObject in gameState.Background)
+        {
             backgroundObject.Draw(spriteBatch);
         }
 
         player.Draw(spriteBatch);
 
-        foreach (IItem currentItem in gameState.Items){
+        foreach (IItem currentItem in gameState.Items)
+        {
             currentItem.Draw(spriteBatch);
         }
-        foreach (IBlock currentBlock in gameState.Blocks){
+        foreach (IBlock currentBlock in gameState.Blocks)
+        {
             currentBlock.Draw(spriteBatch);
         }
         foreach (IEnemy enemy in gameState.Enemies)

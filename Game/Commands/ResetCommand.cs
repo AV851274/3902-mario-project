@@ -1,7 +1,7 @@
-using Mario.Bootstrap;
-using Mario.Interfaces;
+using Mario.Game;
+using Mario.Game.Interfaces;
 
-namespace Mario.Commands;
+namespace Mario.Game.Commands;
 
 public class ResetCommand : ICommand
 {

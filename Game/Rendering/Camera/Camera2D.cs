@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Mario.Rendering.Camera;
+namespace Mario.Game.Rendering.Camera;
 
 public class Camera2D
 {

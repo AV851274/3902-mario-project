@@ -1,11 +1,11 @@
-using Mario.Interfaces;
-using Mario.Physics;
-using Mario.Physics.Aspects;
-using Mario.Physics.State;
+using Mario.Game.Interfaces;
+using Mario.Game.Physics;
+using Mario.Game.Physics.Aspects;
+using Mario.Game.Physics.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Mario.Entities.Enemies;
+namespace Mario.Game.Entities.Enemies;
 
 public class Goomba : IEnemy
 {

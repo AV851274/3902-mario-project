@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Mario.Interfaces;
+namespace Mario.Game.Interfaces;
 
 public interface IController
 {

@@ -1,9 +1,9 @@
 using System;
-using Mario.Physics.Interfaces;
-using Mario.Physics.State;
+using Mario.Game.Physics.Interfaces;
+using Mario.Game.Physics.State;
 using Microsoft.Xna.Framework;
 
-namespace Mario.Physics.Aspects;
+namespace Mario.Game.Physics.Aspects;
 
 public sealed class JumpingPhysics : IPhysicsAspect
 {

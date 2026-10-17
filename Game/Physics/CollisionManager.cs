@@ -1,9 +1,9 @@
-using Mario.Interfaces.Player;
-using Mario.Interfaces;
+using Mario.Game.Interfaces.Player;
+using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
-namespace Mario.Physics;
+namespace Mario.Game.Physics;
 
 public static class CollisionManager
 {

@@ -1,13 +1,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mario.Interfaces;
-using Mario.Animation;
-using Mario.Physics;
-using Mario.Physics.Aspects;
-using Mario.Physics.State;
+using Mario.Game.Interfaces;
+using Mario.Game.Animation;
+using Mario.Game.Physics;
+using Mario.Game.Physics.Aspects;
+using Mario.Game.Physics.State;
 using System;
 
-namespace Mario.Entities.Enemies;
+namespace Mario.Game.Entities.Enemies;
 
 public enum HammerBroState
 {

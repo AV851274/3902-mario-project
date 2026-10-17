@@ -1,15 +1,15 @@
-using Mario.Interfaces.Player;
-using Mario.Bootstrap;
-using Mario.Animation;
-using Mario.Commands;
-using Mario.Entities.Enemies;
-using Mario.Interfaces;
-using Mario.Entities.Players;
+using Mario.Game.Interfaces.Player;
+using Mario.Game.Animation;
+using Mario.Game.Commands;
+using Mario.Game.Entities.Enemies;
+using Mario.Game.Interfaces;
+using Mario.Game.Entities.Players;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using Mario.Game;
 
-namespace Mario.Controllers;
+namespace Mario.Game.Controllers;
 
 public class KeyboardController : IController
 {

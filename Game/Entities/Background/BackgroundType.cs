@@ -1,4 +1,4 @@
-namespace Mario.Entities.Background;
+namespace Mario.Game.Entities.Background;
 
 public enum BackgroundType
 {

@@ -1,7 +1,7 @@
-using Mario.Animation;
+using Mario.Game.Animation;
 using Microsoft.Xna.Framework;
 
-namespace Mario.Interfaces.Player;
+namespace Mario.Game.Interfaces.Player;
 
 public interface IPlayerBodyAction
 {

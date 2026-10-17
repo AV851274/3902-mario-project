@@ -1,6 +1,6 @@
-using Mario.Physics.State;
+using Mario.Game.Physics.State;
 
-namespace Mario.Physics.Interfaces;
+namespace Mario.Game.Physics.Interfaces;
 
 public interface IPhysicsAspect
 {

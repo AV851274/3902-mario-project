@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using System;
 
-namespace Mario.Animation;
+namespace Mario.Game.Animation;
 
 /// <summary>
 /// A named sequence of spritesheet frames, each with its own display duration.

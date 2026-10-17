@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
-using Mario.Animation;
-using Mario.Interfaces;
-using Mario.Interfaces.Player;
-using Mario.Entities.Players.PlayerStates;
-using Mario.Rendering.Sprites;
+using Mario.Game.Animation;
+using Mario.Game.Interfaces;
+using Mario.Game.Interfaces.Player;
+using Mario.Game.Entities.Players.PlayerStates;
+using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Mario.Entities.Players;
+namespace Mario.Game.Entities.Players;
 
 public class Player : IPlayer
 {

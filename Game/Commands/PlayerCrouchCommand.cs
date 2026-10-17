@@ -1,7 +1,7 @@
-using Mario.Interfaces.Player;
-using Mario.Interfaces;
+using Mario.Game.Interfaces.Player;
+using Mario.Game.Interfaces;
 
-namespace Mario.Commands;
+namespace Mario.Game.Commands;
 
 public class PlayerCrouchCommand : PlayerCommand
 {

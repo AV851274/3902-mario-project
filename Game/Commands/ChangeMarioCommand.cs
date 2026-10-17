@@ -1,8 +1,8 @@
-using Mario.Bootstrap;
-using Mario.Interfaces;
-using Mario.Entities.Players;
+using Mario.Game.Interfaces;
+using Mario.Game.Entities.Players;
+using Mario.Game;
 
-namespace Mario.Commands;
+namespace Mario.Game.Commands;
 
 public class ChangeMarioCommand : ICommand
 {

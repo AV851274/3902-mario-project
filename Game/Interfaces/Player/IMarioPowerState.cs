@@ -1,7 +1,7 @@
-using Mario.Entities.Players;
+using Mario.Game.Entities.Players;
 using Microsoft.Xna.Framework;
 
-namespace Mario.Interfaces.Player;
+namespace Mario.Game.Interfaces.Player;
 
 public interface IMarioPowerState
 {

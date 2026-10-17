@@ -1,9 +1,9 @@
-using Mario.Interfaces.Player;
-using Mario.Interfaces;
+using Mario.Game.Interfaces.Player;
+using Mario.Game.Interfaces;
 using System.Collections.Generic;
 
 
-namespace Mario.State;
+namespace Mario.Game.State;
 
 public class GameState
 {

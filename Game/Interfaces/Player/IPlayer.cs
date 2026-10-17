@@ -1,9 +1,9 @@
 using System;
-using Mario.Animation;
-using Mario.Entities.Players;
+using Mario.Game.Animation;
+using Mario.Game.Entities.Players;
 using Microsoft.Xna.Framework;
 
-namespace Mario.Interfaces.Player;
+namespace Mario.Game.Interfaces.Player;
 
 public interface IPlayer : IGameObject
 {

@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace Mario.Physics.State;
+namespace Mario.Game.Physics.State;
 
 public struct PhysicsState
 {

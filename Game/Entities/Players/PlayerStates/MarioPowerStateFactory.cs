@@ -1,7 +1,7 @@
 using System;
-using Mario.Interfaces.Player;
+using Mario.Game.Interfaces.Player;
 
-namespace Mario.Entities.Players.PlayerStates;
+namespace Mario.Game.Entities.Players.PlayerStates;
 
 public static class MarioPowerStateFactory
 {

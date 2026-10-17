@@ -1,8 +1,8 @@
-using Mario.Interfaces.Player;
-using Mario.Animation;
-using Mario.Interfaces;
+using Mario.Game.Interfaces.Player;
+using Mario.Game.Animation;
+using Mario.Game.Interfaces;
 
-namespace Mario.Commands;
+namespace Mario.Game.Commands;
 
 public class PlayerMoveCommand : PlayerCommand
 {

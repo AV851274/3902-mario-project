@@ -1,7 +1,7 @@
-using Mario.Physics.Interfaces;
-using Mario.Physics.State;
+using Mario.Game.Physics.Interfaces;
+using Mario.Game.Physics.State;
 
-namespace Mario.Physics.Aspects;
+namespace Mario.Game.Physics.Aspects;
 
 public sealed class MovementPhysics : IPhysicsAspect
 {

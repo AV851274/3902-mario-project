@@ -1,11 +1,11 @@
-using Mario.Animation;
-using Mario.Interfaces;
-using Mario.Interfaces.Player;
-using Mario.Physics;
-using Mario.Physics.State;
+using Mario.Game.Animation;
+using Mario.Game.Interfaces;
+using Mario.Game.Interfaces.Player;
+using Mario.Game.Physics;
+using Mario.Game.Physics.State;
 using Microsoft.Xna.Framework;
 
-namespace Mario.Entities.Players;
+namespace Mario.Game.Entities.Players;
 
 public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
 {

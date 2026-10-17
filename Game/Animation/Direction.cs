@@ -1,4 +1,4 @@
-namespace Mario.Animation;
+namespace Mario.Game.Animation;
 
 /// <summary>
 /// The spritesheet only draws the character facing right; Left is achieved by

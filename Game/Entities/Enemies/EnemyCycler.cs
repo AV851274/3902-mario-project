@@ -1,9 +1,9 @@
-using Mario.Interfaces;
+using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
-namespace Mario.Entities.Enemies;
+namespace Mario.Game.Entities.Enemies;
 
 public class EnemyCycler
 {

@@ -1,4 +1,4 @@
-namespace Mario.Interfaces;
+namespace Mario.Game.Interfaces;
 
 public interface ICommand
 {

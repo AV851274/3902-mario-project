@@ -1,11 +1,11 @@
 using System;
-using Mario.Animation;
-using Mario.Interfaces;
-using Mario.Physics;
-using Mario.Physics.Aspects;
+using Mario.Game.Animation;
+using Mario.Game.Interfaces;
+using Mario.Game.Physics;
+using Mario.Game.Physics.Aspects;
 using Microsoft.Xna.Framework;
 
-namespace Mario.Entities.Players;
+namespace Mario.Game.Entities.Players;
 
 public class SwimmingPlayerBody : PlayerBodyBase
 {

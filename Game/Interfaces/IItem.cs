@@ -1,8 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Mario.Interfaces.Player;
+using Mario.Game.Interfaces.Player;
 
-namespace Mario.Interfaces;
+namespace Mario.Game.Interfaces;
 
 public interface IItem: IGameObject
 {

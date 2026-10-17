@@ -1,7 +1,7 @@
-using Mario.Physics.Aspects;
-using Mario.Physics.State;
+using Mario.Game.Physics.Aspects;
+using Mario.Game.Physics.State;
 
-namespace Mario.Physics;
+namespace Mario.Game.Physics;
 
 public sealed class PhysicsController
 {

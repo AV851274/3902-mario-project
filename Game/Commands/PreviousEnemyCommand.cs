@@ -1,7 +1,7 @@
-using Mario.Entities.Enemies;
-using Mario.Interfaces;
+using Mario.Game.Entities.Enemies;
+using Mario.Game.Interfaces;
 
-namespace Mario.Commands;
+namespace Mario.Game.Commands;
 
 public class PreviousEnemyCommand : ICommand
 {

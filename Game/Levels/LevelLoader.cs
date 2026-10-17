@@ -1,14 +1,14 @@
 using System;
 using System.IO;
-using Mario.Entities.Blocks;
-using Mario.State;
-using Mario.Rendering.Sprites;
+using Mario.Game.Entities.Blocks;
+using Mario.Game.State;
+using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
-using Mario.Entities.Enemies;
-using Mario.Entities.Items;
-using Mario.Entities.Background;
+using Mario.Game.Entities.Enemies;
+using Mario.Game.Entities.Items;
+using Mario.Game.Entities.Background;
 
-namespace Mario.Levels;
+namespace Mario.Game.Levels;
 
 public class LevelLoader
 {
