@@ -3,7 +3,6 @@ using Mario.Game.Animation;
 using Mario.Game.Controllers;
 using Mario.Game.Entities.Enemies;
 using Mario.Game.Interfaces;
-
 using Mario.Game.Entities.Players;
 using Mario.Game.Entities.Projectiles;
 using Mario.Game.Rendering.Sprites;
@@ -67,7 +66,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         camera = new Camera2D();
         // fireballSprite = spriteFactory.CreateFireBallSprite();
 
-        var level = LevelLoader.LoadLevel("Game/Levels/level1.csv", gameState, spriteFactory);
+        var level = LevelLoader.LoadLevel(Content, gameState, spriteFactory);
 
         Vector2 marioSpawn = level.spawn;
         levelWidth = level.width;
@@ -167,10 +166,12 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             currentItem.Update(gameTime);
             CollisionManager.ResolveItemWallCollisions(currentItem, gameState.Blocks, previousItemBounds);
         }
+
         foreach (IBlock currentBlock in gameState.Blocks)
         {
             currentBlock.Update(gameTime);
         }
+
         foreach (IEnemy enemy in gameState.Enemies)
         {
             Rectangle previousEnemyBounds = enemy.Bounds;
@@ -213,14 +214,17 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         {
             currentItem.Draw(spriteBatch);
         }
+
         foreach (IBlock currentBlock in gameState.Blocks)
         {
             currentBlock.Draw(spriteBatch);
         }
+
         foreach (IEnemy enemy in gameState.Enemies)
         {
             enemy.Draw(spriteBatch);
         }
+
         foreach (var projectile in gameState.Projectiles)
         {
             projectile.Draw(spriteBatch);

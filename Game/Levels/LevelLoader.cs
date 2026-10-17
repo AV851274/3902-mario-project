@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Mario.Game.Entities.Blocks;
 using Mario.Game.State;
@@ -7,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Mario.Game.Entities.Enemies;
 using Mario.Game.Entities.Items;
 using Mario.Game.Entities.Background;
+using Microsoft.Xna.Framework.Content;
 
 namespace Mario.Game.Levels;
 
@@ -15,15 +17,22 @@ public class LevelLoader
     private const int TileSize = 48;
 
     public static (Vector2 spawn, int width) LoadLevel(
-    string filePath,
-    GameState gameState,
-    SpriteFactory spriteFactory)
+        ContentManager content,
+        GameState gameState,
+        SpriteFactory spriteFactory)
     {
-        string[] rows = File.ReadAllLines(filePath);
+        using var csvin = new StreamReader(
+            TitleContainer.OpenStream(Path.Combine(content.RootDirectory, "levels", "level1.csv")));
+        List<String> rows = [];
+        while (!csvin.EndOfStream)
+        {
+            rows.Add(csvin.ReadLine());
+        }
+
         Vector2 marioSpawn = new Vector2(100, 100);
         int levelWidth = 0;
 
-        for (int row = 0; row < rows.Length; row++)
+        for (int row = 0; row < rows.Count; row++)
         {
             string[] tiles = rows[row].Split(',');
             levelWidth = Math.Max(levelWidth, tiles.Length * TileSize);
@@ -96,10 +105,12 @@ public class LevelLoader
                         gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, position));
                         break;
                     case "sh":
-                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallHill, position));
+                        gameState.Background.Add(
+                            new BackgroundObject(spriteFactory, BackgroundType.SmallHill, position));
                         break;
                     case "sb":
-                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallBush, position));
+                        gameState.Background.Add(
+                            new BackgroundObject(spriteFactory, BackgroundType.SmallBush, position));
                         break;
                     case "bb":
                         gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, position));
@@ -123,6 +134,7 @@ public class LevelLoader
                 }
             }
         }
+
         return (marioSpawn, levelWidth);
     }
 }
