@@ -7,6 +7,101 @@ namespace Mario.Physics;
 
 public static class CollisionManager
 {
+    private const float StompBounceSpeed = 350f;
+    private const int StompTolerance = 10;
+
+    public static void ResolveEnemyBlockCollisions(IEnemy enemy, List<IBlock> blocks, Rectangle previousBounds)
+    {
+        // Landing first, so an enemy resting on the ground isn't mistaken for hitting a wall
+        ResolveEnemyLanding(enemy, blocks, previousBounds);
+        ResolveEnemyWalls(enemy, blocks, previousBounds);
+    }
+
+    private static void ResolveEnemyLanding(IEnemy enemy, List<IBlock> blocks, Rectangle previousBounds)
+    {
+        foreach (IBlock block in blocks)
+        {
+            Rectangle enemyBounds = enemy.Bounds;
+            Rectangle blockBounds = block.Bounds;
+
+            bool horizontalOverlap =
+                enemyBounds.Right > blockBounds.Left &&
+                enemyBounds.Left < blockBounds.Right;
+
+            bool landing =
+                horizontalOverlap &&
+                previousBounds.Bottom <= blockBounds.Top &&
+                enemyBounds.Bottom >= blockBounds.Top;
+
+            if (landing)
+            {
+                enemy.LandOn(blockBounds.Top);
+                return;
+            }
+        }
+    }
+
+    private static void ResolveEnemyWalls(IEnemy enemy, List<IBlock> blocks, Rectangle previousBounds)
+    {
+        foreach (IBlock block in blocks)
+        {
+            Rectangle enemyBounds = enemy.Bounds;
+            Rectangle blockBounds = block.Bounds;
+
+            bool verticalOverlap =
+                enemyBounds.Bottom > blockBounds.Top &&
+                enemyBounds.Top < blockBounds.Bottom;
+
+            bool hitLeftSide =
+                verticalOverlap &&
+                previousBounds.Right <= blockBounds.Left &&
+                enemyBounds.Right > blockBounds.Left;
+
+            bool hitRightSide =
+                verticalOverlap &&
+                previousBounds.Left >= blockBounds.Right &&
+                enemyBounds.Left < blockBounds.Right;
+
+            if (hitLeftSide)
+            {
+                enemy.BounceOffWall(blockBounds.Left - enemyBounds.Width);
+                return;
+            }
+
+            if (hitRightSide)
+            {
+                enemy.BounceOffWall(blockBounds.Right);
+                return;
+            }
+        }
+    }
+
+    public static void ResolvePlayerEnemyCollisions(IPlayer player, List<IEnemy> enemies, Rectangle previousPlayerBounds)
+    {
+        foreach (IEnemy enemy in enemies)
+        {
+            if (enemy.IsDefeated || !player.Bounds.Intersects(enemy.Bounds))
+            {
+                continue;
+            }
+
+            // Falling, and Mario's feet were above the enemy's head last frame
+            bool landedOnTop =
+                player.Velocity.Y > 0f &&
+                previousPlayerBounds.Bottom <= enemy.Bounds.Top + StompTolerance;
+
+            if (landedOnTop)
+            {
+                enemy.Stomp();
+                player.Velocity = new Vector2(player.Velocity.X, -StompBounceSpeed);
+            }
+            else if (enemy.CanHurtPlayer)
+            {
+                player.TakeDamage();
+            }
+        }
+    }
+
     public static void ResolvePlayerBlockCollisions(IPlayer player, List<IBlock> blocks, Rectangle previousBounds)
     {
         foreach (IBlock block in blocks)

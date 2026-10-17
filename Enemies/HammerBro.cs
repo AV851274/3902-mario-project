@@ -18,12 +18,13 @@ public class HammerBro : IEnemy
     private const float WalkSpeed = 30f;
     private const float JumpSpeed = -500f;
     private const float Gravity = 1000f;
+    private const int Width = 32;
+    private const int Height = 48;
 
     private ISprite sprite;
     private Vector2 position;
     private float velocityY;
-    private float groundY;
-    private bool isOnGround = true;
+    private bool isOnGround;
     private float velocityX = -WalkSpeed;
     private bool isStomped;
 
@@ -41,17 +42,20 @@ public class HammerBro : IEnemy
         get { return position; }
     }
 
+    public Rectangle Bounds => new Rectangle((int)position.X, (int)position.Y, Width, Height);
+    public bool IsDefeated => isStomped;
+    public bool CanHurtPlayer => !isStomped;
+
     public event Action<Vector2, Direction> SummonHammer;
 
     private HammerBroState state = HammerBroState.Idle;
     private float throwElapsed;
     private const float HammerThrowDuration = 0.4f;
 
-    public HammerBro(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
+    public HammerBro(ISprite sprite, Vector2 initialPosition)
     {
         this.sprite = sprite;
         position = initialPosition;
-        groundY = initialPosition.Y;
     }
 
 
@@ -61,8 +65,13 @@ public class HammerBro : IEnemy
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
+        if (isStomped)
+        {
+            effects = SpriteEffects.FlipVertically;
+        }
 
-        sprite.Draw(spriteBatch, position, rotation, effects: effects);
+
+        sprite.Draw(spriteBatch, position, effects: effects);
     }
 
     public void Update(GameTime gameTime)
@@ -81,7 +90,6 @@ public class HammerBro : IEnemy
             if (isOnGround && Random.Shared.NextDouble() < 0.02) // 2% chance to jump each frame
             {
                 velocityY = JumpSpeed;
-                isOnGround = false;
             }
 
             if (Random.Shared.NextDouble() <
@@ -90,22 +98,13 @@ public class HammerBro : IEnemy
                 velocityX = -velocityX;
             }
 
-            velocityY += Gravity * deltaTime;
-            position.Y += velocityY * deltaTime;
-            if (position.Y >= groundY)
-            {
-                position.Y = groundY;
-                velocityY = 0f;
-                isOnGround = true;
-            }
-
             position.X += velocityX * deltaTime;
-
-        } else
-        {
-            position.Y += velocityY * deltaTime;
-            velocityY += Gravity * deltaTime;
         }
+
+        // LandOn sets this back to true when standing on a block
+        isOnGround = false;
+        velocityY += Gravity * deltaTime;
+        position.Y += velocityY * deltaTime;
 
 
         if (state == HammerBroState.Thrown && throwElapsed >= HammerThrowDuration)
@@ -126,10 +125,29 @@ public class HammerBro : IEnemy
     {
         if (isStomped)
             return;
-        
+
         sprite.Play("Stomped");
         rotation = 180f;
         isStomped = true;
+    }
+
+    public void LandOn(float groundTop)
+    {
+        // A stomped Hammer Bro falls through the floor and off the screen
+        if (isStomped)
+        {
+            return;
+        }
+
+        position.Y = groundTop - Height;
+        velocityY = 0f;
+        isOnGround = true;
+    }
+
+    public void BounceOffWall(float newX)
+    {
+        position.X = newX;
+        velocityX = -velocityX;
     }
 
     public void ThrowHammer()

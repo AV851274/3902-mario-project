@@ -14,6 +14,7 @@ namespace Mario.Players;
 public class Player : IPlayer
 {
     private const float ThrowAnimationTime = 0.3f;
+    private const float InvincibleDuration = 1.5f;
 
     private sealed record AppearanceKey(MarioPower Power, bool IsSwimming);
 
@@ -26,6 +27,7 @@ public class Player : IPlayer
     private Direction facingDirection = Direction.Right;
     private bool isSwimming;
     private bool attackPressed;
+    private float invincibleTimer;
 
 
     public IPlayerBodyAction BodyAction => body;
@@ -120,7 +122,15 @@ public class Player : IPlayer
         timeSinceThrow = float.PositiveInfinity;
     }
 
-    public void TakeDamage() => SetPower(MarioPowerState.TakeDamage());
+    public void TakeDamage()
+    {
+        // Briefly invincible after a hit, so one enemy touch only counts once
+        if (invincibleTimer > 0f)
+            return;
+
+        SetPower(MarioPowerState.TakeDamage());
+        invincibleTimer = InvincibleDuration;
+    }
 
     public void Crouch()
     {
@@ -139,6 +149,7 @@ public class Player : IPlayer
         facingDirection = body.FacingDirection;
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         timeSinceThrow += deltaTime;
+        invincibleTimer = Math.Max(0f, invincibleTimer - deltaTime);
 
         // TODO: Temporary integration until the shared physics engine is available.
         Vector2 position = body.Position;
@@ -207,6 +218,10 @@ public class Player : IPlayer
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        // Flash while invincible: skip drawing every other tenth of a second
+        if (invincibleTimer > 0f && (int)(invincibleTimer * 10) % 2 == 0)
+            return;
+
         bool flip = facingDirection == Direction.Right;
         if (isSwimming)
             flip = facingDirection == Direction.Left;
