@@ -31,7 +31,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private IController keyboardController;
     private IController mouseController;
     private SpriteFactory spriteFactory;
-    private GameState gameState = new GameState();
+    private GameEntities gameEntities = new GameEntities();
     private Camera2D camera = new Camera2D();
     private int levelWidth;
 
@@ -62,18 +62,18 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     public void ResetGame()
     {
-        gameState.Reset();
+        gameEntities.Reset();
         camera = new Camera2D();
         // fireballSprite = spriteFactory.CreateFireBallSprite();
 
-        var level = LevelLoader.LoadLevel(Content, gameState, spriteFactory);
+        var level = LevelLoader.LoadLevel(Content, gameEntities, spriteFactory);
 
         Vector2 marioSpawn = level.spawn;
         levelWidth = level.width;
-        enemies = new EnemyCycler(gameState.Enemies);
+        enemies = new EnemyCycler(gameEntities.Enemies);
 
         // Hammer Bros announce their throws; spawn the hammer projectile when they do
-        foreach (IEnemy enemy in gameState.Enemies)
+        foreach (IEnemy enemy in gameEntities.Enemies)
         {
             if (enemy is HammerBro hammerBro)
             {
@@ -81,7 +81,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             }
         }
 
-        CreateMario(false, marioSpawn);
+        gameEntities.Players.Add(CreateMario(false, marioSpawn));
     }
 
 
@@ -92,21 +92,21 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         player.SetPower(power);
     }
 
-    private void CreateMario(bool swimming, Vector2 position)
+    private IPlayer CreateMario(bool swimming, Vector2 position)
     {
         player = new Player(spriteFactory, position);
         player.SetSwimming(swimming);
-        gameState.Player = player;
         player.SummonFireball += SpawnFireball;
         keyboardController = new KeyboardController(this, player, enemies);
         mouseController = new MouseController(player);
+        return player;
     }
 
     private void SpawnFireball(Vector2 position, Direction direction)
     {
         float flip = direction == Direction.Left ? -1f : 1f;
         var velocity = new Vector2(850f * flip, 0);
-        gameState.Projectiles.Add(new Fireball(
+        gameEntities.Projectiles.Add(new Fireball(
             spriteFactory.CreateFireballSprite(), // new animation contoller for each fireball
             position + new Vector2(25 * flip, -50f),
             velocity,
@@ -120,7 +120,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         float directionSign = direction == Direction.Left ? -1f : 1f;
 
-        gameState.Projectiles.Add(new Hammer(
+        gameEntities.Projectiles.Add(new Hammer(
             spriteFactory.CreateHammerSprite(),
             position + new Vector2(20f * directionSign, -20f),
             new Vector2(250f * directionSign, -350f),
@@ -146,44 +146,44 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         player.Update(gameTime);
 
         // Resolve collisions with walls
-        CollisionManager.ResolvePlayerWallCollisions(player, gameState.Blocks, previousBounds);
+        CollisionManager.ResolvePlayerWallCollisions(player, gameEntities.Blocks, previousBounds);
         // Resolve collisions with ceilings
-        CollisionManager.ResolvePlayerCeilingCollisions(player, gameState.Blocks, previousBounds);
+        CollisionManager.ResolvePlayerCeilingCollisions(player, gameEntities.Blocks, previousBounds);
         // Resolve collisions with blocks
-        CollisionManager.ResolvePlayerBlockCollisions(player, gameState.Blocks, previousBounds);
+        CollisionManager.ResolvePlayerBlockCollisions(player, gameEntities.Blocks, previousBounds);
         // Resolve collisions with items
-        CollisionManager.ResolvePlayerItemCollisions(player, gameState.Items);
-        gameState.Items.RemoveAll(item => item.IsCollected);
+        CollisionManager.ResolvePlayerItemCollisions(player, gameEntities.Items);
+        gameEntities.Items.RemoveAll(item => item.IsCollected);
 
         player.UpdateAnimation(gameTime);
 
         // Update camera
         camera.Follow(player.Position, GraphicsDevice.Viewport.Width, levelWidth);
 
-        foreach (IItem currentItem in gameState.Items)
+        foreach (IItem currentItem in gameEntities.Items)
         {
             Rectangle previousItemBounds = currentItem.Bounds;
             currentItem.Update(gameTime);
-            CollisionManager.ResolveItemWallCollisions(currentItem, gameState.Blocks, previousItemBounds);
+            CollisionManager.ResolveItemWallCollisions(currentItem, gameEntities.Blocks, previousItemBounds);
         }
 
-        foreach (IBlock currentBlock in gameState.Blocks)
+        foreach (IBlock currentBlock in gameEntities.Blocks)
         {
             currentBlock.Update(gameTime);
         }
 
-        foreach (IEnemy enemy in gameState.Enemies)
+        foreach (IEnemy enemy in gameEntities.Enemies)
         {
             Rectangle previousEnemyBounds = enemy.Bounds;
             enemy.Update(gameTime);
-            CollisionManager.ResolveEnemyBlockCollisions(enemy, gameState.Blocks, previousEnemyBounds);
+            CollisionManager.ResolveEnemyBlockCollisions(enemy, gameEntities.Blocks, previousEnemyBounds);
         }
 
         // Stomp enemies Mario lands on, take damage from the rest
-        CollisionManager.ResolvePlayerEnemyCollisions(player, gameState.Enemies, previousBounds);
+        CollisionManager.ResolvePlayerEnemyCollisions(player, gameEntities.Enemies, previousBounds);
 
         // Defeated enemies fall off the bottom of the level; remove them once they're far below
-        gameState.Enemies.RemoveAll(enemy => enemy.Position.Y > 1000f);
+        gameEntities.Enemies.RemoveAll(enemy => enemy.Position.Y > 1000f);
 
         UpdateProjectiles(gameTime);
 
@@ -203,31 +203,9 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             null,
             camera.Transform);
 
-        foreach (IGameObject backgroundObject in gameState.Background)
+        foreach (var gameObj in gameEntities.GetAllGameObjects())
         {
-            backgroundObject.Draw(spriteBatch);
-        }
-
-        player.Draw(spriteBatch);
-
-        foreach (IItem currentItem in gameState.Items)
-        {
-            currentItem.Draw(spriteBatch);
-        }
-
-        foreach (IBlock currentBlock in gameState.Blocks)
-        {
-            currentBlock.Draw(spriteBatch);
-        }
-
-        foreach (IEnemy enemy in gameState.Enemies)
-        {
-            enemy.Draw(spriteBatch);
-        }
-
-        foreach (var projectile in gameState.Projectiles)
-        {
-            projectile.Draw(spriteBatch);
+            gameObj.Draw(spriteBatch);
         }
 
         spriteBatch.End();
@@ -237,12 +215,12 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     private void UpdateProjectiles(GameTime gameTime)
     {
-        foreach (var projectile in gameState.Projectiles)
+        foreach (var projectile in gameEntities.Projectiles)
         {
             if (projectile.Active)
                 projectile.Update(gameTime);
         }
 
-        gameState.Projectiles.RemoveAll(p => !p.Active);
+        gameEntities.Projectiles.RemoveAll(p => !p.Active);
     }
 }

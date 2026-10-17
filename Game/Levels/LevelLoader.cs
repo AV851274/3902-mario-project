@@ -18,7 +18,7 @@ public class LevelLoader
 
     public static (Vector2 spawn, int width) LoadLevel(
         ContentManager content,
-        GameState gameState,
+        GameEntities gameEntities,
         SpriteFactory spriteFactory)
     {
         using var csvin = new StreamReader(
@@ -48,17 +48,17 @@ public class LevelLoader
                 switch (tile)
                 {
                     case "G":
-                        gameState.Blocks.Add(
+                        gameEntities.Blocks.Add(
                             new Block(spriteFactory, BlockType.Ground, position));
                         break;
 
                     case "B":
-                        gameState.Blocks.Add(
+                        gameEntities.Blocks.Add(
                             new Block(spriteFactory, BlockType.Brick, position));
                         break;
 
                     case "?":
-                        gameState.Blocks.Add(
+                        gameEntities.Blocks.Add(
                             new Block(spriteFactory, BlockType.Question, position));
                         break;
 
@@ -66,19 +66,19 @@ public class LevelLoader
                         marioSpawn = position;
                         break;
                     case "E":
-                        gameState.Enemies.Add(
+                        gameEntities.Enemies.Add(
                             new Goomba(
                                 spriteFactory.CreateGoombaSprite(),
                                 position));
                         break;
                     case "K":
-                        gameState.Enemies.Add(
+                        gameEntities.Enemies.Add(
                             new Turtle(
                                 spriteFactory.CreateTurtleSprite(),
                                 position));
                         break;
                     case "H":
-                        gameState.Enemies.Add(
+                        gameEntities.Enemies.Add(
                             new HammerBro(
                                 spriteFactory.CreateHammerBroSprite(),
                                 position));
@@ -87,45 +87,45 @@ public class LevelLoader
                     case "":
                         break;
                     case "mu":
-                        gameState.Items.Add(new Item(spriteFactory, ItemType.Mushroom, position));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.Mushroom, position));
                         break;
                     case "fi":
-                        gameState.Items.Add(new Item(spriteFactory, ItemType.FireFlower, position));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.FireFlower, position));
                         break;
                     case "co":
-                        gameState.Items.Add(new Item(spriteFactory, ItemType.Coin, position));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.Coin, position));
                         break;
                     case "st":
-                        gameState.Items.Add(new Item(spriteFactory, ItemType.Star, position));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.Star, position));
                         break;
                     case "cl":
-                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud, position));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud, position));
                         break;
                     case "bh":
-                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, position));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, position));
                         break;
                     case "sh":
-                        gameState.Background.Add(
+                        gameEntities.Background.Add(
                             new BackgroundObject(spriteFactory, BackgroundType.SmallHill, position));
                         break;
                     case "sb":
-                        gameState.Background.Add(
+                        gameEntities.Background.Add(
                             new BackgroundObject(spriteFactory, BackgroundType.SmallBush, position));
                         break;
                     case "bb":
-                        gameState.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, position));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, position));
                         break;
                     case "PL":
-                        gameState.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopLeft, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopLeft, position));
                         break;
                     case "PR":
-                        gameState.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopRight, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopRight, position));
                         break;
                     case "pl":
-                        gameState.Blocks.Add(new Block(spriteFactory, BlockType.PipeLeft, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeLeft, position));
                         break;
                     case "pr":
-                        gameState.Blocks.Add(new Block(spriteFactory, BlockType.PipeRight, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeRight, position));
                         break;
 
                     default:
