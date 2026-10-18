@@ -39,6 +39,9 @@
 /processorParam:Version=3.8.5.1
 /build:itemsAndBlocks.png
 
+#begin levels/level1.csv
+/copy:levels/level1.csv
+
 #begin mario.png
 /importer:TextureImporter
 /processor:TextureProcessor
