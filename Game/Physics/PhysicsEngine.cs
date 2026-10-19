@@ -27,6 +27,7 @@ public sealed class PhysicsEngine
 
         var previousBounds = UpdateBodies(entities, deltaTime);
         ResolveTerrainCollisions(entities, previousBounds);
+        ResolveProjectileInteractions(entities, previousBounds);
         ResolvePlayerInteractions(entities, previousBounds);
     }
 
@@ -84,6 +85,14 @@ public sealed class PhysicsEngine
                 }
             }
         }
+    }
+
+    private static void ResolveProjectileInteractions(GameEntities entities,
+        Dictionary<ICollider, Box?> previousBounds)
+    {
+        foreach (var projectile in entities.Projectiles.Distinct())
+            foreach (var enemy in entities.Enemies.Distinct())
+                ResolveCollision(projectile, enemy, previousBounds);
     }
 
     private static void ResolvePlayerInteractions(GameEntities entities,

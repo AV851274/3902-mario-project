@@ -1,3 +1,4 @@
+using System.Linq;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Animation;
 using Mario.Game.Controllers;
@@ -20,6 +21,8 @@ namespace Mario.Game;
 
 public class MarioGame : Microsoft.Xna.Framework.Game
 {
+    private const int MaxFireBall = 4;
+    
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
 
@@ -130,11 +133,14 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     private void SpawnFireball(Vector2 position, Direction direction)
     {
+        if (gameEntities.Projectiles.OfType<Fireball>().Count(fireball => fireball.Active) >= MaxFireBall)
+            return;
+
         float flip = direction == Direction.Left ? -1f : 1f;
-        var velocity = new Vector2(850f * flip, 0);
+        var velocity = new Vector2(600f * flip, 0);
         gameEntities.Projectiles.Add(new Fireball(
             spriteFactory.CreateFireballSprite(), // new animation contoller for each fireball
-            position + new Vector2(25 * flip, -50f),
+            position + new Vector2(25 * flip, -20f),
             velocity,
             1f,
             400f

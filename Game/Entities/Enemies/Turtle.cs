@@ -19,6 +19,7 @@ public class Turtle : IEnemy, IPhysicsBody
     private float leftBound;
     private float rightBound;
     private bool isStomped;
+    private bool defeatedByFireball;
     private bool isKicked;
     private float kickGraceTimer;
     private Direction facingDirection = Direction.Left;
@@ -31,13 +32,13 @@ public class Turtle : IEnemy, IPhysicsBody
     public Vector2 Velocity { get; set; }
     public Box Bounds => new Box(Position.X, Position.Y, Width, Height);
     public bool Active => Position.Y <= 1000f;
-    public bool CollisionEnabled => Active;
+    public bool CollisionEnabled => Active && !IsDefeated;
 
-    // A shell stays in the level, so a Koopa is never fully defeated
-    public bool IsDefeated => false;
+    // Stomping leaves a shell; fireballs defeat it outright.
+    public bool IsDefeated => defeatedByFireball;
 
     // Walking Koopas and moving shells hurt; a resting shell (or one just kicked) doesn't
-    public bool CanHurtPlayer => !isStomped || (isKicked && kickGraceTimer <= 0f);
+    public bool CanHurtPlayer => !IsDefeated && (!isStomped || (isKicked && kickGraceTimer <= 0f));
 
     public Turtle(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
     {
@@ -54,11 +55,20 @@ public class Turtle : IEnemy, IPhysicsBody
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
+        if (defeatedByFireball)
+            effects |= SpriteEffects.FlipVertically;
+
         sprite.Draw(spriteBatch, Position, effects: effects);
     }
 
     public void Update(GameTime gameTime)
     {
+        if (defeatedByFireball)
+        {
+            sprite.UpdateAnimation(gameTime);
+            return;
+        }
+
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         kickGraceTimer = Math.Max(0f, kickGraceTimer - deltaTime);
 
@@ -85,6 +95,9 @@ public class Turtle : IEnemy, IPhysicsBody
 
     public void Stomp()
     {
+        if (defeatedByFireball)
+            return;
+
         if (!isStomped)
         {
             isStomped = true;
@@ -102,6 +115,16 @@ public class Turtle : IEnemy, IPhysicsBody
             isKicked = false;
             Velocity = new Vector2(0f, Velocity.Y);
         }
+    }
+
+    public void HitByFireball()
+    {
+        if (IsDefeated)
+            return;
+
+        defeatedByFireball = true;
+        Velocity = new Vector2(0f, -200f);
+        IsOnGround = false;
     }
 
     public void OnCollision(in CollisionEvent collision)

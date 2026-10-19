@@ -23,6 +23,7 @@ public class HammerBro : IEnemy, IPhysicsBody
 
     private ISprite sprite;
     private bool isStomped;
+    private bool defeatedByFireball;
 
     private Direction facingDirection = Direction.Left;
 
@@ -39,9 +40,9 @@ public class HammerBro : IEnemy, IPhysicsBody
 
     public Box Bounds => new Box(Position.X, Position.Y, Width, Height);
     public bool Active => Position.Y <= 1000f;
-    public bool CollisionEnabled => Active && !isStomped;
-    public bool IsDefeated => isStomped;
-    public bool CanHurtPlayer => !isStomped;
+    public bool CollisionEnabled => Active && !IsDefeated;
+    public bool IsDefeated => isStomped || defeatedByFireball;
+    public bool CanHurtPlayer => !IsDefeated;
 
     public event Action<Vector2, Direction> SummonHammer;
 
@@ -63,7 +64,7 @@ public class HammerBro : IEnemy, IPhysicsBody
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
-        if (isStomped)
+        if (IsDefeated)
         {
             effects = SpriteEffects.FlipVertically;
         }
@@ -74,7 +75,7 @@ public class HammerBro : IEnemy, IPhysicsBody
     public void Update(GameTime gameTime)
     {
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (!isStomped)
+        if (!IsDefeated)
         {
             if (Random.Shared.NextDouble() < 0.01) // 1% chance to throw a hammer each frame
             {
@@ -118,12 +119,25 @@ public class HammerBro : IEnemy, IPhysicsBody
 
     public void Stomp()
     {
+        if (defeatedByFireball)
+            return;
+
         if (isStomped)
             return;
 
         sprite.Play("Stomped");
         isStomped = true;
         Velocity = new Vector2(0f, Velocity.Y);
+    }
+
+    public void HitByFireball()
+    {
+        if (IsDefeated)
+            return;
+
+        defeatedByFireball = true;
+        Velocity = new Vector2(0f, -200f);
+        IsOnGround = false;
     }
 
     public void OnCollision(in CollisionEvent collision)

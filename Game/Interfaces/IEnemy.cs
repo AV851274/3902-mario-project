@@ -14,4 +14,5 @@ public interface IEnemy : IGameObject, ICollider
     bool CanHurtPlayer { get; }
 
     void Stomp();
+    void HitByFireball();
 }

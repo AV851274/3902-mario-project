@@ -15,6 +15,7 @@ public class Goomba : IEnemy, IPhysicsBody
     private float leftBound;
     private float rightBound;
     private bool isStomped;
+    private bool defeatedByFireball;
 
     public Vector2 PendingAcceleration { get; set; }
     public bool IsOnGround { get; set; }
@@ -24,9 +25,9 @@ public class Goomba : IEnemy, IPhysicsBody
 
     public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
     public bool Active => Position.Y <= 1000f;
-    public bool CollisionEnabled => Active && !isStomped;
-    public bool IsDefeated => isStomped;
-    public bool CanHurtPlayer => !isStomped;
+    public bool CollisionEnabled => Active && !IsDefeated;
+    public bool IsDefeated => isStomped || defeatedByFireball;
+    public bool CanHurtPlayer => !IsDefeated;
 
     public Goomba(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
     {
@@ -39,13 +40,13 @@ public class Goomba : IEnemy, IPhysicsBody
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        SpriteEffects effects = isStomped ? SpriteEffects.FlipVertically : SpriteEffects.None;
+        SpriteEffects effects = IsDefeated ? SpriteEffects.FlipVertically : SpriteEffects.None;
         sprite.Draw(spriteBatch, Position, effects: effects);
     }
 
     public void Update(GameTime gameTime)
     {
-        if (!isStomped)
+        if (!IsDefeated)
         {
             //TURN GOOMBA AROUND WHEN IT HITS THE EDGE OF ITS PATROL AREA
             if (Position.X <= leftBound || Position.X >= rightBound)
@@ -63,12 +64,25 @@ public class Goomba : IEnemy, IPhysicsBody
 
     public void Stomp()
     {
+        if (defeatedByFireball)
+            return;
+
         if (isStomped)
             return;
         
         sprite.Play("Stomped");
         isStomped = true;
         Velocity = new Vector2(0f, Velocity.Y);
+    }
+
+    public void HitByFireball()
+    {
+        if (IsDefeated)
+            return;
+
+        defeatedByFireball = true;
+        Velocity = new Vector2(0f, -200f);
+        IsOnGround = false;
     }
 
     public void OnCollision(in CollisionEvent collision)

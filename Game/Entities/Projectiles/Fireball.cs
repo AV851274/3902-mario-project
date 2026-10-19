@@ -57,15 +57,32 @@ public class Fireball : IProjectile
 
     public void OnCollision(in CollisionEvent collision)
     {
-        if (collision.Other is IBlock && collision.Normal.Y < 0f && IsOnGround && BounceSpeed > 0f)
+        if (!Active)
+            return;
+
+        if (collision.Other.IsSolid)
         {
-            Velocity = new Vector2(Velocity.X, -BounceSpeed);
-            IsOnGround = false;
+            if (collision.Normal.Y < 0f)
+            {
+                if (IsOnGround && BounceSpeed > 0f)
+                {
+                    Velocity = new Vector2(Velocity.X, -BounceSpeed);
+                    IsOnGround = false;
+                }
+            }
+            else
+                Active = false;
+        }
+        else if (collision.Other is IEnemy enemy)
+        {
+            enemy.HitByFireball();
+            Active = false;
         }
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        sprite.Draw(spriteBatch, Position);
+        if (Active)
+            sprite.Draw(spriteBatch, Position);
     }
 }
