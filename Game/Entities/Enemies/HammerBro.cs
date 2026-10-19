@@ -1,4 +1,3 @@
-using Mario.Game.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mario.Game.Interfaces;
@@ -14,16 +13,14 @@ public enum HammerBroState
     Stuck
 }
 
-public class HammerBro : IEnemy, IPhysicsBody
+public class HammerBro : EnemyBase
 {
     private const float WalkSpeed = 30f;
     private const float JumpSpeed = -500f;
     private const int Width = 32;
     private const int Height = 48;
 
-    private ISprite sprite;
     private bool isStomped;
-    private bool defeatedByFireball;
 
     private Direction facingDirection = Direction.Left;
 
@@ -32,17 +29,7 @@ public class HammerBro : IEnemy, IPhysicsBody
         get { return facingDirection; }
     }
 
-    public Vector2 PendingAcceleration { get; set; }
-    public bool IsOnGround { get; set; }
-    public float GravityScale => 1f;
-    public Vector2 Position { get; set; }
-    public Vector2 Velocity { get; set; }
-
-    public Box Bounds => new Box(Position.X, Position.Y, Width, Height);
-    public bool Active => Position.Y <= 1000f;
-    public bool CollisionEnabled => Active && !IsDefeated;
-    public bool IsDefeated => isStomped || defeatedByFireball;
-    public bool CanHurtPlayer => !IsDefeated;
+    public override bool IsDefeated => isStomped || base.IsDefeated;
 
     public event Action<Vector2, Direction> SummonHammer;
 
@@ -51,14 +38,13 @@ public class HammerBro : IEnemy, IPhysicsBody
     private const float HammerThrowDuration = 0.4f;
 
     public HammerBro(ISprite sprite, Vector2 initialPosition)
+        : base(sprite, initialPosition, Width, Height)
     {
-        this.sprite = sprite;
-        Position = initialPosition;
         IsOnGround = true;
         Velocity = new Vector2(-WalkSpeed, 0f);
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
         SpriteEffects effects = facingDirection == Direction.Right
             ? SpriteEffects.FlipHorizontally
@@ -72,7 +58,7 @@ public class HammerBro : IEnemy, IPhysicsBody
         sprite.Draw(spriteBatch, Position, effects: effects);
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (!IsDefeated)
@@ -117,9 +103,9 @@ public class HammerBro : IEnemy, IPhysicsBody
         sprite.UpdateAnimation(gameTime);
     }
 
-    public void Stomp()
+    public override void Stomp()
     {
-        if (defeatedByFireball)
+        if (DefeatedByFireball)
             return;
 
         if (isStomped)
@@ -130,23 +116,6 @@ public class HammerBro : IEnemy, IPhysicsBody
         Velocity = new Vector2(0f, Velocity.Y);
     }
 
-    public void HitByFireball()
-    {
-        if (IsDefeated)
-            return;
-
-        defeatedByFireball = true;
-        Velocity = new Vector2(0f, -200f);
-        IsOnGround = false;
-    }
-
-    public void OnCollision(in CollisionEvent collision)
-    {
-        if (collision.Other is IBlock && collision.Normal.X != 0f)
-        {
-            Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
-        }
-    }
     public void ThrowHammer()
     {
         SummonHammer?.Invoke(Position, facingDirection);

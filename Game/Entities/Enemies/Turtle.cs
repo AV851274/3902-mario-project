@@ -1,4 +1,3 @@
-using Mario.Game.Physics;
 using System;
 using Mario.Game.Animation;
 using Mario.Game.Interfaces;
@@ -7,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Mario.Game.Entities.Enemies;
 
-public class Turtle : IEnemy, IPhysicsBody
+public class Turtle : EnemyBase
 {
     private const float WalkSpeed = 60f;
     private const float KickSpeed = 6 * WalkSpeed;
@@ -15,55 +14,40 @@ public class Turtle : IEnemy, IPhysicsBody
     private const int Width = 32;
     private const int Height = 48;
 
-    private ISprite sprite;
     private float leftBound;
     private float rightBound;
     private bool isStomped;
-    private bool defeatedByFireball;
     private bool isKicked;
     private float kickGraceTimer;
     private Direction facingDirection = Direction.Left;
 
     public Direction FacingDirection => facingDirection;
-    public Vector2 PendingAcceleration { get; set; }
-    public bool IsOnGround { get; set; }
-    public float GravityScale => 1f;
-    public Vector2 Position { get; set; }
-    public Vector2 Velocity { get; set; }
-    public Box Bounds => new Box(Position.X, Position.Y, Width, Height);
-    public bool Active => Position.Y <= 1000f;
-    public bool CollisionEnabled => Active && !IsDefeated;
-
-    // Stomping leaves a shell; fireballs defeat it outright.
-    public bool IsDefeated => defeatedByFireball;
-
     // Walking Koopas and moving shells hurt; a resting shell (or one just kicked) doesn't
-    public bool CanHurtPlayer => !IsDefeated && (!isStomped || (isKicked && kickGraceTimer <= 0f));
+    public override bool CanHurtPlayer => !IsDefeated && (!isStomped || (isKicked && kickGraceTimer <= 0f));
 
     public Turtle(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
+        : base(sprite, initialPosition, Width, Height)
     {
-        this.sprite = sprite;
-        Position = initialPosition;
         Velocity = new Vector2(-WalkSpeed, 0f);
         leftBound = initialPosition.X - patrolDistance;
         rightBound = initialPosition.X + patrolDistance;
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public override void Draw(SpriteBatch spriteBatch)
     {
         SpriteEffects effects = facingDirection == Direction.Right
             ? SpriteEffects.FlipHorizontally
             : SpriteEffects.None;
 
-        if (defeatedByFireball)
+        if (DefeatedByFireball)
             effects |= SpriteEffects.FlipVertically;
 
         sprite.Draw(spriteBatch, Position, effects: effects);
     }
 
-    public void Update(GameTime gameTime)
+    public override void Update(GameTime gameTime)
     {
-        if (defeatedByFireball)
+        if (DefeatedByFireball)
         {
             sprite.UpdateAnimation(gameTime);
             return;
@@ -93,9 +77,9 @@ public class Turtle : IEnemy, IPhysicsBody
         sprite.UpdateAnimation(gameTime);
     }
 
-    public void Stomp()
+    public override void Stomp()
     {
-        if (defeatedByFireball)
+        if (DefeatedByFireball)
             return;
 
         if (!isStomped)
@@ -117,22 +101,8 @@ public class Turtle : IEnemy, IPhysicsBody
         }
     }
 
-    public void HitByFireball()
+    protected override void OnWallBounce()
     {
-        if (IsDefeated)
-            return;
-
-        defeatedByFireball = true;
-        Velocity = new Vector2(0f, -200f);
-        IsOnGround = false;
-    }
-
-    public void OnCollision(in CollisionEvent collision)
-    {
-        if (collision.Other is IBlock && collision.Normal.X != 0f)
-        {
-            Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
-            facingDirection = Velocity.X < 0f ? Direction.Left : Direction.Right;
-        }
+        facingDirection = Velocity.X < 0f ? Direction.Left : Direction.Right;
     }
 }
