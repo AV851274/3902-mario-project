@@ -51,6 +51,8 @@ public sealed class PhysicsEngine
             if (body.MaxFallSpeed > 0f && velocity.Y > body.MaxFallSpeed)
                 velocity.Y = body.MaxFallSpeed;
 
+            velocity.X = Math.Clamp(velocity.X, -body.MaxHorizontalSpeed, body.MaxHorizontalSpeed);
+
             // update body
             body.Velocity = velocity;
             body.Position += velocity * deltaTime;
