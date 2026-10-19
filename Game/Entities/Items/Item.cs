@@ -73,11 +73,11 @@ public class Item : IItem, IPhysicsBody
         }
         //else if (type == ItemType.Coin)
         //{
-            // TODO: add to a coin counter once there's a HUD
+        // TODO: add to a coin counter once there's a HUD
         //}
         //else if (type == ItemType.Star)
         //{
-            // TODO: star invincibility
+        // TODO: star invincibility
         //}
     }
 
@@ -92,15 +92,20 @@ public class Item : IItem, IPhysicsBody
     }
     public void OnCollision(CollisionEvent collision)
     {
-        if (collision.Other is IBlock && collision.Normal.X != 0f)
+        if (collision.Other is IBlock)
         {
-            direction = -direction;
-            Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
-        }
-        else if (collision.Other is IBlock && collision.Normal.Y < 0f && IsOnGround && BounceSpeed > 0f)
-        {
-            Velocity = new Vector2(Velocity.X, -BounceSpeed);
-            IsOnGround = false;
+            if (collision.Normal.X != 0 &&
+                    Vector2.Dot(collision.RelativeVelocityBefore, collision.Normal) < 0f)
+            {
+                direction = -direction;
+                Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
+            }
+
+            if (collision.Normal.Y < 0f && IsOnGround && BounceSpeed > 0f)
+            {
+                Velocity = new Vector2(Velocity.X, -BounceSpeed);
+                IsOnGround = false;
+            }
         }
     }
 
