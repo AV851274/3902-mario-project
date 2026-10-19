@@ -63,13 +63,14 @@ public sealed class PhysicsEngine
         return previousBounds;
     }
 
+    // Resolve moving bodies against solid terrain and top-only platforms.
     private static void ResolveTerrainCollisions(GameEntities entities,
         Dictionary<ICollider, Box?> previousBounds)
     {
         var solids = entities.GetAllGameObjects()
             .Where(obj => obj.Active)
             .OfType<ICollider>()
-            .Where(collider => collider.IsSolid && collider is not IPhysicsBody)
+            .Where(collider => collider.BlockingMode != ICollider.BlockingModes.None && collider is not IPhysicsBody)
             .Distinct()
             .ToArray();
 
@@ -89,6 +90,7 @@ public sealed class PhysicsEngine
         }
     }
 
+    // Check projectile-enemy contacts and dispatch their collision responses.
     private static void ResolveProjectileInteractions(GameEntities entities,
         Dictionary<ICollider, Box?> previousBounds)
     {
@@ -97,6 +99,7 @@ public sealed class PhysicsEngine
                 ResolveCollision(projectile, enemy, previousBounds);
     }
 
+    // Handle player-item pickups and player-enemy stomps or damage.
     private static void ResolvePlayerInteractions(GameEntities entities,
         Dictionary<ICollider, Box?> previousBounds)
     {
@@ -109,6 +112,7 @@ public sealed class PhysicsEngine
         }
     }
 
+    // Resolve one collider pair using previous bounds to determine the contact side.
     private static void ResolveCollision(ICollider a, ICollider b,
         Dictionary<ICollider, Box?> previousBounds)
     {

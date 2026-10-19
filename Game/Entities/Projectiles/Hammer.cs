@@ -16,6 +16,7 @@ public class Hammer : IProjectile
     public bool IsOnGround { get; set; }
     public bool CollisionEnabled => false;
     public Vector2 Position { get; set; }
+    public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(Position.X, Position.Y, 32, 32);
     private bool active;
     public bool Active => active && Position.Y < deathY;

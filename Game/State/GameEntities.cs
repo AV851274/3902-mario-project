@@ -21,11 +21,11 @@ public class GameEntities
     public IEnumerable<IGameObject> GetAllGameObjects()
     {
         return Background
-            .Concat(Players)
             .Concat(Blocks)
             .Concat(Items)
             .Concat(Enemies)
-            .Concat(Projectiles);
+            .Concat(Projectiles)
+            .Concat(Players);
     }
 
     public void Update(GameTime gameTime)
