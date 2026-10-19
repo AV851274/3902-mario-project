@@ -13,7 +13,7 @@ SPRINT 3 - STILL NEEDED
        - Move up and down between two heights
        - Mario rides along when standing on one
        - Add a BlockType or class, a sprite, and a CSV code in LevelLoader
-   [ ] Place all new blocks into level1.csv
+   [WIP] Place all new blocks into level1.csv
 
 2) Enemies: gravity, block collision, and player collision (stomping)
    [DONE] Gravity for all enemies (Goomba, Koopa, Hammer Bro)
@@ -24,15 +24,15 @@ SPRINT 3 - STILL NEEDED
    [DONE] Enemy <-> player collision
        - Mario landing on top of an enemy = Stomp() and Mario bounces up
        - Mario touching an enemy from the side = Mario takes damage
-   [ ] Enemies placed from level1.csv only (remove the hard-coded ones in MarioGame.ResetGame)
+   [DONE] Enemies placed from level1.csv only (remove the hard-coded ones in MarioGame.ResetGame)
 
 
 
 3) Rooms / level segments (required by the rubric)
-   [ ] Split the level into multiple rooms/screens, each in its own CSV file (room1.csv, room2.csv, ...)
+   [DONE] Split the level into multiple rooms/screens, each in its own CSV file (room1.csv, room2.csv, ...)
    [ ] Keep a list of rooms and load/clear objects when switching rooms
    [ ] Include an "artificial" test room that has every object type (all blocks, items, enemies, Mario)
-   [ ] Mouse controller switches rooms: left click = previous room, right click = next room
+   [DONE] Mouse controller switches rooms: left click = previous room, right click = next room
        (MouseController is currently all commented out)
 
 4) Remaining collisions (rubric: "all types of collisions")
@@ -51,11 +51,11 @@ SPRINT 3 - STILL NEEDED
    [ ] Background sprites aligned to the ground (hill rectangles 48 / 32 px tall so their bottoms touch the ground)
 
 6) Mario
-   [ ] Death: Small Mario taking damage should die (Player.SetPower currently ignores MarioPower.Dead)
+   [WIP] Death: Small Mario taking damage should die (Player.SetPower currently ignores MarioPower.Dead)
        -> death animation, then reset the room
-   [ ] Brief invincibility (flashing) after taking damage so one enemy can't hit twice in a row
+   [DONE] Brief invincibility (flashing) after taking damage so one enemy can't hit twice in a row
    [ ] Star power: star item makes Mario invincible for a few seconds (currently the star does nothing)
-   [ ] Falling off the bottom of the level = death
+   [DONE] Falling off the bottom of the level = death
    [ ] Attack also on Z and N (spec key mapping), keep F
 
 7) Game info
