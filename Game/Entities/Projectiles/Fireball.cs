@@ -1,8 +1,6 @@
+using Mario.Game.Physics;
 using System;
 using Mario.Game.Interfaces;
-using Mario.Game.Physics;
-using Mario.Game.Physics.Aspects;
-using Mario.Game.Physics.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,40 +11,38 @@ public class Fireball : IProjectile
     private ISprite sprite;
     private float lifeTime;
     private float elapsedTime = 0f;
-    private readonly PhysicsController physicsController;
-    private PhysicsState physicsState;
 
-    public Vector2 Position => physicsState.Position;
+    public Vector2 Position { get; set; }
+    public Vector2 Velocity { get; set; }
+    public Vector2 PendingAcceleration { get; set; }
+    public bool IsOnGround { get; set; }
+    public float BounceSpeed { get; }
+    public bool CollisionEnabled => Active;
+    public Box Bounds => new Box(Position.X, Position.Y, 64, 64);
     public bool Active { get; private set; }
-    public Vector2 Velocity => physicsState.Velocity;
-
 
     public Fireball(
         ISprite sprite,
         Vector2 position,
         Vector2 velocity,
         float lifeTime,
-        float gravity,
-        float groundY,
-        float? bounceHeight = null)
+        float bounceSpeed = 400f)
     {
         this.sprite = sprite;
-        physicsState = new PhysicsState(position, velocity);
+        Position = position;
+        Velocity = velocity;
         this.lifeTime = lifeTime;
-        physicsController = new PhysicsController
-        {
-            GravityPhysics = new GravityPhysics(gravity),
-            MovementPhysics = new MovementPhysics(),
-            BouncingPhysics = new BouncingPhysics(
-                bounceHeight ?? Math.Max(0f, groundY - position.Y),
-                groundY,
-                gravity)
-        };
+        if (!float.IsFinite(bounceSpeed) || bounceSpeed < 0f)
+            throw new ArgumentOutOfRangeException(nameof(bounceSpeed));
+        BounceSpeed = bounceSpeed;
         Active = true;
     }
 
     public void Update(GameTime gameTime)
     {
+        if (!Active)
+            return;
+
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         elapsedTime += deltaTime;
         if (elapsedTime > lifeTime)
@@ -55,10 +51,17 @@ public class Fireball : IProjectile
             return;
         }
 
-        physicsController.Update(ref physicsState, deltaTime);
-
         sprite.Play("Idle");
         sprite.UpdateAnimation(gameTime);
+    }
+
+    public void OnCollision(in CollisionEvent collision)
+    {
+        if (collision.Other is IBlock && collision.Normal.Y < 0f && IsOnGround && BounceSpeed > 0f)
+        {
+            Velocity = new Vector2(Velocity.X, -BounceSpeed);
+            IsOnGround = false;
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch)

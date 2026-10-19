@@ -1,3 +1,4 @@
+using Mario.Game.Physics;
 using System;
 using Mario.Game.Interfaces;
 using Mario.Game.Rendering.Sprites;
@@ -18,7 +19,8 @@ public class Block : IBlock
     private float bumpTimer;
 
     public Vector2 Position { get; private set; }
-    public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, Size, Size);
+    public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
+    public bool IsSolid => true;
 
     public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position)
     {

@@ -5,15 +5,10 @@ using Microsoft.Xna.Framework;
 
 namespace Mario.Game.Interfaces.Player;
 
-public interface IPlayer : IGameObject
+public interface IPlayer : IGameObject, IPhysicsBody
 {
     IPlayerBodyAction BodyAction { get; }
     IMarioPowerState MarioPowerState { get; }
-    Vector2 Position { get; }
-    Rectangle Bounds { get; }
-    Vector2 Velocity { get; set; }
-    bool IsOnGround { get; set; }
-    void SetPosition(Vector2 position);
     event Action<Vector2, Direction> SummonFireball;
     event Action Died;
     void Attack();

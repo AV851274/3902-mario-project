@@ -1,262 +1,112 @@
-using Mario.Game.Interfaces.Player;
+using Mario.Game.Physics;
 using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-
-namespace Mario.Game.Physics;
 
 public static class CollisionManager
 {
-    private const float StompBounceSpeed = 350f;
-    private const int StompTolerance = 10;
+    public record struct CollisionResult(Vector2 Normal, float Penetration);
 
-    public static void ResolveEnemyBlockCollisions(IEnemy enemy, List<IBlock> blocks, Rectangle previousBounds)
+    // Resolve one pair and notify both colliders after correction.
+    // Missing previous bounds use the collider's current bounds.
+    public static void ResolveCollision(ICollider a, ICollider b,
+        Box? prevA = null, Box? prevB = null)
     {
-        // Landing first, so an enemy resting on the ground isn't mistaken for hitting a wall
-        ResolveEnemyLanding(enemy, blocks, previousBounds);
-        ResolveEnemyWalls(enemy, blocks, previousBounds);
+        if (ReferenceEquals(a, b) || !CanCollide(a) || !CanCollide(b))
+            return;
+
+        var result = CheckCollision(a.Bounds, b.Bounds, prevA, prevB);
+        if (!result.HasValue)
+            return;
+
+        Vector2 relativeVelocity = GetRelativeVelocity(a, b);
+        Vector2 normal = result.Value.Normal;
+        // Current solids are static terrain; dynamic solid response is unsupported.
+        if (a is IPhysicsBody bodyA && !a.IsSolid && b.IsSolid)
+            ResolveBody(bodyA, normal, result.Value.Penetration);
+        else if (b is IPhysicsBody bodyB && !b.IsSolid && a.IsSolid)
+            ResolveBody(bodyB, -normal, result.Value.Penetration);
+
+        a.OnCollision(new CollisionEvent(b, normal, relativeVelocity));
+        b.OnCollision(new CollisionEvent(a, -normal, -relativeVelocity));
     }
 
-    private static void ResolveEnemyLanding(IEnemy enemy, List<IBlock> blocks, Rectangle previousBounds)
+    private static bool CanCollide(ICollider collider)
     {
-        foreach (IBlock block in blocks)
-        {
-            Rectangle enemyBounds = enemy.Bounds;
-            Rectangle blockBounds = block.Bounds;
-
-            bool horizontalOverlap =
-                enemyBounds.Right > blockBounds.Left &&
-                enemyBounds.Left < blockBounds.Right;
-
-            bool landing =
-                horizontalOverlap &&
-                previousBounds.Bottom <= blockBounds.Top &&
-                enemyBounds.Bottom >= blockBounds.Top;
-
-            if (landing)
-            {
-                enemy.LandOn(blockBounds.Top);
-                return;
-            }
-        }
+        return collider.CollisionEnabled && (collider is not IGameObject obj || obj.Active);
     }
 
-    private static void ResolveEnemyWalls(IEnemy enemy, List<IBlock> blocks, Rectangle previousBounds)
+    private static Vector2 GetRelativeVelocity(ICollider a, ICollider b)
     {
-        foreach (IBlock block in blocks)
-        {
-            Rectangle enemyBounds = enemy.Bounds;
-            Rectangle blockBounds = block.Bounds;
-
-            bool verticalOverlap =
-                enemyBounds.Bottom > blockBounds.Top &&
-                enemyBounds.Top < blockBounds.Bottom;
-
-            bool hitLeftSide =
-                verticalOverlap &&
-                previousBounds.Right <= blockBounds.Left &&
-                enemyBounds.Right > blockBounds.Left;
-
-            bool hitRightSide =
-                verticalOverlap &&
-                previousBounds.Left >= blockBounds.Right &&
-                enemyBounds.Left < blockBounds.Right;
-
-            if (hitLeftSide)
-            {
-                enemy.BounceOffWall(blockBounds.Left - enemyBounds.Width);
-                return;
-            }
-
-            if (hitRightSide)
-            {
-                enemy.BounceOffWall(blockBounds.Right);
-                return;
-            }
-        }
+        Vector2 velocityA = a is IPhysicsBody bodyA ? bodyA.Velocity : Vector2.Zero;
+        Vector2 velocityB = b is IPhysicsBody bodyB ? bodyB.Velocity : Vector2.Zero;
+        return velocityA - velocityB;
     }
 
-    public static void ResolvePlayerEnemyCollisions(IPlayer player, List<IEnemy> enemies, Rectangle previousPlayerBounds)
+    private static void ResolveBody(IPhysicsBody body, Vector2 normal, float penetration)
     {
-        foreach (IEnemy enemy in enemies)
-        {
-            if (enemy.IsDefeated || !player.Bounds.Intersects(enemy.Bounds))
-            {
-                continue;
-            }
-
-            // Falling, and Mario's feet were above the enemy's head last frame
-            bool landedOnTop =
-                player.Velocity.Y > 0f &&
-                previousPlayerBounds.Bottom <= enemy.Bounds.Top + StompTolerance;
-
-            if (landedOnTop)
-            {
-                enemy.Stomp();
-                player.Velocity = new Vector2(player.Velocity.X, -StompBounceSpeed);
-            }
-            else if (enemy.CanHurtPlayer)
-            {
-                player.TakeDamage();
-            }
-        }
+        body.Position += normal * penetration;
+        float normalSpeed = Vector2.Dot(body.Velocity, normal);
+        if (normalSpeed < 0f)
+            body.Velocity -= normal * normalSpeed;
+        if (normal.Y < 0f && normalSpeed <= 0f)
+            body.IsOnGround = true;
     }
 
-    public static void ResolvePlayerBlockCollisions(IPlayer player, List<IBlock> blocks, Rectangle previousBounds)
+    // Normal points from B toward A;  return null is no collision
+    // Edge contact counts; corner-only contact does not.
+    //
+    // This is not a full swept AABB test: side crossings require overlap on
+    // the other axis at the final position. A diagonal pass-through can be
+    // missed when neither axis overlaps at the end of the step, even if the
+    // rectangles intersected during movement.
+    public static CollisionResult? CheckCollision(Box a, Box b, Box? prevA, Box? prevB)
     {
-        foreach (IBlock block in blocks)
+        if (a.Width <= 0 || a.Height <= 0 || b.Width <= 0 || b.Height <= 0)
+            return null;
+
+        var oldA = prevA ?? a;
+        var oldB = prevB ?? b;
+
+        bool horizontalOverlap = a.Left < b.Right && a.Right > b.Left;
+        bool verticalOverlap = a.Top < b.Bottom && a.Bottom > b.Top;
+        // Prefer the side crossed since the previous step. For ambiguous corners,
+        // vertical takes priority.
+        if (horizontalOverlap)
         {
-            Rectangle playerBounds = player.Bounds;
-            Rectangle blockBounds = block.Bounds;
-
-            bool horizontalOverlap =
-                playerBounds.Right > blockBounds.Left &&
-                playerBounds.Left < blockBounds.Right;
-
-            bool landing =
-                horizontalOverlap &&
-                previousBounds.Bottom <= blockBounds.Top &&
-                playerBounds.Bottom >= blockBounds.Top &&
-                player.Velocity.Y >= 0f;
-
-            if (landing)
-            {
-                float newY = blockBounds.Top - playerBounds.Height;
-                if (playerBounds.Height > 48)
-                {
-                    newY += 40f;
-                }
-
-                player.SetPosition(new Vector2(player.Position.X, newY));
-                player.Velocity = new Vector2(player.Velocity.X, 0f);
-                player.IsOnGround = true;
-
-                break;
-            }
+            if (oldA.Bottom <= oldB.Top && a.Bottom >= b.Top)
+                return new CollisionResult(-Vector2.UnitY, a.Bottom - b.Top);
+            if (oldA.Top >= oldB.Bottom && a.Top <= b.Bottom)
+                return new CollisionResult(Vector2.UnitY, b.Bottom - a.Top);
         }
+
+        if (verticalOverlap)
+        {
+            if (oldA.Right <= oldB.Left && a.Right >= b.Left)
+                return new CollisionResult(-Vector2.UnitX, a.Right - b.Left);
+            if (oldA.Left >= oldB.Right && a.Left <= b.Right)
+                return new CollisionResult(Vector2.UnitX, b.Right - a.Left);
+        }
+
+        if (!(horizontalOverlap && verticalOverlap))
+            return null;
+
+        return FallbackCollision(a, b);
     }
 
-        public static void ResolveItemWallCollisions(IItem item, List<IBlock> blocks, Rectangle previousBounds)
+    // If the entry side is unknown, use the shortest distance to separate overlapping bounds.
+    private static CollisionResult? FallbackCollision(Box a, Box b)
     {
-        foreach (IBlock block in blocks)
-        {
-            Rectangle itemBounds = item.Bounds;
-            Rectangle blockBounds = block.Bounds;
-
-            bool verticalOverlap =
-                itemBounds.Bottom > blockBounds.Top &&
-                itemBounds.Top < blockBounds.Bottom;
-
-            bool hitLeftSide =
-                verticalOverlap &&
-                previousBounds.Right <= blockBounds.Left &&
-                itemBounds.Right > blockBounds.Left;
-
-            bool hitRightSide =
-                verticalOverlap &&
-                previousBounds.Left >= blockBounds.Right &&
-                itemBounds.Left < blockBounds.Right;
-
-            if (hitLeftSide)
-            {
-                item.BounceOffWall(blockBounds.Left - itemBounds.Width);
-                break;
-            }
-
-            if (hitRightSide)
-            {
-                item.BounceOffWall(blockBounds.Right);
-                break;
-            }
-        }
+        CollisionResult? result = null;
+        Consider(-Vector2.UnitY, a.Bottom - b.Top, ref result);
+        Consider(Vector2.UnitY, b.Bottom - a.Top, ref result);
+        Consider(-Vector2.UnitX, a.Right - b.Left, ref result);
+        Consider(Vector2.UnitX, b.Right - a.Left, ref result);
+        return result;
     }
 
-    public static void ResolvePlayerItemCollisions(IPlayer player, List<IItem> items)
+    private static void Consider(Vector2 normal, float penetration, ref CollisionResult? result)
     {
-        foreach (IItem item in items)
-        {
-            if (!item.IsCollected && player.Bounds.Intersects(item.Bounds))
-            {
-                item.Collect(player);
-            }
-        }
-    }
-    public static void ResolvePlayerWallCollisions(IPlayer player, List<IBlock> blocks, Rectangle previousBounds)
-    {
-        foreach (IBlock block in blocks)
-        {
-            Rectangle playerBounds = player.Bounds;
-            Rectangle blockBounds = block.Bounds;
-
-            bool verticalOverlap =
-                playerBounds.Bottom > blockBounds.Top &&
-                playerBounds.Top < blockBounds.Bottom;
-
-            bool movingRight =
-                verticalOverlap &&
-                previousBounds.Right <= blockBounds.Left &&
-                playerBounds.Right >= blockBounds.Left &&
-                player.Velocity.X > 0f;
-
-            bool movingLeft =
-                verticalOverlap &&
-                previousBounds.Left >= blockBounds.Right &&
-                playerBounds.Left <= blockBounds.Right &&
-                player.Velocity.X < 0f;
-
-            if (movingRight || movingLeft)
-            {
-                if (movingRight)
-                {
-                    float newX = blockBounds.Left - playerBounds.Width;
-
-                    player.SetPosition(new Vector2(newX, player.Position.Y));
-                    player.Velocity = new Vector2(0f, player.Velocity.Y);
-                }
-                else if (movingLeft)
-                {
-                    float newX = blockBounds.Right;
-
-                    player.SetPosition(new Vector2(newX, player.Position.Y));
-                    player.Velocity = new Vector2(0f, player.Velocity.Y);
-                }
-
-                break;
-            }
-        }
-    }
-    public static void ResolvePlayerCeilingCollisions(IPlayer player, List<IBlock> blocks, Rectangle previousBounds)
-    {
-        foreach (IBlock block in blocks)
-        {
-            Rectangle playerBounds = player.Bounds;
-            Rectangle blockBounds = block.Bounds;
-
-            bool horizontalOverlap =
-                playerBounds.Right > blockBounds.Left &&
-                playerBounds.Left < blockBounds.Right;
-
-            bool hittingCeiling =
-                horizontalOverlap &&
-                previousBounds.Top >= blockBounds.Bottom &&
-                playerBounds.Top <= blockBounds.Bottom &&
-                player.Velocity.Y < 0f;
-
-            if (hittingCeiling)
-            {
-                float newY = blockBounds.Bottom;
-                block.Hit();
-
-                if (playerBounds.Height > 48)
-                {
-                    newY += 40f;
-                }
-
-                player.SetPosition(new Vector2(player.Position.X, newY));
-                player.Velocity = new Vector2(player.Velocity.X, 0f);
-
-                break;
-            }
-        }
+        if (!result.HasValue || penetration < result.Value.Penetration)
+            result = new CollisionResult(normal, penetration);
     }
 }

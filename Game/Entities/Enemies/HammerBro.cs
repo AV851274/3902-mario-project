@@ -1,10 +1,8 @@
+using Mario.Game.Physics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mario.Game.Interfaces;
 using Mario.Game.Animation;
-using Mario.Game.Physics;
-using Mario.Game.Physics.Aspects;
-using Mario.Game.Physics.State;
 using System;
 
 namespace Mario.Game.Entities.Enemies;
@@ -16,18 +14,14 @@ public enum HammerBroState
     Stuck
 }
 
-public class HammerBro : IEnemy
+public class HammerBro : IEnemy, IPhysicsBody
 {
     private const float WalkSpeed = 30f;
     private const float JumpSpeed = -500f;
-    private const float Gravity = 1000f;
     private const int Width = 32;
     private const int Height = 48;
 
     private ISprite sprite;
-    private PhysicsState physicsState;
-    private readonly PhysicsController physicsController;
-    private readonly HorizontalVelocityPhysics horizontalMovement;
     private bool isStomped;
 
     private Direction facingDirection = Direction.Left;
@@ -37,12 +31,15 @@ public class HammerBro : IEnemy
         get { return facingDirection; }
     }
 
-    public Vector2 Position
-    {
-        get { return physicsState.Position; }
-    }
+    public Vector2 PendingAcceleration { get; set; }
+    public bool IsOnGround { get; set; }
+    public float GravityScale => 1f;
+    public Vector2 Position { get; set; }
+    public Vector2 Velocity { get; set; }
 
-    public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+    public Box Bounds => new Box(Position.X, Position.Y, Width, Height);
+    public bool Active => Position.Y <= 1000f;
+    public bool CollisionEnabled => Active && !isStomped;
     public bool IsDefeated => isStomped;
     public bool CanHurtPlayer => !isStomped;
 
@@ -55,16 +52,10 @@ public class HammerBro : IEnemy
     public HammerBro(ISprite sprite, Vector2 initialPosition)
     {
         this.sprite = sprite;
-        physicsState = new PhysicsState(initialPosition, Vector2.Zero, isOnGround: true);
-        horizontalMovement = new HorizontalVelocityPhysics(-WalkSpeed);
-        physicsController = new PhysicsController
-        {
-            HorizontalVelocityPhysics = horizontalMovement,
-            GravityPhysics = new GravityPhysics(Gravity),
-            MovementPhysics = new MovementPhysics()
-        };
+        Position = initialPosition;
+        IsOnGround = true;
+        Velocity = new Vector2(-WalkSpeed, 0f);
     }
-
 
     public void Draw(SpriteBatch spriteBatch)
     {
@@ -93,25 +84,23 @@ public class HammerBro : IEnemy
                 ThrowHammer();
             }
 
-            if (physicsState.IsOnGround && Random.Shared.NextDouble() < 0.02) // 2% chance to jump each frame
+            if (IsOnGround && Random.Shared.NextDouble() < 0.02) // 2% chance to jump each frame
             {
-                physicsState.Velocity = new Vector2(physicsState.Velocity.X, JumpSpeed);
-                physicsState.IsOnGround = false;
+                Velocity = new Vector2(Velocity.X, JumpSpeed);
+                IsOnGround = false;
             }
 
             if (Random.Shared.NextDouble() <
                 0.05) // 5% chance to switch moving direction each frame without changin the facing direction
             {
-                horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
+                Velocity = new Vector2(-Velocity.X, Velocity.Y);
             }
 
         }
         else
         {
-            horizontalMovement.VelocityX = 0f;
+            Velocity = new Vector2(0f, Velocity.Y);
         }
-
-        physicsController.Update(ref physicsState, deltaTime);
 
         if (state == HammerBroState.Thrown && throwElapsed >= HammerThrowDuration)
         {
@@ -134,30 +123,18 @@ public class HammerBro : IEnemy
 
         sprite.Play("Stomped");
         isStomped = true;
-        horizontalMovement.VelocityX = 0f;
+        Velocity = new Vector2(0f, Velocity.Y);
     }
 
-    public void LandOn(float groundTop)
+    public void OnCollision(in CollisionEvent collision)
     {
-        // A stomped Hammer Bro falls through the floor and off the screen
-        if (isStomped)
+        if (collision.Other is IBlock && collision.Normal.X != 0f)
         {
-            return;
+            Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
         }
-
-        physicsState.Position = new Vector2(physicsState.Position.X, groundTop - Height);
-        physicsState.Velocity = new Vector2(physicsState.Velocity.X, 0f);
-        physicsState.IsOnGround = true;
     }
-
-    public void BounceOffWall(float newX)
-    {
-        physicsState.Position = new Vector2(newX, physicsState.Position.Y);
-        horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
-    }
-
     public void ThrowHammer()
     {
-        SummonHammer?.Invoke(physicsState.Position, facingDirection);
+        SummonHammer?.Invoke(Position, facingDirection);
     }
 }

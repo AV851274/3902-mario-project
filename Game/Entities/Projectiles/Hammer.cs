@@ -1,7 +1,5 @@
-using Mario.Game.Interfaces;
 using Mario.Game.Physics;
-using Mario.Game.Physics.Aspects;
-using Mario.Game.Physics.State;
+using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,42 +11,41 @@ public class Hammer : IProjectile
     private float lifeTime;
     private float elapsedTime = 0f;
     private float deathY;
-    private readonly PhysicsController physicsController;
-    private PhysicsState physicsState;
 
-    public Vector2 Position => physicsState.Position;
-    public bool Active { get; private set; }
-    public Vector2 Velocity => physicsState.Velocity;
+    public Vector2 PendingAcceleration { get; set; }
+    public bool IsOnGround { get; set; }
+    public bool CollisionEnabled => false;
+    public Vector2 Position { get; set; }
+    public Box Bounds => new Box(Position.X, Position.Y, 32, 32);
+    private bool active;
+    public bool Active => active && Position.Y < deathY;
+    public Vector2 Velocity { get; set; }
 
-
-    public Hammer(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime, float gravity, float deathY)
+    public Hammer(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime, float deathY)
     {
         this.sprite = sprite;
-        physicsState = new PhysicsState(position, velocity);
+        Position = position;
+        Velocity = velocity;
         this.lifeTime = lifeTime;
         this.deathY = deathY;
-        physicsController = new PhysicsController
-        {
-            GravityPhysics = new GravityPhysics(gravity),
-            MovementPhysics = new MovementPhysics()
-        };
-        Active = true;
+
+        active = true;
     }
 
     public void Update(GameTime gameTime)
     {
+        if (!Active) return;
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         elapsedTime += deltaTime;
         if (elapsedTime > lifeTime)
         {
-            Active = false;
+            active = false;
             return;
         }
 
-        physicsController.Update(ref physicsState, deltaTime);
         if (Position.Y >= deathY)
         {
-            Active = false;
+            active = false;
         }
 
         sprite.Play("Idle");

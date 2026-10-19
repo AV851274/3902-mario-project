@@ -1,3 +1,4 @@
+using Mario.Game.Physics;
 using System;
 using System.Collections.Generic;
 using Mario.Game.Animation;
@@ -31,7 +32,24 @@ public class Player : IPlayer
 
     public IPlayerBodyAction BodyAction => body;
     public IMarioPowerState MarioPowerState { get; private set; } = MarioPowerStateFactory.Create(MarioPower.Small);
-    public Vector2 Position => body.Position;
+
+    // Delegate Implementation of IPhysicsBody to body
+    public Vector2 Position
+    {
+        get => body.Position;
+        set => body.Position = value;
+    }
+
+    public Vector2 PendingAcceleration
+    {
+        get => body.PendingAcceleration;
+        set => body.PendingAcceleration = value;
+    }
+
+    public float GravityScale => body.GravityScale;
+    public float MaxFallSpeed => body.MaxFallSpeed;
+    
+
     public event Action<Vector2, Direction> SummonFireball;
     public event Action Died;
     public Vector2 Velocity
@@ -46,31 +64,7 @@ public class Player : IPlayer
         set => body.IsOnGround = value;
     }
 
-    public void SetPosition(Vector2 position)
-    {
-        body.Position = position;
-    }
-    public Rectangle Bounds
-    {
-        get
-        {
-            bool isSmall = MarioPowerState.Power == MarioPower.Small;
-
-            int width = 36;
-            int height = isSmall ? 48 : 88;
-
-            int x = (int)Position.X;
-            int y = (int)Position.Y;
-
-            if (!isSmall)
-            {
-                y -= 40;
-            }
-
-            return new Rectangle(x, y, width, height);
-        }
-    }
-
+    public Box Bounds => body.Bounds;
 
     public Player(SpriteFactory factory, Vector2 position)
     {
@@ -123,6 +117,8 @@ public class Player : IPlayer
 
     private void RefreshSprite()
     {
+        bool isSmall = MarioPowerState.Power == MarioPower.Small;
+        body.LocalBounds = new Box(0, isSmall ? 0 : -40, 36, isSmall ? 48 : 88);
         appearance = appearancesTable[new AppearanceKey(MarioPowerState.Power, isSwimming)];
         timeSinceThrow = float.PositiveInfinity;
     }
@@ -135,6 +131,27 @@ public class Player : IPlayer
 
         SetPower(MarioPowerState.TakeDamage());
         invincibleTimer = InvincibleDuration;
+    }
+
+    public void OnCollision(in CollisionEvent collision)
+    {
+        if (collision.Other is IEnemy enemy && !enemy.IsDefeated)
+        {
+            bool stomped = collision.Normal.Y < 0f && collision.RelativeVelocityBefore.Y > 0f;
+            if (stomped)
+            {
+                enemy.Stomp();
+                Velocity = new Vector2(Velocity.X, -350f);
+                IsOnGround = false;
+            }
+            else if (enemy.CanHurtPlayer)
+                TakeDamage();
+        }
+        else if (collision.Other is IItem item && !item.IsCollected)
+            item.Collect(this);
+        else if (collision.Other is IBlock block && collision.Normal.Y > 0f &&
+                 collision.RelativeVelocityBefore.Y < 0f)
+            block.Hit();
     }
 
     public void Crouch()
@@ -151,7 +168,6 @@ public class Player : IPlayer
     public void Update(GameTime gameTime)
     {
         body.Update(gameTime);
-        body.IsOnGround = false;
         facingDirection = body.FacingDirection;
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         timeSinceThrow += deltaTime;
@@ -166,6 +182,7 @@ public class Player : IPlayer
 
         attackPressed = false;
     }
+
     public void UpdateAnimation(GameTime gameTime)
     {
         string animation;

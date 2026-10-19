@@ -7,4 +7,5 @@ public interface IGameObject
 {
     public void Draw(SpriteBatch spriteBatch);
     public void Update(GameTime gameTime);
+    public bool Active => true;
 }

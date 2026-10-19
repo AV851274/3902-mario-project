@@ -1,48 +1,38 @@
-using Mario.Game.Interfaces;
 using Mario.Game.Physics;
-using Mario.Game.Physics.Aspects;
-using Mario.Game.Physics.State;
+using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Mario.Game.Entities.Enemies;
 
-public class Goomba : IEnemy
+public class Goomba : IEnemy, IPhysicsBody
 {
     private const float WalkSpeed = 60f;
     private const int Size = 32;
 
     private ISprite sprite;
 
-    private readonly PhysicsController physicsController;
-    private readonly HorizontalVelocityPhysics horizontalMovement;
-    private readonly GravityPhysics gravityPhysics;
-    private PhysicsState physicsState;
     private float leftBound;
     private float rightBound;
     private bool isStomped;
 
-    public Vector2 Position
-    {
-        get { return physicsState.Position; }
-    }
+    public Vector2 PendingAcceleration { get; set; }
+    public bool IsOnGround { get; set; }
+    public float GravityScale => 1f;
+    public Vector2 Position { get; set; }
+    public Vector2 Velocity { get; set; }
 
-    public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, Size, Size);
+    public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
+    public bool Active => Position.Y <= 1000f;
+    public bool CollisionEnabled => Active && !isStomped;
     public bool IsDefeated => isStomped;
     public bool CanHurtPlayer => !isStomped;
 
     public Goomba(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
     {
         this.sprite = sprite;
-        physicsState = new PhysicsState(initialPosition, Vector2.Zero);
-        horizontalMovement = new HorizontalVelocityPhysics(-WalkSpeed);
-        gravityPhysics = new GravityPhysics(gravity: 1000f);
-        physicsController = new PhysicsController
-        {
-            HorizontalVelocityPhysics = horizontalMovement,
-            GravityPhysics = gravityPhysics,
-            MovementPhysics = new MovementPhysics()
-        };
+        Position = initialPosition;
+        Velocity = new Vector2(-WalkSpeed, 0f);
         leftBound = initialPosition.X - patrolDistance;
         rightBound = initialPosition.X + patrolDistance;
     }
@@ -58,17 +48,16 @@ public class Goomba : IEnemy
         if (!isStomped)
         {
             //TURN GOOMBA AROUND WHEN IT HITS THE EDGE OF ITS PATROL AREA
-            if (physicsState.Position.X <= leftBound || physicsState.Position.X >= rightBound)
+            if (Position.X <= leftBound || Position.X >= rightBound)
             {
-                horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
+                Velocity = new Vector2(-Velocity.X, Velocity.Y);
             }
         }
         else
         {
-            horizontalMovement.VelocityX = 0f;
+            Velocity = new Vector2(0f, Velocity.Y);
         }
 
-        physicsController.Update(ref physicsState, (float)gameTime.ElapsedGameTime.TotalSeconds);
         sprite.UpdateAnimation(gameTime);
     }
 
@@ -79,22 +68,14 @@ public class Goomba : IEnemy
         
         sprite.Play("Stomped");
         isStomped = true;
-        horizontalMovement.VelocityX = 0f;
+        Velocity = new Vector2(0f, Velocity.Y);
     }
 
-    public void LandOn(float groundTop)
+    public void OnCollision(in CollisionEvent collision)
     {
-        if (isStomped)
-            return;
-
-        physicsState.Position = new Vector2(physicsState.Position.X, groundTop - Size);
-        physicsState.Velocity = new Vector2(physicsState.Velocity.X, 0f);
-        physicsState.IsOnGround = true;
-    }
-
-    public void BounceOffWall(float newX)
-    {
-        physicsState.Position = new Vector2(newX, physicsState.Position.Y);
-        horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
+        if (collision.Other is IBlock && collision.Normal.X != 0f)
+        {
+            Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
+        }
     }
 }

@@ -4,11 +4,9 @@ using Mario.Game.Interfaces.Player;
 
 namespace Mario.Game.Interfaces;
 
-public interface IItem: IGameObject
+public interface IItem: IGameObject, ICollider
 {
     Vector2 Position { get; }
-    Rectangle Bounds { get; }
     bool IsCollected { get; }
     void Collect(IPlayer player);
-    void BounceOffWall(float newX);
 }

@@ -1,28 +1,21 @@
+using Mario.Game.Physics;
 using System;
 using Mario.Game.Animation;
 using Mario.Game.Interfaces;
-using Mario.Game.Physics;
-using Mario.Game.Physics.Aspects;
-using Mario.Game.Physics.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Mario.Game.Entities.Enemies;
 
-public class Turtle : IEnemy
+public class Turtle : IEnemy, IPhysicsBody
 {
     private const float WalkSpeed = 60f;
     private const float KickSpeed = 6 * WalkSpeed;
-    private const float Gravity = 1000f;
     private const float KickGraceTime = 0.25f;
     private const int Width = 32;
     private const int Height = 48;
 
     private ISprite sprite;
-    private readonly PhysicsController physicsController;
-    private readonly HorizontalVelocityPhysics horizontalMovement;
-    private readonly GravityPhysics gravityPhysics;
-    private PhysicsState physicsState;
     private float leftBound;
     private float rightBound;
     private bool isStomped;
@@ -31,8 +24,14 @@ public class Turtle : IEnemy
     private Direction facingDirection = Direction.Left;
 
     public Direction FacingDirection => facingDirection;
-    public Vector2 Position => physicsState.Position;
-    public Rectangle Bounds => new Rectangle((int)Position.X, (int)Position.Y, Width, Height);
+    public Vector2 PendingAcceleration { get; set; }
+    public bool IsOnGround { get; set; }
+    public float GravityScale => 1f;
+    public Vector2 Position { get; set; }
+    public Vector2 Velocity { get; set; }
+    public Box Bounds => new Box(Position.X, Position.Y, Width, Height);
+    public bool Active => Position.Y <= 1000f;
+    public bool CollisionEnabled => Active;
 
     // A shell stays in the level, so a Koopa is never fully defeated
     public bool IsDefeated => false;
@@ -43,15 +42,8 @@ public class Turtle : IEnemy
     public Turtle(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
     {
         this.sprite = sprite;
-        physicsState = new PhysicsState(initialPosition, Vector2.Zero);
-        horizontalMovement = new HorizontalVelocityPhysics(-WalkSpeed);
-        gravityPhysics = new GravityPhysics(Gravity);
-        physicsController = new PhysicsController
-        {
-            HorizontalVelocityPhysics = horizontalMovement,
-            GravityPhysics = gravityPhysics,
-            MovementPhysics = new MovementPhysics()
-        };
+        Position = initialPosition;
+        Velocity = new Vector2(-WalkSpeed, 0f);
         leftBound = initialPosition.X - patrolDistance;
         rightBound = initialPosition.X + patrolDistance;
     }
@@ -75,20 +67,19 @@ public class Turtle : IEnemy
             //TURN TURTLE AROUND WHEN IT HITS THE EDGE OF ITS PATROL AREA
             if (Position.X <= leftBound || Position.X >= rightBound)
             {
-                horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
-                facingDirection = horizontalMovement.VelocityX < 0
+                Velocity = new Vector2(-Velocity.X, Velocity.Y);
+                facingDirection = Velocity.X < 0
                     ? Direction.Left
                     : Direction.Right;
             }
         }
 
         if (isStomped && !isKicked)
-            horizontalMovement.VelocityX = 0f;
-        else if (isKicked && horizontalMovement.VelocityX == 0f)
-            horizontalMovement.VelocityX = KickSpeed *
-                (facingDirection == Direction.Left ? -1 : 1);
+            Velocity = new Vector2(0f, Velocity.Y);
+        else if (isKicked && Velocity.X == 0f)
+            Velocity = new Vector2(KickSpeed *
+                (facingDirection == Direction.Left ? -1 : 1), Velocity.Y);
 
-        physicsController.Update(ref physicsState, (float)gameTime.ElapsedGameTime.TotalSeconds);
         sprite.UpdateAnimation(gameTime);
     }
 
@@ -103,27 +94,22 @@ public class Turtle : IEnemy
         {
             isKicked = true;
             kickGraceTimer = KickGraceTime;
-            horizontalMovement.VelocityX = KickSpeed *
-                (facingDirection == Direction.Left ? -1 : 1);
+            Velocity = new Vector2(KickSpeed *
+                (facingDirection == Direction.Left ? -1 : 1), Velocity.Y);
         }
         else
         {
             isKicked = false;
-            horizontalMovement.VelocityX = 0f;
+            Velocity = new Vector2(0f, Velocity.Y);
         }
     }
 
-    public void LandOn(float groundTop)
+    public void OnCollision(in CollisionEvent collision)
     {
-        physicsState.Position = new Vector2(physicsState.Position.X, groundTop - Height);
-        physicsState.Velocity = new Vector2(physicsState.Velocity.X, 0f);
-        physicsState.IsOnGround = true;
-    }
-
-    public void BounceOffWall(float newX)
-    {
-        physicsState.Position = new Vector2(newX, physicsState.Position.Y);
-        horizontalMovement.VelocityX = -horizontalMovement.VelocityX;
-        facingDirection = horizontalMovement.VelocityX < 0 ? Direction.Left : Direction.Right;
+        if (collision.Other is IBlock && collision.Normal.X != 0f)
+        {
+            Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
+            facingDirection = Velocity.X < 0f ? Direction.Left : Direction.Right;
+        }
     }
 }

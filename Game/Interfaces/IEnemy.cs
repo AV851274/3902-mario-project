@@ -3,10 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Mario.Game.Interfaces;
 
-public interface IEnemy : IGameObject
+public interface IEnemy : IGameObject, ICollider
 {
     Vector2 Position { get; }
-    Rectangle Bounds { get; }
 
     // Defeated enemies are ignored by collisions (e.g. a stomped Goomba falling off screen)
     bool IsDefeated { get; }
@@ -15,6 +14,4 @@ public interface IEnemy : IGameObject
     bool CanHurtPlayer { get; }
 
     void Stomp();
-    void LandOn(float groundTop);
-    void BounceOffWall(float newX);
 }

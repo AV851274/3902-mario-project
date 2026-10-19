@@ -1,7 +1,5 @@
-using Mario.Game.Interfaces;
 using Mario.Game.Physics;
-using Mario.Game.Physics.Aspects;
-using Mario.Game.Physics.State;
+using Mario.Game.Interfaces;
 using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,74 +8,41 @@ using Mario.Game.Interfaces.Player;
 
 namespace Mario.Game.Entities.Items;
 
-public class Item : IItem
+public class Item : IItem, IPhysicsBody
 {
     private const float MushroomSpeed = 100f;
-    private const float Gravity = 1000f;
-    private const float GroundY = 384f;
     private const int Size = 48;
-    private readonly PhysicsController physicsController;
-    private readonly HorizontalVelocityPhysics horizontalMovement;
-    private readonly GravityPhysics gravityPhysics;
     public bool IsCollected { get; private set; }
-    public Rectangle Bounds => new Rectangle(
-        (int)physicsState.Position.X,
-        (int)physicsState.Position.Y,
+    public bool Active => !IsCollected;
+    public Box Bounds => new Box(
+        Position.X,
+        Position.Y,
         Size,
         Size);
 
     private ISprite sprite;
     private ItemType type;
-    private PhysicsState physicsState;
     private float direction = 1f;
 
-    public Vector2 Position => physicsState.Position;
+    public Vector2 PendingAcceleration { get; set; }
+    public bool IsOnGround { get; set; }
+    public float GravityScale => type == ItemType.Mushroom || type == ItemType.Star ? 1f : 0f;
+    public float BounceSpeed { get; }
+    public bool CollisionEnabled => Active;
+    public Vector2 Position { get; set; }
+    public Vector2 Velocity { get; set; }
 
-    public Item(SpriteFactory spriteFactory, ItemType type, Vector2 position, float bounceHeight = 80f)
+    public Item(SpriteFactory spriteFactory, ItemType type, Vector2 position, float bounceSpeed = 400f)
     {
         this.type = type;
-        physicsState = new PhysicsState(position, Vector2.Zero);
+        Position = position;
         sprite = spriteFactory.CreateItemSprite(type);
-        horizontalMovement = new HorizontalVelocityPhysics(0f);
-        gravityPhysics = new GravityPhysics(Gravity)
-        {
-            Enabled = type == ItemType.Mushroom || type == ItemType.Star
-        };
-
-        if (type == ItemType.Star)
-        {
-            physicsController = new PhysicsController
-            {
-                HorizontalVelocityPhysics = horizontalMovement,
-                GravityPhysics = gravityPhysics,
-                MovementPhysics = new MovementPhysics(),
-                BouncingPhysics = new BouncingPhysics(
-                    bounceHeight,
-                    groundY: GroundY,
-                    gravity: Gravity)
-            };
-        }
-        else if (type == ItemType.Mushroom)
-        {
-            physicsController = new PhysicsController
-            {
-                HorizontalVelocityPhysics = horizontalMovement,
-                GravityPhysics = gravityPhysics,
-                MovementPhysics = new MovementPhysics(),
-                GroundCollisionPhysics = new GroundCollisionPhysics(GroundY)
-            };
-        }
-        else
-        {
-            physicsController = new PhysicsController
-            {
-                HorizontalVelocityPhysics = horizontalMovement,
-                MovementPhysics = new MovementPhysics()
-            };
-        }
+        if (!float.IsFinite(bounceSpeed) || bounceSpeed < 0f)
+            throw new System.ArgumentOutOfRangeException(nameof(bounceSpeed));
+        BounceSpeed = type == ItemType.Star ? bounceSpeed : 0f;
     }
 
-        public void Collect(IPlayer player)
+    public void Collect(IPlayer player)
     {
         if (IsCollected)
         {
@@ -118,23 +83,29 @@ public class Item : IItem
 
     public void Update(GameTime gameTime)
     {
-        horizontalMovement.VelocityX =
-            type == ItemType.Mushroom || type == ItemType.Star
-                ? direction * MushroomSpeed
-                : 0f;
-
-        physicsController.Update(ref physicsState, (float)gameTime.ElapsedGameTime.TotalSeconds);
+        float speed = type == ItemType.Mushroom || type == ItemType.Star
+            ? direction * MushroomSpeed
+            : 0f;
+        Velocity = new Vector2(speed, Velocity.Y);
 
         sprite.UpdateAnimation(gameTime);
     }
-    public void BounceOffWall(float newX)
+    public void OnCollision(in CollisionEvent collision)
     {
-        physicsState.Position = new Vector2(newX, physicsState.Position.Y);
-        direction = -direction;
+        if (collision.Other is IBlock && collision.Normal.X != 0f)
+        {
+            direction = -direction;
+            Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
+        }
+        else if (collision.Other is IBlock && collision.Normal.Y < 0f && IsOnGround && BounceSpeed > 0f)
+        {
+            Velocity = new Vector2(Velocity.X, -BounceSpeed);
+            IsOnGround = false;
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        sprite.Draw(spriteBatch, physicsState.Position);
+        sprite.Draw(spriteBatch, Position);
     }
 }

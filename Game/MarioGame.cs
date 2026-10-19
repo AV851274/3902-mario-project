@@ -23,13 +23,13 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
 
-    private IPlayer player;
     private IController keyboardController;
     private IController mouseController;
     private SpriteFactory spriteFactory;
     private GameEntities gameEntities = new GameEntities();
     private Camera2D camera = new Camera2D();
     private int levelWidth;
+    private readonly PhysicsEngine physicsEngine;
 
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
     private static readonly string[] RoomFiles = { "level1.csv", "room2.csv" };
@@ -38,6 +38,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     public MarioGame()
     {
+        physicsEngine = new PhysicsEngine(gravity: 1000f);
         graphics = new GraphicsDeviceManager(this);
         graphics.PreferredBackBufferWidth = 1280;
         graphics.PreferredBackBufferHeight = 768;
@@ -103,13 +104,16 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     // Keys 1-6: switch between regular and swimming Mario, then set his size
     public void ChangeMario(bool swimming, MarioPower power)
     {
-        player.SetSwimming(swimming);
-        player.SetPower(power);
+        foreach (IPlayer player in gameEntities.Players)
+        {
+            player.SetSwimming(swimming);
+            player.SetPower(power);
+        }
     }
 
     private IPlayer CreateMario(bool swimming, Vector2 position)
     {
-        player = new Player(spriteFactory, position);
+        IPlayer player = new Player(spriteFactory, position);
         player.SetSwimming(swimming);
         player.SummonFireball += SpawnFireball;
         player.Died += OnMarioDied;
@@ -133,7 +137,6 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             position + new Vector2(25 * flip, -50f),
             velocity,
             1f,
-            1000f,
             400f
         ));
     }
@@ -147,7 +150,6 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             position + new Vector2(20f * directionSign, -20f),
             new Vector2(250f * directionSign, -350f),
             3f,
-            1000f,
             600f
         ));
     }
@@ -161,59 +163,16 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         keyboardController.Update(gameTime);
         mouseController.Update(gameTime);
 
-        // Save Mario's position before moving
-        Rectangle previousBounds = player.Bounds;
+        gameEntities.Update(gameTime);
+        physicsEngine.Step(gameEntities, gameTime);
 
-        // Update Mario's movement and gravity
-        player.Update(gameTime);
-
-        // Resolve collisions with walls
-        CollisionManager.ResolvePlayerWallCollisions(player, gameEntities.Blocks, previousBounds);
-        // Resolve collisions with ceilings
-        CollisionManager.ResolvePlayerCeilingCollisions(player, gameEntities.Blocks, previousBounds);
-        // Resolve collisions with blocks
-        CollisionManager.ResolvePlayerBlockCollisions(player, gameEntities.Blocks, previousBounds);
-        // Resolve collisions with items
-        CollisionManager.ResolvePlayerItemCollisions(player, gameEntities.Items);
-        gameEntities.Items.RemoveAll(item => item.IsCollected);
-
-        player.UpdateAnimation(gameTime);
-
-        // Update camera
-        camera.Follow(player.Position, GraphicsDevice.Viewport.Width, levelWidth);
-
-        foreach (IItem currentItem in gameEntities.Items)
+        foreach (IPlayer player in gameEntities.Players)
         {
-            Rectangle previousItemBounds = currentItem.Bounds;
-            currentItem.Update(gameTime);
-            CollisionManager.ResolveItemWallCollisions(currentItem, gameEntities.Blocks, previousItemBounds);
+            player.UpdateAnimation(gameTime);
+            if (player.Position.Y > 1000f)
+                reloadRoomRequested = true;
         }
-
-        foreach (IBlock currentBlock in gameEntities.Blocks)
-        {
-            currentBlock.Update(gameTime);
-        }
-
-        foreach (IEnemy enemy in gameEntities.Enemies)
-        {
-            Rectangle previousEnemyBounds = enemy.Bounds;
-            enemy.Update(gameTime);
-            CollisionManager.ResolveEnemyBlockCollisions(enemy, gameEntities.Blocks, previousEnemyBounds);
-        }
-
-        // Stomp enemies Mario lands on, take damage from the rest
-        CollisionManager.ResolvePlayerEnemyCollisions(player, gameEntities.Enemies, previousBounds);
-
-        // Defeated enemies fall off the bottom of the level; remove them once they're far below
-        gameEntities.Enemies.RemoveAll(enemy => enemy.Position.Y > 1000f);
-
-        // Falling below the level counts as a death
-        if (player.Position.Y > 1000f)
-        {
-            reloadRoomRequested = true;
-        }
-
-        UpdateProjectiles(gameTime);
+        camera.Follow(gameEntities.Players[0].Position, GraphicsDevice.Viewport.Width, levelWidth);
 
         if (reloadRoomRequested)
         {
@@ -247,14 +206,4 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         base.Draw(gameTime);
     }
 
-    private void UpdateProjectiles(GameTime gameTime)
-    {
-        foreach (var projectile in gameEntities.Projectiles)
-        {
-            if (projectile.Active)
-                projectile.Update(gameTime);
-        }
-
-        gameEntities.Projectiles.RemoveAll(p => !p.Active);
-    }
 }
