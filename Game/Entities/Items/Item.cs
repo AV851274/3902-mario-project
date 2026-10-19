@@ -14,6 +14,7 @@ public class Item : IItem, IPhysicsBody
     private const int Size = 48;
     public bool IsCollected { get; private set; }
     public bool Active => !IsCollected;
+    public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(
         Position.X,
         Position.Y,

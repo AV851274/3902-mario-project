@@ -21,15 +21,34 @@ public static class CollisionManager
 
         Vector2 relativeVelocity = GetRelativeVelocity(a, b);
         Vector2 normal = result.Value.Normal;
+        // Ignore pass-through contacts before notifying either collider.
+        if (!AcceptsContact(b, a, normal, relativeVelocity, prevB, prevA) ||
+            !AcceptsContact(a, b, -normal, -relativeVelocity, prevA, prevB))
+            return;
+
         // Current solids are static terrain; dynamic solid response is unsupported.
-        // Last && clause excludes collision unless landing for semisolids
-        if (a is IPhysicsBody bodyA && !a.IsSolid && b.IsSolid && (!b.isSemisolid || (normal.Y < 0f && relativeVelocity.Y > 0f)))
+        if (a is IPhysicsBody bodyA && a.BlockingMode == ICollider.BlockingModes.None &&
+            b.BlockingMode != ICollider.BlockingModes.None)
             ResolveBody(bodyA, normal, result.Value.Penetration);
-        else if (b is IPhysicsBody bodyB && !b.IsSolid && a.IsSolid && (!a.isSemisolid || (normal.Y < 0f && relativeVelocity.Y > 0f)))
+        else if (b is IPhysicsBody bodyB && b.BlockingMode == ICollider.BlockingModes.None &&
+                 a.BlockingMode != ICollider.BlockingModes.None)
             ResolveBody(bodyB, -normal, result.Value.Penetration);
 
         a.OnCollision(new CollisionEvent(b, normal, relativeVelocity));
         b.OnCollision(new CollisionEvent(a, -normal, -relativeVelocity));
+    }
+
+    // Normal and velocity are expressed from the other collider's perspective.
+    private static bool AcceptsContact(ICollider surface, ICollider other,
+        Vector2 normal, Vector2 relativeVelocity, Box? previousSurface, Box? previousOther)
+    {
+        if (surface.BlockingMode != ICollider.BlockingModes.TopOnly)
+            return true;
+
+        Box oldSurface = previousSurface ?? surface.Bounds;
+        Box oldOther = previousOther ?? other.Bounds;
+        return normal.Y < 0f && relativeVelocity.Y >= 0f &&
+               oldOther.Bottom <= oldSurface.Top + 0.1;
     }
 
     private static bool CanCollide(ICollider collider)

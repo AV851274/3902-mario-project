@@ -18,13 +18,32 @@ public class Block : IBlock
     private ISprite sprite;
     private BlockType type;
     private float bumpTimer;
-    private float disappearTimer = -100f;
     private float cloudDisappearTime = 2f;
-    public bool Active => disappearTimer > 0f || disappearTimer < -50f;
+    private float cloudComebackTime = -2f;
+    private bool cloudTimerStarted = false;
+    private float cloudTimer = 0;
+    public bool Active => true;
+
 
     public Vector2 Position { get; private set; }
-    public bool IsSolid => true;
-    public bool isSemisolid => type == BlockType.Bridge || type == BlockType.Cloud || type == BlockType.MovingPlatform;
+
+    public ICollider.BlockingModes BlockingMode
+    {
+        get {
+            if (type == BlockType.Cloud)
+            {
+                return cloudTimerStarted && cloudTimer <= 0f
+                    ? ICollider.BlockingModes.None
+                    : ICollider.BlockingModes.TopOnly;
+            }
+
+            if (type == BlockType.MovingPlatform || type == BlockType.Bridge)
+                return ICollider.BlockingModes.TopOnly;
+
+            return ICollider.BlockingModes.Solid;
+        }
+    }
+
     public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
 
     public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position)
@@ -38,14 +57,14 @@ public class Block : IBlock
     public void OnCollision(CollisionEvent collision)
     {
         //Set timer to despawn cloud if it's been landed on.
-        if (type == BlockType.Cloud && collision.Normal.Y < 0f && 
-        (collision.Other is IPlayer || collision.Other is IEnemy) && disappearTimer < -75f 
-        && collision.RelativeVelocityBefore.Y < 0f)
+        if (type == BlockType.Cloud &&
+            collision.Normal.Y > 0f &&
+            (collision.Other is IPlayer || collision.Other is IEnemy) &&
+            !cloudTimerStarted &&
+            collision.RelativeVelocityBefore.Y < 0f)
         {
-            disappearTimer = cloudDisappearTime;
-        } else
-        {
-            return;
+            cloudTimerStarted = true;
+            cloudTimer = cloudDisappearTime;
         }
 
         //bool stomped = collision.Normal.Y < 0f && collision.RelativeVelocityBefore.Y > 0f;
@@ -71,15 +90,26 @@ public class Block : IBlock
     {
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         bumpTimer = Math.Max(0f, bumpTimer - deltaTime);
-        handleTimer(deltaTime);
+
+        if (cloudTimerStarted)
+            cloudTimer -= deltaTime;
+
+        if (cloudTimerStarted && cloudTimer <= cloudComebackTime)
+        {
+            cloudTimerStarted = false;
+            cloudTimer = 0;
+        }
 
         sprite.UpdateAnimation(gameTime);
     }
 
     public void Draw(SpriteBatch spriteBatch)
     {
+        if (cloudTimerStarted && cloudTimer <= 0f)
+            return;
         sprite.Draw(spriteBatch, Position - new Vector2(0, BumpOffset()));
     }
+
     private float BumpOffset()
     {
         if (bumpTimer <= 0f)
@@ -90,13 +120,4 @@ public class Block : IBlock
         float progress = 1f - (bumpTimer / BumpDuration);
         return MathF.Sin(progress * MathF.PI) * BumpHeight;
     }
-
-    private void handleTimer(float deltaTime)
-    {
-        if (disappearTimer > 0f)
-        {
-            disappearTimer -= deltaTime;
-        }
-    }
-
 }

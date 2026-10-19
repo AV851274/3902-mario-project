@@ -17,6 +17,7 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
     public Vector2 PendingAcceleration { get; set; }
     public bool IsOnGround { get; set; }
     public float GravityScale => 1f;
+    public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(Position.X, Position.Y, width, height);
     public bool Active => Position.Y <= 1000f;
     public bool CollisionEnabled => Active && !IsDefeated;

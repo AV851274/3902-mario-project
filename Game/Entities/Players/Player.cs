@@ -67,6 +67,7 @@ public class Player : IPlayer
         set => body.IsOnGround = value;
     }
 
+    public ICollider.BlockingModes BlockingMode => body.BlockingMode;
     public Box Bounds => body.Bounds;
 
     public Player(SpriteFactory factory, Vector2 position)
