@@ -16,12 +16,12 @@ SPRINT 3 - STILL NEEDED
    [ ] Place all new blocks into level1.csv
 
 2) Enemies: gravity, block collision, and player collision (stomping)
-   [ ] Gravity for all enemies (Goomba, Koopa, Hammer Bro)
+   [DONE] Gravity for all enemies (Goomba, Koopa, Hammer Bro)
        - Always fall, so they can walk off ledges
-   [ ] Enemy <-> block collision
+   [DONE] Enemy <-> block collision
        - Land on top of blocks (fixes the Goomba floating too high)
        - Turn around when walking into a wall/block (replaces the patrol bounds)
-   [ ] Enemy <-> player collision
+   [DONE] Enemy <-> player collision
        - Mario landing on top of an enemy = Stomp() and Mario bounces up
        - Mario touching an enemy from the side = Mario takes damage
    [ ] Enemies placed from level1.csv only (remove the hard-coded ones in MarioGame.ResetGame)
@@ -37,11 +37,11 @@ SPRINT 3 - STILL NEEDED
 
 4) Remaining collisions (rubric: "all types of collisions")
    [DONE] Item <-> block: mushroom/star land on blocks and turn around at walls (then remove GroundY from Item)
-   [ ] Fireball <-> enemy: fireball kills the enemy and disappears
-   [ ] Fireball <-> block: bounces on blocks instead of a fixed ground height, disappears when hitting a wall
+   [DONE] Fireball <-> enemy: fireball kills the enemy and disappears
+   [DONE] Fireball <-> block: bounces on blocks instead of a fixed ground height, disappears when hitting a wall
    [ ] Hammer <-> Mario: Hammer Bro's hammer damages Mario
    [ ] Kicked Koopa shell <-> other enemies: shell knocks them out
-   [ ] Shared collision code: CollisionManager repeats the same overlap logic for player/enemy/item;
+   [DONE] Shared collision code: CollisionManager repeats the same overlap logic for player/enemy/item;
        consider one helper that works for any object with Bounds
 
 5) Blocks
