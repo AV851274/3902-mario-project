@@ -90,7 +90,7 @@ public class Item : IItem, IPhysicsBody
 
         sprite.UpdateAnimation(gameTime);
     }
-    public void OnCollision(in CollisionEvent collision)
+    public void OnCollision(CollisionEvent collision)
     {
         if (collision.Other is IBlock && collision.Normal.X != 0f)
         {

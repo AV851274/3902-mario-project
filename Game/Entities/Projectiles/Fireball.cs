@@ -55,7 +55,7 @@ public class Fireball : IProjectile
         sprite.UpdateAnimation(gameTime);
     }
 
-    public void OnCollision(in CollisionEvent collision)
+    public void OnCollision(CollisionEvent collision)
     {
         if (!Active)
             return;

@@ -133,7 +133,7 @@ public class Player : IPlayer
         invincibleTimer = InvincibleDuration;
     }
 
-    public void OnCollision(in CollisionEvent collision)
+    public void OnCollision(CollisionEvent collision)
     {
         if (collision.Other is IEnemy enemy && !enemy.IsDefeated)
         {
