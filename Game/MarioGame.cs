@@ -33,7 +33,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private readonly PhysicsEngine physicsEngine;
 
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
-    private static readonly string[] RoomFiles = { "level1.csv", "room2.csv" };
+    private static readonly string[] RoomFiles = { "testRoom.csv", "level1.csv", "room2.csv" };
     private int currentRoom;
     private bool reloadRoomRequested;
 
