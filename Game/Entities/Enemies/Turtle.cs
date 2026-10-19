@@ -14,23 +14,24 @@ public class Turtle : EnemyBase
     private const int Width = 32;
     private const int Height = 48;
 
-    private float leftBound;
-    private float rightBound;
+    // private float leftBound;
+    // private float rightBound;
     private bool isStomped;
     private bool isKicked;
     private float kickGraceTimer;
     private Direction facingDirection = Direction.Left;
 
     public Direction FacingDirection => facingDirection;
+
     // Walking Koopas and moving shells hurt; a resting shell (or one just kicked) doesn't
     public override bool CanHurtPlayer => !IsDefeated && (!isStomped || (isKicked && kickGraceTimer <= 0f));
 
-    public Turtle(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
+    public Turtle(ISprite sprite, Vector2 initialPosition)
         : base(sprite, initialPosition, Width, Height)
     {
         Velocity = new Vector2(-WalkSpeed, 0f);
-        leftBound = initialPosition.X - patrolDistance;
-        rightBound = initialPosition.X + patrolDistance;
+        // leftBound = initialPosition.X - patrolDistance;
+        // rightBound = initialPosition.X + patrolDistance;
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -56,23 +57,11 @@ public class Turtle : EnemyBase
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         kickGraceTimer = Math.Max(0f, kickGraceTimer - deltaTime);
 
-        if (!isStomped || isKicked)
-        {
-            //TURN TURTLE AROUND WHEN IT HITS THE EDGE OF ITS PATROL AREA
-            if (Position.X <= leftBound || Position.X >= rightBound)
-            {
-                Velocity = new Vector2(-Velocity.X, Velocity.Y);
-                facingDirection = Velocity.X < 0
-                    ? Direction.Left
-                    : Direction.Right;
-            }
-        }
-
         if (isStomped && !isKicked)
             Velocity = new Vector2(0f, Velocity.Y);
         else if (isKicked && Velocity.X == 0f)
-            Velocity = new Vector2(KickSpeed *
-                (facingDirection == Direction.Left ? -1 : 1), Velocity.Y);
+            Velocity =
+                new Vector2(KickSpeed * (facingDirection == Direction.Left ? -1 : 1), Velocity.Y);
 
         sprite.UpdateAnimation(gameTime);
     }
@@ -92,7 +81,7 @@ public class Turtle : EnemyBase
             isKicked = true;
             kickGraceTimer = KickGraceTime;
             Velocity = new Vector2(KickSpeed *
-                (facingDirection == Direction.Left ? -1 : 1), Velocity.Y);
+                                   (facingDirection == Direction.Left ? -1 : 1), Velocity.Y);
         }
         else
         {

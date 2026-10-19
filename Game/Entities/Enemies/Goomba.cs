@@ -9,18 +9,14 @@ public class Goomba : EnemyBase
     private const float WalkSpeed = 60f;
     private const int Size = 32;
 
-    private float leftBound;
-    private float rightBound;
     private bool isStomped;
 
     public override bool IsDefeated => isStomped || base.IsDefeated;
 
-    public Goomba(ISprite sprite, Vector2 initialPosition, int patrolDistance = 150)
+    public Goomba(ISprite sprite, Vector2 initialPosition)
         : base(sprite, initialPosition, Size, Size)
     {
         Velocity = new Vector2(-WalkSpeed, 0f);
-        leftBound = initialPosition.X - patrolDistance;
-        rightBound = initialPosition.X + patrolDistance;
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -31,15 +27,7 @@ public class Goomba : EnemyBase
 
     public override void Update(GameTime gameTime)
     {
-        if (!IsDefeated)
-        {
-            //TURN GOOMBA AROUND WHEN IT HITS THE EDGE OF ITS PATROL AREA
-            if (Position.X <= leftBound || Position.X >= rightBound)
-            {
-                Velocity = new Vector2(-Velocity.X, Velocity.Y);
-            }
-        }
-        else
+        if (IsDefeated)
         {
             Velocity = new Vector2(0f, Velocity.Y);
         }
@@ -54,7 +42,7 @@ public class Goomba : EnemyBase
 
         if (isStomped)
             return;
-        
+
         sprite.Play("Stomped");
         isStomped = true;
         Velocity = new Vector2(0f, Velocity.Y);
