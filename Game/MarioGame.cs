@@ -33,7 +33,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private readonly PhysicsEngine physicsEngine;
 
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
-    private static readonly string[] RoomFiles = { "level1.csv", "room2.csv" };
+    private static readonly string[] RoomFiles = { "testRoom.csv", "level1.csv", "room2.csv" };
     private int currentRoom;
     private bool reloadRoomRequested;
 
@@ -82,12 +82,14 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         currentRoom = roomIndex;
         gameEntities.Reset();
-        camera = new Camera2D();
 
         var level = LevelLoader.LoadLevel(Content, RoomFiles[currentRoom], gameEntities, spriteFactory);
 
         Vector2 marioSpawn = level.spawn;
         levelWidth = level.width;
+
+        // Zoom so the whole level height fits in the window
+        camera = new Camera2D(GraphicsDevice.Viewport.Height / (float)level.height);
 
         // Hammer Bros announce their throws; spawn the hammer projectile when they do
         foreach (IEnemy enemy in gameEntities.Enemies)
