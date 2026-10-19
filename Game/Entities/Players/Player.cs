@@ -31,7 +31,9 @@ public class Player : IPlayer
 
 
     public IPlayerBodyAction BodyAction => body;
-    public IMarioPowerState MarioPowerState { get; private set; } = MarioPowerStateFactory.Create(MarioPower.Small);
+
+    public IMarioPowerState MarioPowerState { get; private set; }
+        = MarioPowerStateFactory.Create(MarioPower.Small);
 
     // Delegate Implementation of IPhysicsBody to body
     public Vector2 Position
@@ -48,10 +50,11 @@ public class Player : IPlayer
 
     public float GravityScale => body.GravityScale;
     public float MaxFallSpeed => body.MaxFallSpeed;
-    
+
 
     public event Action<Vector2, Direction> SummonFireball;
     public event Action Died;
+
     public Vector2 Velocity
     {
         get => body.Velocity;
@@ -167,6 +170,12 @@ public class Player : IPlayer
 
     public void Update(GameTime gameTime)
     {
+        if (Position.Y > 1000f)
+        {
+            SetPower(MarioPower.Dead);
+            return;
+        }
+
         body.Update(gameTime);
         facingDirection = body.FacingDirection;
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;

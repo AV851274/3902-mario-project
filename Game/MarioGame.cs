@@ -10,8 +10,6 @@ using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
-using System.Collections.Generic;
 using Mario.Game.State;
 using Mario.Game.Levels;
 using Mario.Game.Rendering.Camera;
@@ -175,8 +173,6 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         foreach (IPlayer player in gameEntities.Players)
         {
             player.UpdateAnimation(gameTime);
-            if (player.Position.Y > 1000f)
-                reloadRoomRequested = true;
         }
         camera.Follow(gameEntities.Players[0].Position, GraphicsDevice.Viewport.Width, levelWidth);
 
