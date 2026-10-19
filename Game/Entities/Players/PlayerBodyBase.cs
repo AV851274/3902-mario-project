@@ -20,6 +20,7 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
     public virtual float GravityScale => 1f;
     public virtual float MaxFallSpeed => float.PositiveInfinity;
 
+    public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box LocalBounds { get; set; } = new Box(0, 0, 36, 48);
 
     public Box Bounds => new Box(

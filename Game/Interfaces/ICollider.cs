@@ -5,8 +5,15 @@ namespace Mario.Game.Interfaces;
 
 public interface ICollider
 {
+    public enum BlockingModes
+    {
+        None,
+        Solid,
+        TopOnly,
+    }
+
     Box Bounds { get; }
     bool CollisionEnabled => true;
-    bool IsSolid => false;
+    BlockingModes BlockingMode { get; }
     void OnCollision(CollisionEvent collision) { }
 }

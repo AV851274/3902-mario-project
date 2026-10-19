@@ -18,6 +18,7 @@ public class Fireball : IProjectile
     public bool IsOnGround { get; set; }
     public float BounceSpeed { get; }
     public bool CollisionEnabled => Active;
+    public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(Position.X, Position.Y, 64, 64);
     public bool Active { get; private set; }
 
@@ -60,7 +61,7 @@ public class Fireball : IProjectile
         if (!Active)
             return;
 
-        if (collision.Other.IsSolid)
+        if (collision.Other.BlockingMode != ICollider.BlockingModes.None)
         {
             if (collision.Normal.Y < 0f)
             {
