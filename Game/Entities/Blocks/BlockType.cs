@@ -13,4 +13,7 @@ public enum BlockType
     PipeTopRight,
     PipeLeft,
     PipeRight,
+    Bridge,
+    Cloud,
+    MovingPlatform
 }

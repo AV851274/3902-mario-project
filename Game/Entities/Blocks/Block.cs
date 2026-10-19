@@ -4,6 +4,7 @@ using Mario.Game.Interfaces;
 using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mario.Game.Interfaces.Player;
 
 namespace Mario.Game.Entities.Blocks;
 
@@ -17,10 +18,14 @@ public class Block : IBlock
     private ISprite sprite;
     private BlockType type;
     private float bumpTimer;
+    private float disappearTimer = -100f;
+    private float cloudDisappearTime = 2f;
+    public bool Active => disappearTimer > 0f || disappearTimer < -50f;
 
     public Vector2 Position { get; private set; }
-    public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
     public bool IsSolid => true;
+    public bool isSemisolid => type == BlockType.Bridge || type == BlockType.Cloud || type == BlockType.MovingPlatform;
+    public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
 
     public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position)
     {
@@ -28,6 +33,22 @@ public class Block : IBlock
         this.type = type;
         sprite = spriteFactory.CreateBlockSprite(type);
         Position = position;
+    }
+
+    public void OnCollision(CollisionEvent collision)
+    {
+        //Set timer to despawn cloud if it's been landed on.
+        if (type == BlockType.Cloud && collision.Normal.Y < 0f && 
+        (collision.Other is IPlayer || collision.Other is IEnemy) && disappearTimer < -75f 
+        && collision.RelativeVelocityBefore.Y < 0f)
+        {
+            disappearTimer = cloudDisappearTime;
+        } else
+        {
+            return;
+        }
+
+        //bool stomped = collision.Normal.Y < 0f && collision.RelativeVelocityBefore.Y > 0f;
     }
 
     public void Hit()
@@ -50,6 +71,7 @@ public class Block : IBlock
     {
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         bumpTimer = Math.Max(0f, bumpTimer - deltaTime);
+        handleTimer(deltaTime);
 
         sprite.UpdateAnimation(gameTime);
     }
@@ -68,4 +90,13 @@ public class Block : IBlock
         float progress = 1f - (bumpTimer / BumpDuration);
         return MathF.Sin(progress * MathF.PI) * BumpHeight;
     }
+
+    private void handleTimer(float deltaTime)
+    {
+        if (disappearTimer > 0f)
+        {
+            disappearTimer -= deltaTime;
+        }
+    }
+
 }

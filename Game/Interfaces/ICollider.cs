@@ -8,5 +8,6 @@ public interface ICollider
     Box Bounds { get; }
     bool CollisionEnabled => true;
     bool IsSolid => false;
+    bool isSemisolid => false;
     void OnCollision(CollisionEvent collision) { }
 }

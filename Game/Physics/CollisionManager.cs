@@ -22,9 +22,10 @@ public static class CollisionManager
         Vector2 relativeVelocity = GetRelativeVelocity(a, b);
         Vector2 normal = result.Value.Normal;
         // Current solids are static terrain; dynamic solid response is unsupported.
-        if (a is IPhysicsBody bodyA && !a.IsSolid && b.IsSolid)
+        // Last && clause excludes collision unless landing for semisolids
+        if (a is IPhysicsBody bodyA && !a.IsSolid && b.IsSolid && (!b.isSemisolid || (normal.Y < 0f && relativeVelocity.Y > 0f)))
             ResolveBody(bodyA, normal, result.Value.Penetration);
-        else if (b is IPhysicsBody bodyB && !b.IsSolid && a.IsSolid)
+        else if (b is IPhysicsBody bodyB && !b.IsSolid && a.IsSolid && (!a.isSemisolid || (normal.Y < 0f && relativeVelocity.Y > 0f)))
             ResolveBody(bodyB, -normal, result.Value.Penetration);
 
         a.OnCollision(new CollisionEvent(b, normal, relativeVelocity));

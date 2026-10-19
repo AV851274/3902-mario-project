@@ -139,6 +139,12 @@ public class LevelLoader
                     case "pr":
                         gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeRight, position));
                         break;
+                    case "bridge":
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.Bridge, position));
+                        break;
+                    case "cloud":
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.Cloud, position));
+                        break;
 
                     default:
                         throw new FormatException(
