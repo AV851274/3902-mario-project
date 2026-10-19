@@ -1,27 +1,39 @@
-using Mario.Game.Interfaces.Player;
+using Mario.Game.Commands;
 using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Mario.Game.Controllers;
 
-// TODO: mouse dash
 public class MouseController : IController
 {
-    // private IPlayer player;
+    private ICommand previousRoomCommand;
+    private ICommand nextRoomCommand;
+    private MouseState previousState;
 
-    public MouseController(IPlayer player)
+    public MouseController(MarioGame game)
     {
-        // this.player = player;
+        previousRoomCommand = new PreviousRoomCommand(game);
+        nextRoomCommand = new NextRoomCommand(game);
+
+        // Start from the real mouse state so a click held during a room switch isn't treated as a new click
+        previousState = Mouse.GetState();
     }
 
     public void Update(GameTime gameTime)
     {
         MouseState mouseState = Mouse.GetState();
 
-        // if (mouseState.LeftButton == ButtonState.Pressed)
-        // {
-        //     player.Dash();
-        // }
+        if (mouseState.LeftButton == ButtonState.Pressed && previousState.LeftButton == ButtonState.Released)
+        {
+            previousRoomCommand.Execute();
+        }
+
+        if (mouseState.RightButton == ButtonState.Pressed && previousState.RightButton == ButtonState.Released)
+        {
+            nextRoomCommand.Execute();
+        }
+
+        previousState = mouseState;
     }
 }

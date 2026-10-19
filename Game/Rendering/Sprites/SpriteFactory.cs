@@ -41,6 +41,8 @@ public class SpriteFactory
             BackgroundType.SmallHill => new StaticSprite(tileSet, new Rectangle(198, 756, 50, 20)),
             BackgroundType.SmallBush => new StaticSprite(tileSet, new Rectangle(200, 700, 43, 20)),
             BackgroundType.BigBush => new StaticSprite(tileSet, new Rectangle(120, 700, 64, 20)),
+            BackgroundType.BigCastle => new StaticSprite(tileSet, new Rectangle(399, 599, 146, 176)),
+            BackgroundType.SmallCastle => new StaticSprite(tileSet, new Rectangle(20, 695, 80, 125)),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }
@@ -100,6 +102,7 @@ public class SpriteFactory
         return type switch
         {
             BlockType.Brick => new StaticSprite(tileSet, new Rectangle(17, 16, 16, 16)),
+            BlockType.Block => new StaticSprite(tileSet, new Rectangle(0, 33, 16, 16)),
             BlockType.Question => CreateQuestionBlockSprite(),
             BlockType.UsedQuestion => new StaticSprite(tileSet, new Rectangle(349, 78, 16, 16)),
             BlockType.Ground => new StaticSprite(tileSet, new Rectangle(0, 16, 16, 16)),

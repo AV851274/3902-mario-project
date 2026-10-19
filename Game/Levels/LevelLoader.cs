@@ -18,11 +18,12 @@ public class LevelLoader
 
     public static (Vector2 spawn, int width) LoadLevel(
         ContentManager content,
+        string fileName,
         GameEntities gameEntities,
         SpriteFactory spriteFactory)
     {
         using var csvin = new StreamReader(
-            TitleContainer.OpenStream(Path.Combine(content.RootDirectory, "levels", "level1.csv")));
+            TitleContainer.OpenStream(Path.Combine(content.RootDirectory, "levels", fileName)));
         List<String> rows = [];
         while (!csvin.EndOfStream)
         {
@@ -61,7 +62,18 @@ public class LevelLoader
                         gameEntities.Blocks.Add(
                             new Block(spriteFactory, BlockType.Question, position));
                         break;
-
+                    case "Bl":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory, BlockType.Block, position));
+                        break;
+                    case "smCastle":
+                        gameEntities.Background.Add(
+                            new BackgroundObject(spriteFactory, BackgroundType.SmallCastle, position));
+                        break;
+                    case "bgCastle":
+                        gameEntities.Background.Add(
+                            new BackgroundObject(spriteFactory, BackgroundType.BigCastle, position));
+                        break;
                     case "M":
                         marioSpawn = position;
                         break;

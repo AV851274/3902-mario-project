@@ -3,6 +3,7 @@ namespace Mario.Game.Entities.Blocks;
 public enum BlockType
 {
     Brick,
+    Block,
     Question,
     UsedQuestion,
     Ground,
@@ -11,5 +12,5 @@ public enum BlockType
     PipeTopLeft,
     PipeTopRight,
     PipeLeft,
-    PipeRight
+    PipeRight,
 }

@@ -24,16 +24,16 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private SpriteBatch spriteBatch;
 
     private IPlayer player;
-    private EnemyCycler enemies;
-
-
-    // private ISprite fireballSprite;
     private IController keyboardController;
     private IController mouseController;
     private SpriteFactory spriteFactory;
     private GameEntities gameEntities = new GameEntities();
     private Camera2D camera = new Camera2D();
     private int levelWidth;
+
+    // Rooms in order; the mouse cycles through them (left = previous, right = next)
+    private static readonly string[] RoomFiles = { "level1.csv", "room2.csv" };
+    private int currentRoom;
 
     public MarioGame()
     {
@@ -62,15 +62,29 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     public void ResetGame()
     {
+        LoadRoom(0);
+    }
+
+    public void NextRoom()
+    {
+        LoadRoom((currentRoom + 1) % RoomFiles.Length);
+    }
+
+    public void PreviousRoom()
+    {
+        LoadRoom((currentRoom - 1 + RoomFiles.Length) % RoomFiles.Length);
+    }
+
+    private void LoadRoom(int roomIndex)
+    {
+        currentRoom = roomIndex;
         gameEntities.Reset();
         camera = new Camera2D();
-        // fireballSprite = spriteFactory.CreateFireBallSprite();
 
-        var level = LevelLoader.LoadLevel(Content, gameEntities, spriteFactory);
+        var level = LevelLoader.LoadLevel(Content, RoomFiles[currentRoom], gameEntities, spriteFactory);
 
         Vector2 marioSpawn = level.spawn;
         levelWidth = level.width;
-        enemies = new EnemyCycler(gameEntities.Enemies);
 
         // Hammer Bros announce their throws; spawn the hammer projectile when they do
         foreach (IEnemy enemy in gameEntities.Enemies)
@@ -97,8 +111,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         player = new Player(spriteFactory, position);
         player.SetSwimming(swimming);
         player.SummonFireball += SpawnFireball;
-        keyboardController = new KeyboardController(this, player, enemies);
-        mouseController = new MouseController(player);
+        keyboardController = new KeyboardController(this, player);
+        mouseController = new MouseController(this);
         return player;
     }
 
@@ -137,7 +151,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             Exit();
 
         keyboardController.Update(gameTime);
-        //mouseController.Update(gameTime);
+        mouseController.Update(gameTime);
 
         // Save Mario's position before moving
         Rectangle previousBounds = player.Bounds;

@@ -6,5 +6,7 @@ public enum BackgroundType
     BigHill,
     SmallHill,
     SmallBush,
-    BigBush
+    BigBush,
+    BigCastle,
+    SmallCastle
 }
