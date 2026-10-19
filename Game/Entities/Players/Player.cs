@@ -33,6 +33,7 @@ public class Player : IPlayer
     public IMarioPowerState MarioPowerState { get; private set; } = MarioPowerStateFactory.Create(MarioPower.Small);
     public Vector2 Position => body.Position;
     public event Action<Vector2, Direction> SummonFireball;
+    public event Action Died;
     public Vector2 Velocity
     {
         get => body.Velocity;
@@ -107,8 +108,13 @@ public class Player : IPlayer
 
     public void SetPower(MarioPower power)
     {
-        // Death behavior will be implemented later.
-        if (power == MarioPower.Dead || power == MarioPowerState.Power)
+        if (power == MarioPower.Dead)
+        {
+            Died?.Invoke();
+            return;
+        }
+
+        if (power == MarioPowerState.Power)
             return;
 
         MarioPowerState = MarioPowerStateFactory.Create(power);

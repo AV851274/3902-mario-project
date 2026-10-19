@@ -15,6 +15,7 @@ public interface IPlayer : IGameObject
     bool IsOnGround { get; set; }
     void SetPosition(Vector2 position);
     event Action<Vector2, Direction> SummonFireball;
+    event Action Died;
     void Attack();
     void Crouch();
     void TakeDamage();

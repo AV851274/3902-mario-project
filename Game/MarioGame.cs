@@ -34,6 +34,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
     private static readonly string[] RoomFiles = { "level1.csv", "room2.csv" };
     private int currentRoom;
+    private bool reloadRoomRequested;
 
     public MarioGame()
     {
@@ -111,9 +112,16 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         player = new Player(spriteFactory, position);
         player.SetSwimming(swimming);
         player.SummonFireball += SpawnFireball;
+        player.Died += OnMarioDied;
         keyboardController = new KeyboardController(this, player);
         mouseController = new MouseController(this);
         return player;
+    }
+
+    // Mario can die in the middle of a collision loop, so the room is reloaded at the end of Update instead
+    private void OnMarioDied()
+    {
+        reloadRoomRequested = true;
     }
 
     private void SpawnFireball(Vector2 position, Direction direction)
@@ -199,7 +207,19 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         // Defeated enemies fall off the bottom of the level; remove them once they're far below
         gameEntities.Enemies.RemoveAll(enemy => enemy.Position.Y > 1000f);
 
+        // Falling below the level counts as a death
+        if (player.Position.Y > 1000f)
+        {
+            reloadRoomRequested = true;
+        }
+
         UpdateProjectiles(gameTime);
+
+        if (reloadRoomRequested)
+        {
+            reloadRoomRequested = false;
+            LoadRoom(currentRoom);
+        }
 
         base.Update(gameTime);
     }
