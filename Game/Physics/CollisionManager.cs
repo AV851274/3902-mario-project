@@ -1,6 +1,7 @@
-using Mario.Game.Physics;
 using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
+
+namespace Mario.Game.Physics;
 
 public static class CollisionManager
 {
