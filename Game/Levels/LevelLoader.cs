@@ -16,7 +16,7 @@ public class LevelLoader
 {
     private const int TileSize = 48;
 
-    public static (Vector2 spawn, int width) LoadLevel(
+    public static (Vector2 spawn, int width, int height) LoadLevel(
         ContentManager content,
         string fileName,
         GameEntities gameEntities,
@@ -147,6 +147,6 @@ public class LevelLoader
             }
         }
 
-        return (marioSpawn, levelWidth);
+        return (marioSpawn, levelWidth, rows.Count * TileSize);
     }
 }
