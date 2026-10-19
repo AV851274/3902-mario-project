@@ -82,12 +82,14 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         currentRoom = roomIndex;
         gameEntities.Reset();
-        camera = new Camera2D();
 
         var level = LevelLoader.LoadLevel(Content, RoomFiles[currentRoom], gameEntities, spriteFactory);
 
         Vector2 marioSpawn = level.spawn;
         levelWidth = level.width;
+
+        // Zoom so the whole level height fits in the window
+        camera = new Camera2D(GraphicsDevice.Viewport.Height / (float)level.height);
 
         // Hammer Bros announce their throws; spawn the hammer projectile when they do
         foreach (IEnemy enemy in gameEntities.Enemies)

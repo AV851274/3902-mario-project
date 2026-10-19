@@ -5,7 +5,12 @@ namespace Mario.Game.Rendering.Camera;
 
 public class Camera2D
 {
-    private const float Zoom = 1.6f;
+    private readonly float zoom;
+
+    public Camera2D(float zoom = 1.6f)
+    {
+        this.zoom = zoom;
+    }
 
     public Vector2 Position { get; private set; }
 
@@ -13,11 +18,11 @@ public class Camera2D
         Matrix.CreateTranslation(
             -Position.X,
             -Position.Y,
-            0f) * Matrix.CreateScale(Zoom);
+            0f) * Matrix.CreateScale(zoom);
 
     public void Follow(Vector2 playerPosition, int screenWidth, int levelWidth)
     {
-        float visibleWidth = screenWidth / Zoom;
+        float visibleWidth = screenWidth / zoom;
         float targetX = playerPosition.X - visibleWidth / 2f;
         float maxX = Math.Max(0, levelWidth - visibleWidth);
 
