@@ -23,6 +23,7 @@ public class Block : IBlock
     private bool cloudTimerStarted = false;
     private float cloudTimer = 0;
     public bool Active => true;
+    private bool isIntact = true;
 
 
     public Vector2 Position { get; private set; }
@@ -39,6 +40,9 @@ public class Block : IBlock
 
             if (type == BlockType.MovingPlatform || type == BlockType.Bridge)
                 return ICollider.BlockingModes.TopOnly;
+
+            if (!isIntact) //Brick break
+                return ICollider.BlockingModes.None;
 
             return ICollider.BlockingModes.Solid;
         }
@@ -70,7 +74,7 @@ public class Block : IBlock
         //bool stomped = collision.Normal.Y < 0f && collision.RelativeVelocityBefore.Y > 0f;
     }
 
-    public void Hit()
+    public void Hit(bool big)
     {
         if (type != BlockType.Brick && type != BlockType.Question)
         {
@@ -84,6 +88,8 @@ public class Block : IBlock
             type = BlockType.UsedQuestion;
             sprite = spriteFactory.CreateBlockSprite(BlockType.UsedQuestion);
         }
+
+        isIntact = !(type == BlockType.Brick && big);
     }
 
     public void Update(GameTime gameTime)
@@ -106,6 +112,8 @@ public class Block : IBlock
     public void Draw(SpriteBatch spriteBatch)
     {
         if (cloudTimerStarted && cloudTimer <= 0f)
+            return;
+        if (!isIntact)
             return;
         sprite.Draw(spriteBatch, Position - new Vector2(0, BumpOffset()));
     }

@@ -1,7 +1,7 @@
 SPRINT 3 - STILL NEEDED
 
 1) New blocks, placed into the map from level1.csv
-   [ ] Cloud blocks
+   [DONE] Cloud blocks
        - Mario can stand on them
        - Disappear after a short delay once Mario lands on them
        - Add a BlockType, a sprite in SpriteFactory, and a CSV code in LevelLoader
@@ -46,7 +46,7 @@ SPRINT 3 - STILL NEEDED
 
 5) Blocks
    [ ] Question blocks release their item when hit (mushroom / fire flower / coin), item info read from the CSV
-   [ ] Big/Fire Mario breaks bricks when hitting them from below (Small Mario only bumps them)
+   [DONE] Big/Fire Mario breaks bricks when hitting them from below (Small Mario only bumps them)
    [ ] Bushes in the background (big + small), placed from the CSV
    [ ] Background sprites aligned to the ground (hill rectangles 48 / 32 px tall so their bottoms touch the ground)
 
