@@ -154,8 +154,8 @@ public class Player : IPlayer
         else if (collision.Other is IItem item && !item.IsCollected)
             item.Collect(this);
         else if (collision.Other is IBlock block && collision.Normal.Y > 0f &&
-                 collision.RelativeVelocityBefore.Y < 0f)
-            block.Hit();
+                 collision.RelativeVelocityBefore.Y < 0f) 
+            block.Hit(MarioPowerState.CanCrouch);
     }
 
     public void Crouch()
