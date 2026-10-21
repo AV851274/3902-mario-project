@@ -9,11 +9,6 @@ Current features (With Controls):
 | 1 / 2 / 3 | Small / Big / Fire Mario |
 | 4 / 5 / 6 | Small / Big / Fire swimming Mario |
 | F | Shoot fireball (Fire Mario only) |
-| E | Damage Mario |
-| O / P | Cycle enemies |
-| K | "Stomp" enemies |
-| T / Y | Cycle blocks |
-| U / I | Cycle items |
 | Q / R | Quit / Reset |
 Animations for all sprites that require such
 Multiple blocks that can be cycled
