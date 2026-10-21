@@ -121,6 +121,9 @@ public class LevelLoader
                     case "cl":
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud, position));
                         break;
+                    case "smcl":
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallCloud, position));
+                        break;
                     case "bh":
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, position));
                         break;

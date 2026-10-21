@@ -36,7 +36,8 @@ public class SpriteFactory
     {
         return type switch
         {
-            BackgroundType.Cloud => new StaticSprite(tileSet, new Rectangle(623, 608, 48, 30)),
+            BackgroundType.Cloud => new StaticSprite(tileSet, new Rectangle(623, 608, 50, 30)),
+            BackgroundType.SmallCloud => new StaticSprite(tileSet, new Rectangle(350, 630, 40, 25)),
             BackgroundType.BigHill => new StaticSprite(tileSet, new Rectangle(110, 740, 82, 35)),
             BackgroundType.SmallHill => new StaticSprite(tileSet, new Rectangle(198, 756, 50, 20)),
             BackgroundType.SmallBush => new StaticSprite(tileSet, new Rectangle(200, 700, 43, 20)),
