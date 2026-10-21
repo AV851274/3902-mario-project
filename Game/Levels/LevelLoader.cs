@@ -60,7 +60,15 @@ public class LevelLoader
 
                     case "?":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.Question, position));
+                            new Block(spriteFactory, BlockType.Question, position, ItemType.Coin));
+                        break;
+                    case "?m":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory, BlockType.Question, position, ItemType.Mushroom));
+                        break;
+                    case "?s":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory, BlockType.Question, position, ItemType.Star));
                         break;
                     case "Bl":
                         gameEntities.Blocks.Add(

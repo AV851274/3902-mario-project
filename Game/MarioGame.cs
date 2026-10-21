@@ -3,6 +3,7 @@ using Mario.Game.Interfaces.Player;
 using Mario.Game.Animation;
 using Mario.Game.Controllers;
 using Mario.Game.Entities.Enemies;
+using Mario.Game.Entities.Items;
 using Mario.Game.Interfaces;
 using Mario.Game.Entities.Players;
 using Mario.Game.Entities.Projectiles;
@@ -100,6 +101,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             }
         }
 
+        foreach (IBlock block in gameEntities.Blocks)
+        {
+            block.ItemReleased += SpawnItem;
+        }
+
         gameEntities.Players.Add(CreateMario(false, marioSpawn));
     }
 
@@ -145,6 +151,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             1f,
             400f
         ));
+    }
+
+    private void SpawnItem(ItemType type, Vector2 position)
+    {
+        gameEntities.Items.Add(new Item(spriteFactory, type, position));
     }
 
     private void SpawnHammer(Vector2 position, Direction direction)

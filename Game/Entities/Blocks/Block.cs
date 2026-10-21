@@ -1,6 +1,7 @@
 using Mario.Game.Physics;
 using System;
 using Mario.Game.Interfaces;
+using Mario.Game.Entities.Items;
 using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,6 +18,7 @@ public class Block : IBlock
     private SpriteFactory spriteFactory;
     private ISprite sprite;
     private BlockType type;
+    private ItemType? contents;
     private float bumpTimer;
     private float cloudDisappearTime = 2f;
     private float cloudComebackTime = -2f;
@@ -50,10 +52,13 @@ public class Block : IBlock
 
     public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
 
-    public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position)
+    public event Action<ItemType, Vector2> ItemReleased;
+
+    public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position, ItemType? contents = null)
     {
         this.spriteFactory = spriteFactory;
         this.type = type;
+        this.contents = contents;
         sprite = spriteFactory.CreateBlockSprite(type);
         Position = position;
     }
@@ -85,11 +90,32 @@ public class Block : IBlock
 
         if (type == BlockType.Question)
         {
+            ReleaseContents(big);
             type = BlockType.UsedQuestion;
             sprite = spriteFactory.CreateBlockSprite(BlockType.UsedQuestion);
         }
 
         isIntact = !(type == BlockType.Brick && big);
+    }
+
+    private void ReleaseContents(bool big)
+    {
+        if (!contents.HasValue)
+        {
+            return;
+        }
+
+        ItemType released = contents.Value;
+
+        if (released == ItemType.Mushroom && big)
+        {
+            released = ItemType.FireFlower;
+        }
+
+        Vector2 spawnPosition = new Vector2(Position.X, Position.Y - Size);
+        ItemReleased?.Invoke(released, spawnPosition);
+
+        contents = null;
     }
 
     public void Update(GameTime gameTime)
