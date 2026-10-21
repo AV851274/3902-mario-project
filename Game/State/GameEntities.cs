@@ -21,8 +21,8 @@ public class GameEntities
     public IEnumerable<IGameObject> GetAllGameObjects()
     {
         return Background
-            .Concat(Blocks)
             .Concat(Items)
+            .Concat(Blocks)
             .Concat(Enemies)
             .Concat(Projectiles)
             .Concat(Players);

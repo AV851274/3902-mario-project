@@ -112,8 +112,7 @@ public class Block : IBlock
             released = ItemType.FireFlower;
         }
 
-        Vector2 spawnPosition = new Vector2(Position.X, Position.Y - Size);
-        ItemReleased?.Invoke(released, spawnPosition);
+        ItemReleased?.Invoke(released, Position);
 
         contents = null;
     }

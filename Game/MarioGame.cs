@@ -155,7 +155,9 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     private void SpawnItem(ItemType type, Vector2 position)
     {
-        gameEntities.Items.Add(new Item(spriteFactory, type, position));
+        Item item = new Item(spriteFactory, type, position);
+        item.StartEmerging();
+        gameEntities.Items.Add(item);
     }
 
     private void SpawnHammer(Vector2 position, Direction direction)

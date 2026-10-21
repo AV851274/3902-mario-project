@@ -11,6 +11,7 @@ namespace Mario.Game.Entities.Items;
 public class Item : IItem, IPhysicsBody
 {
     private const float MushroomSpeed = 100f;
+    private const float RiseSpeed = 80f;
     private const int Size = 48;
     public bool IsCollected { get; private set; }
     public bool Active => !IsCollected;
@@ -24,12 +25,28 @@ public class Item : IItem, IPhysicsBody
     private ISprite sprite;
     private ItemType type;
     private float direction = 1f;
+    private float? emergeTargetY;
+
+    public bool IsEmerging => emergeTargetY.HasValue;
 
     public Vector2 PendingAcceleration { get; set; }
     public bool IsOnGround { get; set; }
-    public float GravityScale => type == ItemType.Mushroom || type == ItemType.Star ? 1f : 0f;
+    private bool IsMovingItem => type == ItemType.Mushroom || type == ItemType.Star;
+
+    public float GravityScale
+    {
+        get
+        {
+            if (IsEmerging || !IsMovingItem)
+            {
+                return 0f;
+            }
+
+            return 1f;
+        }
+    }
     public float BounceSpeed { get; }
-    public bool CollisionEnabled => Active;
+    public bool CollisionEnabled => Active && !IsEmerging;
     public Vector2 Position { get; set; }
     public Vector2 Velocity { get; set; }
 
@@ -82,11 +99,33 @@ public class Item : IItem, IPhysicsBody
         //}
     }
 
+    public void StartEmerging()
+    {
+        emergeTargetY = Position.Y - Size;
+    }
+
     public void Update(GameTime gameTime)
     {
-        float speed = type == ItemType.Mushroom || type == ItemType.Star
-            ? direction * MushroomSpeed
-            : 0f;
+        if (IsEmerging)
+        {
+            if (Position.Y > emergeTargetY.Value)
+            {
+                Velocity = new Vector2(0f, -RiseSpeed);
+                sprite.UpdateAnimation(gameTime);
+                return;
+            }
+
+            Position = new Vector2(Position.X, emergeTargetY.Value);
+            Velocity = Vector2.Zero;
+            emergeTargetY = null;
+        }
+
+        float speed = 0f;
+        if (IsMovingItem)
+        {
+            speed = direction * MushroomSpeed;
+        }
+
         Velocity = new Vector2(speed, Velocity.Y);
 
         sprite.UpdateAnimation(gameTime);
