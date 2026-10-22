@@ -70,7 +70,8 @@ public sealed class PhysicsEngine
         var solids = entities.GetAllGameObjects()
             .Where(obj => obj.Active)
             .OfType<ICollider>()
-            .Where(collider => collider.BlockingMode != ICollider.BlockingModes.None && collider is not IPhysicsBody)
+            .Where(collider => collider.BlockingMode != ICollider.BlockingModes.ThroughWalls && 
+            collider.BlockingMode != ICollider.BlockingModes.None && collider is not IPhysicsBody)
             .Distinct()
             .ToArray();
 
@@ -95,9 +96,14 @@ public sealed class PhysicsEngine
         Dictionary<ICollider, Box?> previousBounds)
     {
         foreach (var projectile in entities.Projectiles.Distinct())
+        {
             foreach (var enemy in entities.Enemies.Distinct())
                 ResolveCollision(projectile, enemy, previousBounds);
+            foreach (var player in entities.Players.Distinct())
+                ResolveCollision(projectile, player, previousBounds);
+        }
     }
+            
 
     // Handle player-item pickups and player-enemy stomps or damage.
     private static void ResolvePlayerInteractions(GameEntities entities,

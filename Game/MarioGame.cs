@@ -168,9 +168,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             spriteFactory.CreateHammerSprite(),
             position + new Vector2(20f * directionSign, -20f),
             new Vector2(250f * directionSign, -350f),
-            3f,
-            600f
-        ));
+            3f));
     }
 
     protected override void Update(GameTime gameTime)
