@@ -2,6 +2,7 @@ using Mario.Game.Physics;
 using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mario.Game.Interfaces.Player;
 
 namespace Mario.Game.Entities.Projectiles;
 
@@ -10,27 +11,25 @@ public class Hammer : IProjectile
     private ISprite sprite;
     private float lifeTime;
     private float elapsedTime = 0f;
-    private float deathY;
+    private float deathY = 1000f;
 
     public Vector2 PendingAcceleration { get; set; }
     public bool IsOnGround { get; set; }
-    public bool CollisionEnabled => false;
+    public bool CollisionEnabled => true;
     public Vector2 Position { get; set; }
-    public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
+    public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
     public Box Bounds => new Box(Position.X, Position.Y, 32, 32);
-    private bool active;
-    public bool Active => active && Position.Y < deathY;
+    public bool Active { get; private set; }
     public Vector2 Velocity { get; set; }
 
-    public Hammer(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime, float deathY)
+    public Hammer(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime)
     {
         this.sprite = sprite;
         Position = position;
         Velocity = velocity;
         this.lifeTime = lifeTime;
-        this.deathY = deathY;
 
-        active = true;
+        Active = true;
     }
 
     public void Update(GameTime gameTime)
@@ -40,13 +39,13 @@ public class Hammer : IProjectile
         elapsedTime += deltaTime;
         if (elapsedTime > lifeTime)
         {
-            active = false;
+            Active = false;
             return;
         }
 
         if (Position.Y >= deathY)
         {
-            active = false;
+            Active = false;
         }
 
         sprite.Play("Idle");
@@ -55,6 +54,18 @@ public class Hammer : IProjectile
 
     public void Draw(SpriteBatch spriteBatch)
     {
-        sprite.Draw(spriteBatch, Position);
+        if (Active)
+            sprite.Draw(spriteBatch, Position);
+    }
+
+        public void OnCollision(CollisionEvent collision)
+    {
+        if (!Active)
+            return;
+
+        if (collision.Other is IPlayer player)
+        {
+            player.TakeDamage();
+        }
     }
 }

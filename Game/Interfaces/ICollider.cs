@@ -7,6 +7,7 @@ public interface ICollider
 {
     public enum BlockingModes
     {
+        ThroughWalls, //Object not only doesn't cause collision but doesn't collide with ground either.
         None,
         Solid,
         TopOnly,

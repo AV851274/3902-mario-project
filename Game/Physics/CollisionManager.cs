@@ -28,10 +28,10 @@ public static class CollisionManager
 
         // Current solids are static terrain; dynamic solid response is unsupported.
         if (a is IPhysicsBody bodyA && a.BlockingMode == ICollider.BlockingModes.None &&
-            b.BlockingMode != ICollider.BlockingModes.None)
+            b.BlockingMode != ICollider.BlockingModes.None && b.BlockingMode != ICollider.BlockingModes.ThroughWalls)
             ResolveBody(bodyA, normal, result.Value.Penetration);
         else if (b is IPhysicsBody bodyB && b.BlockingMode == ICollider.BlockingModes.None &&
-                 a.BlockingMode != ICollider.BlockingModes.None)
+                 a.BlockingMode != ICollider.BlockingModes.None && a.BlockingMode != ICollider.BlockingModes.ThroughWalls)
             ResolveBody(bodyB, -normal, result.Value.Penetration);
 
         a.OnCollision(new CollisionEvent(b, normal, relativeVelocity));
