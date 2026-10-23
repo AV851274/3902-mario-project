@@ -1,0 +1,32 @@
+Code Review of LevelLoader.cs by Samuel Chandler
+Code authored by: Aakash Vatti
+Day of Code Review: 10/23/2026
+Sprint 3
+
+Minutes spent on review: 30
+
+Readability: 7/10
+
+Overall, the file is very readable. The only downside is the many cases
+to split the entities is that I forsee it getting quite long very fast
+but so a lot of scrolling or CTRL+F is going to be needed for a lot of this
+if there were a lot of additions. But for our game size I think it
+should be about perfect since were nearing the end of entities.
+
+I would say as well the abbreviation may need some work, as cl = cloud
+and smcl = small cloud but bb = big bush and sb = small bush. So it gets
+a little confusing on the CSV file mainly just looking at things. Smaller issue
+but does get tricky sometimes having to refer back to the .cs file.
+
+Maintainability/Quality: 8/10
+
+As far as maintainability goes its a little rough, as there's 30+ cases
+in here its hard to go in and find the exact case you're looking for and
+change it. Many of the constructor patterns are inconsistent. Like the CheepCheep
+using FishColor and no other enemy does this. But this is a minor inconsistency.
+
+As far as quality goes, it's a very handy file to quickly load a CSV file, given that
+the CSV file follows the level loader requirements (cases, size rowxcolumn count).
+The file could benifit with a "skip blank line" case to ensure no blanks are included.
+Adding new cases is super simple and easy to put into a CSV file, but after a while theres
+only so many abbreviations you can use, so cases may get longer and longer names eventually.
