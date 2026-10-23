@@ -113,6 +113,10 @@ public class SpriteFactory
             BlockType.PipeTopRight => new StaticSprite(tileSet, new Rectangle(136, 196, 16, 16)),
             BlockType.PipeLeft => new StaticSprite(tileSet, new Rectangle(119, 213, 16, 16)),
             BlockType.PipeRight => new StaticSprite(tileSet, new Rectangle(136, 213, 16, 16)),
+            BlockType.TreeRoot => new StaticSprite(tileSet, new Rectangle(628, 216, 16, 16)),
+            BlockType.TreeLeft => new StaticSprite(tileSet, new Rectangle(611, 200, 16, 16)),
+            BlockType.TreeRight => new StaticSprite(tileSet, new Rectangle(660, 200, 16, 16)),
+            BlockType.TreeMiddle => new StaticSprite(tileSet, new Rectangle(628, 200, 16, 16)),
             BlockType.Bridge => new StaticSprite(tileSet, new Rectangle(558, 33, 16, 16)),
             BlockType.Cloud => new StaticSprite(tileSet, new Rectangle(366, 16, 16, 16)),
             _ => throw new ArgumentOutOfRangeException(nameof(type))

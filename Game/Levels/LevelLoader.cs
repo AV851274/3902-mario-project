@@ -75,6 +75,22 @@ public class LevelLoader
                         gameEntities.Blocks.Add(
                             new Block(spriteFactory, BlockType.Block, position));
                         break;
+                    case "treeLeft":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory, BlockType.TreeLeft, position));
+                        break;
+                    case "treeRight":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory, BlockType.TreeRight, position));
+                        break;
+                    case "treeMiddle":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory, BlockType.TreeMiddle, position));
+                        break;
+                    case "treeRoot":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory, BlockType.TreeRoot, position));
+                        break;
                     case "smCastle":
                         gameEntities.Background.Add(
                             new BackgroundObject(spriteFactory, BackgroundType.SmallCastle, position));

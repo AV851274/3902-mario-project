@@ -86,4 +86,3 @@ Fix sprite SpriteFactory
 Fix cheep cheep collision
 Add blocks
 Add death animation
-Code review (LevelLoader)
