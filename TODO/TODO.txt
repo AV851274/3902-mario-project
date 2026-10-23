@@ -79,3 +79,11 @@ SPRINT 3 - STILL NEEDED
    [ ] Sprint reflection based on the burndown chart (team write-up, not just one person)
    [ ] Task board: backlog items + tasks with estimates, kept up to date; meet with grader
    [ ] Functionality check-in on Carmen (aim for 2/3 of features)
+
+
+Personal todo:
+Fix sprite SpriteFactory
+Fix cheep cheep collision
+Add blocks
+Add death animation
+Code review (LevelLoader)
