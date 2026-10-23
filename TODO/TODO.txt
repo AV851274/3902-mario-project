@@ -83,6 +83,5 @@ SPRINT 3 - STILL NEEDED
 
 Personal todo:
 Fix sprite SpriteFactory
-Fix cheep cheep collision
-Add blocks
+Weird walking right bug
 Add death animation
