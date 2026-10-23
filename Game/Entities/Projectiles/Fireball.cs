@@ -61,7 +61,8 @@ public class Fireball : IProjectile
         if (!Active)
             return;
 
-        if (collision.Other.BlockingMode != ICollider.BlockingModes.None)
+        if (collision.Other.BlockingMode != ICollider.BlockingModes.None
+        && collision.Other.BlockingMode != ICollider.BlockingModes.ThroughWalls)
         {
             if (collision.Normal.Y < 0f)
             {

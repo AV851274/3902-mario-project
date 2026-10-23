@@ -7,6 +7,13 @@ namespace Mario.Game.Entities.Enemies;
 
 public abstract class EnemyBase : IEnemy, IPhysicsBody
 {
+    // Fish states, can do other enums for other enemies if needed.
+    // Not sure if this is the best spot for it, feel free to move it if you know a better place.
+    public enum FishColor
+    {
+        Gray,
+        Green,
+    }
     protected readonly ISprite sprite;
     private readonly float width;
     private readonly float height;
@@ -16,8 +23,32 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
     public Vector2 Velocity { get; set; }
     public Vector2 PendingAcceleration { get; set; }
     public bool IsOnGround { get; set; }
-    public float GravityScale => 1f;
-    public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
+    public float GravityScale
+    {
+        get
+        {
+            if (this is CheepCheep && !IsDefeated)
+                return 0f;
+            else if (this is CheepCheep) return 0.2f;
+            return 1f;
+        }
+    }
+    public ICollider.BlockingModes BlockingMode
+    {
+        get
+        {
+            if (this is CheepCheep)
+                return ICollider.BlockingModes.ThroughWalls;
+            return ICollider.BlockingModes.None;
+        }
+    }
+    public bool canBeStomped
+    {
+        get
+        {
+            return !(this is CheepCheep);
+        }
+    }
     public Box Bounds => new Box(Position.X, Position.Y, width, height);
     public bool Active => Position.Y <= 1000f;
     public bool CollisionEnabled => Active && !IsDefeated;
@@ -42,7 +73,8 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
             return;
 
         DefeatedByFireball = true;
-        Velocity = new Vector2(0f, -200f);
+        if (this is CheepCheep) Velocity = new Vector2(0f, -100f);
+        else Velocity = new Vector2(0f, -200f);
         IsOnGround = false;
     }
 
@@ -52,10 +84,9 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
         if (collision.Other is IBlock && collision.Normal.X != 0f &&
             Vector2.Dot(collision.RelativeVelocityBefore, collision.Normal) < 0f)
         {
-            Velocity = new Vector2(-collision.RelativeVelocityBefore.X, Velocity.Y);
-            OnWallBounce();
+            OnWallBounce(collision.RelativeVelocityBefore.X);
         }
     }
 
-    protected virtual void OnWallBounce() { }
+    protected virtual void OnWallBounce(float RelativeVelocityBeforeX) { }
 }
