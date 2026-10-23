@@ -8,8 +8,10 @@ namespace Mario.Game.Entities.Enemies;
 
 public class CheepCheep : EnemyBase
 {
-
-    new public static ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
+    public override bool IsDefeated => StruckByFireball;
+    public override bool canBeStomped => false;
+    public override ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
+    public override float GravityScale => StruckByFireball ? 0.2f : 0f;
     private float SwimSpeed = 60f;
     private const int Size = 32;
     private const float bobHeight = 5f;
@@ -20,6 +22,7 @@ public class CheepCheep : EnemyBase
     private float bobDuration => 40f/SwimSpeed; // Time it takes to complete one bob cycle
     private float leftBound;
     private float rightBound;
+    private bool StruckByFireball = false;
     private Direction facingDirection = Direction.Left;
     public Direction FacingDirection => facingDirection;
     private FishColor fishColor;
@@ -76,6 +79,12 @@ public class CheepCheep : EnemyBase
     // {
 
     // }
+
+    public override void HitByFireball()
+    {
+        StruckByFireball = true;
+        Velocity = new Vector2(0f, -100f);
+    }
 
     private float BobOffset()
     {

@@ -23,32 +23,9 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
     public Vector2 Velocity { get; set; }
     public Vector2 PendingAcceleration { get; set; }
     public bool IsOnGround { get; set; }
-    public float GravityScale
-    {
-        get
-        {
-            if (this is CheepCheep && !IsDefeated)
-                return 0f;
-            else if (this is CheepCheep) return 0.2f;
-            return 1f;
-        }
-    }
-    public ICollider.BlockingModes BlockingMode
-    {
-        get
-        {
-            if (this is CheepCheep)
-                return ICollider.BlockingModes.ThroughWalls;
-            return ICollider.BlockingModes.None;
-        }
-    }
-    public bool canBeStomped
-    {
-        get
-        {
-            return !(this is CheepCheep);
-        }
-    }
+    public virtual float GravityScale => 1f;
+    public virtual ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
+    public virtual bool canBeStomped => true;
     public Box Bounds => new Box(Position.X, Position.Y, width, height);
     public bool Active => Position.Y <= 1000f;
     public bool CollisionEnabled => Active && !IsDefeated;
@@ -67,14 +44,13 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
     public abstract void Draw(SpriteBatch spriteBatch);
     public abstract void Stomp();
 
-    public void HitByFireball()
+    public virtual void HitByFireball()
     {
         if (IsDefeated)
             return;
 
         DefeatedByFireball = true;
-        if (this is CheepCheep) Velocity = new Vector2(0f, -100f);
-        else Velocity = new Vector2(0f, -200f);
+        Velocity = new Vector2(0f, -200f);
         IsOnGround = false;
     }
 
