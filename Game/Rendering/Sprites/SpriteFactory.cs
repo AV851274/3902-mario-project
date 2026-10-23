@@ -340,6 +340,56 @@ public class SpriteFactory
 
         return turtle;
     }
+    
+        public ISprite CreateGreenCheepSprite()
+    {
+        AnimationController greenCheep = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+
+        greenCheep.AddClip(new Track(
+            "Swim",
+            [
+                new Rectangle(0, 164, 16, 16),
+                new Rectangle(18, 164, 16, 16)
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        greenCheep.AddClip(new Track(
+            "Stomped",
+            [new Rectangle(0, 164, 16, 16)],
+            [1f],
+            false));
+
+        greenCheep.Play("Swim");
+
+        return greenCheep;
+    }
+
+    public ISprite CreateGrayCheepSprite()
+    {
+        AnimationController grayCheep = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+
+        grayCheep.AddClip(new Track(
+            "Swim",
+            [
+                new Rectangle(292, 164, 16, 16),
+                new Rectangle(310, 164, 16, 16)
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        grayCheep.AddClip(new Track(
+            "Stomped",
+            [new Rectangle(292, 164, 16, 16)],
+            [1f],
+            false));
+
+        grayCheep.Play("Swim");
+
+        return grayCheep;
+    }
+
+    
 
     public ISprite CreateHammerBroSprite()
     {

@@ -90,8 +90,10 @@ public class Turtle : EnemyBase
         }
     }
 
-    protected override void OnWallBounce()
+    protected override void OnWallBounce(float RelativeVelocityBeforeX)
     {
+        //-collision.RelativeVelocityBefore.X
+        Velocity = new Vector2(-RelativeVelocityBeforeX, Velocity.Y);
         facingDirection = Velocity.X < 0f ? Direction.Left : Direction.Right;
     }
 }

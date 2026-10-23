@@ -120,4 +120,9 @@ public class HammerBro : EnemyBase
     {
         SummonHammer?.Invoke(Position, facingDirection);
     }
+
+    protected override void OnWallBounce(float RelativeVelocityBeforeX)
+    {
+        Velocity = new Vector2(-RelativeVelocityBeforeX, Velocity.Y);
+    }
 }

@@ -47,4 +47,9 @@ public class Goomba : EnemyBase
         isStomped = true;
         Velocity = new Vector2(0f, Velocity.Y);
     }
+
+    protected override void OnWallBounce(float RelativeVelocityBeforeX)
+    {
+        Velocity = new Vector2(-RelativeVelocityBeforeX, Velocity.Y);
+    }
 }

@@ -9,6 +9,7 @@ using Mario.Game.Entities.Enemies;
 using Mario.Game.Entities.Items;
 using Mario.Game.Entities.Background;
 using Microsoft.Xna.Framework.Content;
+using static Mario.Game.Entities.Enemies.EnemyBase;
 
 namespace Mario.Game.Levels;
 
@@ -102,6 +103,20 @@ public class LevelLoader
                             new HammerBro(
                                 spriteFactory.CreateHammerBroSprite(),
                                 position));
+                        break;
+                    case "GrayCheep":
+                        gameEntities.Enemies.Add(
+                            new CheepCheep(
+                                spriteFactory.CreateGrayCheepSprite(),
+                                position,
+                                FishColor.Gray));
+                        break;
+                    case "GreenCheep":
+                        gameEntities.Enemies.Add(
+                            new CheepCheep(
+                                spriteFactory.CreateGreenCheepSprite(),
+                                position,
+                                FishColor.Green));
                         break;
                     case ".":
                     case "":

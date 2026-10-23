@@ -142,7 +142,7 @@ public class Player : IPlayer
         if (collision.Other is IEnemy enemy && !enemy.IsDefeated)
         {
             bool stomped = collision.Normal.Y < 0f && collision.RelativeVelocityBefore.Y > 0f;
-            if (stomped)
+            if (stomped && enemy.canBeStomped)
             {
                 enemy.Stomp();
                 Velocity = new Vector2(Velocity.X, -350f);
