@@ -36,14 +36,14 @@ public class SpriteFactory
     {
         return type switch
         {
-            BackgroundType.Cloud => new StaticSprite(tileSet, new Rectangle(623, 608, 50, 30)),
-            BackgroundType.SmallCloud => new StaticSprite(tileSet, new Rectangle(350, 630, 40, 25)),
-            BackgroundType.BigHill => new StaticSprite(tileSet, new Rectangle(110, 740, 82, 35)),
-            BackgroundType.SmallHill => new StaticSprite(tileSet, new Rectangle(198, 756, 50, 20)),
-            BackgroundType.SmallBush => new StaticSprite(tileSet, new Rectangle(200, 700, 43, 20)),
-            BackgroundType.BigBush => new StaticSprite(tileSet, new Rectangle(120, 700, 64, 20)),
-            BackgroundType.BigCastle => new StaticSprite(tileSet, new Rectangle(399, 599, 146, 176)),
-            BackgroundType.SmallCastle => new StaticSprite(tileSet, new Rectangle(20, 695, 80, 125)),
+            BackgroundType.Cloud => new StaticSprite(tileSet, new Rectangle(624, 601, 48, 32)),
+            BackgroundType.SmallCloud => new StaticSprite(tileSet, new Rectangle(352, 624, 32, 32)),
+            BackgroundType.BigHill => new StaticSprite(tileSet, new Rectangle(112, 728, 80, 48)),
+            BackgroundType.SmallHill => new StaticSprite(tileSet, new Rectangle(200, 744, 48, 32)),
+            BackgroundType.SmallBush => new StaticSprite(tileSet, new Rectangle(208, 704, 32, 16)),
+            BackgroundType.BigBush => new StaticSprite(tileSet, new Rectangle(120, 704, 64, 16)),
+            BackgroundType.BigCastle => new StaticSprite(tileSet, new Rectangle(400, 600, 144, 176)),
+            BackgroundType.SmallCastle => new StaticSprite(tileSet, new Rectangle(24, 696, 80, 80)),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }
@@ -67,10 +67,10 @@ public class SpriteFactory
         coin.AddClip(new Track(
             "Spin",
             [
-                new Rectangle(180, 36, 8, 15),
-                new Rectangle(190, 36, 8, 15),
-                new Rectangle(200, 36, 8, 15),
-                new Rectangle(210, 36, 8, 15)
+                new Rectangle(180, 35, 8, 16),
+                new Rectangle(190, 35, 8, 16),
+                new Rectangle(200, 35, 8, 16),
+                new Rectangle(210, 35, 8, 16)
             ],
             [0.15f, 0.15f, 0.15f, 0.15f],
             true));
@@ -443,18 +443,27 @@ public class SpriteFactory
 
     public ISprite CreateFireballSprite()
     {
-        AnimationController fireball = new AnimationController(marioGifTexture, Vector2.Zero, 4f);
+        AnimationController fireball = new AnimationController(marioGifTexture, Vector2.Zero, 3f);
         fireball.AddClip(
             new Track(
                 "Idle",
                 [
-                    new Rectangle(3, 135, 16, 16),
-                    new Rectangle(17, 135, 16, 16),
-                    new Rectangle(33, 135, 16, 16),
-                    new Rectangle(46, 135, 16, 16),
+                    new Rectangle(7, 140, 8, 8),
+                    new Rectangle(21, 140, 8, 8),
+                    new Rectangle(35, 140, 8, 8),
+                    new Rectangle(49, 139, 8, 8),
                 ],
                 Enumerable.Repeat(0.12f, 4).ToArray(),
                 true)
+        );
+
+        fireball.AddClip(
+            new Track(
+                "Explode",
+                [
+                    new Rectangle(61, 135, 16, 16)],
+                [0.5f],
+                false)
         );
         return fireball;
     }

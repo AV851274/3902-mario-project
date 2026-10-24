@@ -144,7 +144,7 @@ public class LevelLoader
                         gameEntities.Items.Add(new Item(spriteFactory, ItemType.FireFlower, position));
                         break;
                     case "co":
-                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.Coin, position));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.Coin, new Vector2(position.X + 12, position.Y)));
                         break;
                     case "st":
                         gameEntities.Items.Add(new Item(spriteFactory, ItemType.Star, position));
@@ -156,11 +156,11 @@ public class LevelLoader
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallCloud, position));
                         break;
                     case "bh":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, position));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, new Vector2(position.X, position.Y + 48)));
                         break;
                     case "sh":
                         gameEntities.Background.Add(
-                            new BackgroundObject(spriteFactory, BackgroundType.SmallHill, position));
+                            new BackgroundObject(spriteFactory, BackgroundType.SmallHill, new Vector2(position.X, position.Y - 48)));
                         break;
                     case "sb":
                         gameEntities.Background.Add(
