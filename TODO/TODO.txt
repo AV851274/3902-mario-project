@@ -35,7 +35,7 @@ SPRINT 3 - STILL NEEDED
    [DONE] Item <-> block: mushroom/star land on blocks and turn around at walls (then remove GroundY from Item)
    [DONE] Fireball <-> enemy: fireball kills the enemy and disappears
    [DONE] Fireball <-> block: bounces on blocks instead of a fixed ground height, disappears when hitting a wall
-   [ ] Hammer <-> Mario: Hammer Bro's hammer damages Mario
+   [DONE] Hammer <-> Mario: Hammer Bro's hammer damages Mario
    [ ] Kicked Koopa shell <-> other enemies: shell knocks them out
    [DONE] Shared collision code: CollisionManager repeats the same overlap logic for player/enemy/item;
        consider one helper that works for any object with Bounds
