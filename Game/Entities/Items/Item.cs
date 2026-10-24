@@ -50,7 +50,7 @@ public class Item : IItem, IPhysicsBody
     public Vector2 Position { get; set; }
     public Vector2 Velocity { get; set; }
 
-    public Item(SpriteFactory spriteFactory, ItemType type, Vector2 position, float bounceSpeed = 400f)
+    public Item(ItemSpriteFactory spriteFactory, ItemType type, Vector2 position, float bounceSpeed = 400f)
     {
         this.type = type;
         Position = position;

@@ -122,7 +122,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     private IPlayer CreateMario(bool swimming, Vector2 position)
     {
-        IPlayer player = new Player(spriteFactory, position);
+        IPlayer player = new Player(spriteFactory.Mario, position);
         player.SetSwimming(swimming);
         player.SummonFireball += SpawnFireball;
         player.Died += OnMarioDied;
@@ -145,7 +145,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         float flip = direction == Direction.Left ? -1f : 1f;
         var velocity = new Vector2(500f * flip, 0);
         gameEntities.Projectiles.Add(new Fireball(
-            spriteFactory.CreateFireballSprite(), // new animation contoller for each fireball
+            spriteFactory.Mario.CreateFireballSprite(), // new animation contoller for each fireball
             position + new Vector2(25 * flip, -20f),
             velocity,
             2f,
@@ -155,7 +155,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     private void SpawnItem(ItemType type, Vector2 position)
     {
-        Item item = new Item(spriteFactory, type, position);
+        Item item = new Item(spriteFactory.Items, type, position);
         item.StartEmerging();
         gameEntities.Items.Add(item);
     }
@@ -165,7 +165,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         float directionSign = direction == Direction.Left ? -1f : 1f;
 
         gameEntities.Projectiles.Add(new Hammer(
-            spriteFactory.CreateHammerSprite(),
+            spriteFactory.Enemies.CreateHammerSprite(),
             position + new Vector2(20f * directionSign, -20f),
             new Vector2(250f * directionSign, -350f),
             3f));
