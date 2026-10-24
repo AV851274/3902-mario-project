@@ -15,6 +15,8 @@ public class Player : IPlayer
 {
     private const float ThrowAnimationTime = 0.3f;
     private const float InvincibleDuration = 1.5f;
+    private const float DeathJumpSpeed = 500f;
+    private const float FallOffScreenY = 1000f;
 
     private sealed record AppearanceKey(MarioPower Power, bool IsSwimming);
 
@@ -28,6 +30,7 @@ public class Player : IPlayer
     private bool isSwimming;
     private bool attackPressed;
     private float invincibleTimer;
+    private bool isDying;
 
 
     public IPlayerBodyAction BodyAction => body;
@@ -68,6 +71,7 @@ public class Player : IPlayer
     }
 
     public ICollider.BlockingModes BlockingMode => body.BlockingMode;
+    public bool CollisionEnabled => !isDying;
     public Box Bounds => body.Bounds;
 
     public Player(MarioSpriteFactory factory, Vector2 position)
@@ -106,9 +110,12 @@ public class Player : IPlayer
 
     public void SetPower(MarioPower power)
     {
+        if (isDying)
+            return;
+
         if (power == MarioPower.Dead)
         {
-            Died?.Invoke();
+            StartDying();
             return;
         }
 
@@ -127,10 +134,19 @@ public class Player : IPlayer
         timeSinceThrow = float.PositiveInfinity;
     }
 
+    private void StartDying()
+    {
+        isDying = true;
+        appearance = appearancesTable[new AppearanceKey(MarioPower.Small, false)];
+        Velocity = new Vector2(0f, -DeathJumpSpeed);
+        IsOnGround = false;
+        invincibleTimer = 0f;
+    }
+
     public void TakeDamage()
     {
         // Briefly invincible after a hit, so one enemy touch only counts once
-        if (invincibleTimer > 0f)
+        if (isDying || invincibleTimer > 0f)
             return;
 
         SetPower(MarioPowerState.TakeDamage());
@@ -171,11 +187,14 @@ public class Player : IPlayer
 
     public void Update(GameTime gameTime)
     {
-        if (Position.Y > 1000f)
+        if (Position.Y > FallOffScreenY)
         {
-            SetPower(MarioPower.Dead);
+            Died?.Invoke();
             return;
         }
+
+        if (isDying)
+            return;
 
         body.Update(gameTime);
         facingDirection = body.FacingDirection;
@@ -195,6 +214,13 @@ public class Player : IPlayer
 
     public void UpdateAnimation(GameTime gameTime)
     {
+        if (isDying)
+        {
+            appearance.Sprite.Play("Dead");
+            appearance.Sprite.UpdateAnimation(gameTime);
+            return;
+        }
+
         string animation;
 
         if (body is SwimmingPlayerBody swimmingBody)

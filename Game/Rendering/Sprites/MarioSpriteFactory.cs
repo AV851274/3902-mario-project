@@ -28,7 +28,8 @@ public class MarioSpriteFactory
                 new Rectangle(88, 0, 17, 16)
             ],
             new Rectangle(26, 0, 20, 16), // jump
-            new Rectangle(60, 0, 14, 16)); // small skid
+            new Rectangle(60, 0, 14, 16), // small skid
+            death: new Rectangle(390, 16, 16, 16)); //small death pose
     }
 
     public ISprite CreateBigMarioSprite()
@@ -63,9 +64,13 @@ public class MarioSpriteFactory
     }
 
     private AnimationController CreateMarioSprite(Rectangle idle,
-        Rectangle[] run, Rectangle jump, Rectangle skid, Rectangle? crouch = null, Rectangle? throwP = null)
+        Rectangle[] run, Rectangle jump, Rectangle skid, Rectangle? crouch = null, Rectangle? throwP = null,
+        Rectangle? death = null)
     {
         AnimationController mario = new AnimationController(marioTexture, Vector2.Zero, 2.5f);
+
+        if (death.HasValue)
+            mario.AddClip(new Track("Dead", [death.Value], [1f], false));
 
         mario.AddClip(new Track("Idle", [idle], [1f], true));
         mario.AddClip(new Track("Run", run, [0.15f, 0.15f, 0.15f], true));
