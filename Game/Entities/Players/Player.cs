@@ -51,8 +51,27 @@ public class Player : IPlayer
         set => body.PendingAcceleration = value;
     }
 
-    public float GravityScale => body.GravityScale;
-    public float MaxFallSpeed => body.MaxFallSpeed;
+    public float GravityScale
+    {
+        get
+        {
+            if (isDying)
+                return 1f;
+
+            return body.GravityScale;
+        }
+    }
+
+    public float MaxFallSpeed
+    {
+        get
+        {
+            if (isDying)
+                return float.PositiveInfinity;
+
+            return body.MaxFallSpeed;
+        }
+    }
 
 
     public event Action<Vector2, Direction> SummonFireball;
