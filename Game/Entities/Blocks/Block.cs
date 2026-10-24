@@ -15,7 +15,7 @@ public class Block : IBlock
     private const float BumpHeight = 12f;
     private const float BumpDuration = 0.15f;
 
-    private SpriteFactory spriteFactory;
+    private BlockSpriteFactory spriteFactory;
     private ISprite sprite;
     private BlockType type;
     private ItemType? contents;
@@ -54,7 +54,7 @@ public class Block : IBlock
 
     public event Action<ItemType, Vector2> ItemReleased;
 
-    public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position, ItemType? contents = null)
+    public Block(BlockSpriteFactory spriteFactory, BlockType type, Vector2 position, ItemType? contents = null)
     {
         this.spriteFactory = spriteFactory;
         this.type = type;

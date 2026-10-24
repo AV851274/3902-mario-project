@@ -11,7 +11,7 @@ public class BackgroundObject : IGameObject
 
     public Vector2 Position { get; }
 
-    public BackgroundObject(SpriteFactory spriteFactory, BackgroundType type, Vector2 position)
+    public BackgroundObject(BackgroundSpriteFactory spriteFactory, BackgroundType type, Vector2 position)
     {
         sprite = spriteFactory.CreateBackgroundSprite(type);
         Position = position;

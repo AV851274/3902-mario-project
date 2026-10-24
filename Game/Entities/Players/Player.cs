@@ -70,7 +70,7 @@ public class Player : IPlayer
     public ICollider.BlockingModes BlockingMode => body.BlockingMode;
     public Box Bounds => body.Bounds;
 
-    public Player(SpriteFactory factory, Vector2 position)
+    public Player(MarioSpriteFactory factory, Vector2 position)
     {
         appearancesTable = new() {
             [new AppearanceKey(MarioPower.Small, false)] =
