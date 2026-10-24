@@ -116,8 +116,13 @@ public class Fireball : IProjectile
     public void Draw(SpriteBatch spriteBatch)
     {
         if (Active) {
-            SpriteEffects flip = Velocity.X < 0f ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-            sprite.Draw(spriteBatch, Position, (float)flip);
+            if(dead)
+            {
+                sprite.Draw(spriteBatch, new Vector2(Position.X - 8, Position.Y - 8));
+            } else {
+                SpriteEffects flip = Velocity.X < 0f ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+                sprite.Draw(spriteBatch, Position, (float)flip);
+            }
         }
     }
 }

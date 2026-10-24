@@ -150,10 +150,13 @@ public class LevelLoader
                         gameEntities.Items.Add(new Item(spriteFactory, ItemType.Star, position));
                         break;
                     case "cl":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud, position));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud, new Vector2(position.X + 24, position.Y - 24)));
                         break;
                     case "smcl":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallCloud, position));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallCloud, new Vector2(position.X + 24, position.Y - 24)));
+                        break;
+                    case "bcl":
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigCloud, new Vector2(position.X + 24, position.Y - 24)));
                         break;
                     case "bh":
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, new Vector2(position.X, position.Y + 48)));
@@ -164,10 +167,10 @@ public class LevelLoader
                         break;
                     case "sb":
                         gameEntities.Background.Add(
-                            new BackgroundObject(spriteFactory, BackgroundType.SmallBush, position));
+                            new BackgroundObject(spriteFactory, BackgroundType.SmallBush, new Vector2(position.X + 24, position.Y)));
                         break;
                     case "bb":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, position));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, new Vector2(position.X + 24, position.Y)));
                         break;
                     case "PL":
                         gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopLeft, position));
