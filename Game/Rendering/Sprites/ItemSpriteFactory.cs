@@ -22,7 +22,7 @@ public class ItemSpriteFactory
         return type switch
         {
             ItemType.Mushroom => new StaticSprite(itemTexture, new Rectangle(0, 8, 16, 16)),
-            ItemType.FireFlower => new StaticSprite(itemTexture, new Rectangle(32, 8, 16, 16)),
+            ItemType.FireFlower => CreateFlowerSprite(),
             ItemType.Coin => CreateCoinSprite(),
             ItemType.Star => CreateStarSprite(),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
@@ -41,11 +41,30 @@ public class ItemSpriteFactory
                 new Rectangle(200, 35, 8, 16),
                 new Rectangle(210, 35, 8, 16)
             ],
-            [0.15f, 0.15f, 0.15f, 0.15f],
+            [0.2f, 0.2f, 0.2f, 0.2f],
             true));
         coin.Play("Spin");
 
         return coin;
+    }
+
+    private AnimationController CreateFlowerSprite()
+    {
+        AnimationController flower = new AnimationController(itemTexture, Vector2.Zero, 3f);
+
+        flower.AddClip(new Track(
+            "Spin",
+            [
+                new Rectangle(32, 8, 16, 16),
+                new Rectangle(50, 8, 16, 16),
+                new Rectangle(68, 8, 16, 16),
+                new Rectangle(86, 8, 16, 16)
+            ],
+            [0.2f, 0.2f, 0.2f, 0.2f],
+            true));
+        flower.Play("Spin");
+
+        return flower;
     }
 
     private AnimationController CreateStarSprite()

@@ -55,7 +55,7 @@ public class BlockSpriteFactory
                 new Rectangle(315, 78, 16, 16),
                 new Rectangle(332, 78, 16, 16),
             ],
-            [0.15f, 0.15f, 0.15f],
+            [0.2f, 0.2f, 0.2f],
             true));
         qBlock.Play("Spin");
 

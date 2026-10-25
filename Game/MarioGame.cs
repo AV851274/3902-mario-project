@@ -143,7 +143,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             return;
 
         float flip = direction == Direction.Left ? -1f : 1f;
-        var velocity = new Vector2(500f * flip, 0);
+        var velocity = new Vector2(500f * flip, 200f);
         gameEntities.Projectiles.Add(new Fireball(
             spriteFactory.Mario.CreateFireballSprite(), // new animation contoller for each fireball
             position + new Vector2(25 * flip, -20f),
