@@ -68,6 +68,66 @@ public class EnemySpriteFactory
         return turtle;
     }
 
+    public ISprite CreateBuzzyBeetleSprite()
+    {
+        AnimationController buzzyBeetle = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        buzzyBeetle.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(0, 34, 16, 16),
+                new Rectangle(18, 34, 16, 16)
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        buzzyBeetle.AddClip(new Track(
+            "Stomped",
+            [new Rectangle(36, 34, 16, 16)],
+            [1f],
+            false));
+
+        buzzyBeetle.Play("Walk");
+
+        return buzzyBeetle;
+    }
+
+    public ISprite CreateSpinySprite()
+    {
+        AnimationController spiny = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        spiny.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(72, 352, 16, 16),
+                new Rectangle(90, 352, 16, 16)
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        spiny.Play("Walk");
+
+        return spiny;
+    }
+
+    public ISprite CreateParaKoopaSprite()
+    {
+        AnimationController paraKoopa = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        paraKoopa.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(36, 112, 16, 24),
+                new Rectangle(54, 112, 16, 24)
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        paraKoopa.Play("Walk");
+
+        return paraKoopa;
+    }
+
     public ISprite CreateGreenCheepSprite()
     {
         AnimationController greenCheep = new AnimationController(enemyTexture, Vector2.Zero, Scale);
@@ -194,5 +254,21 @@ public class EnemySpriteFactory
                 true)
         );
         return hammer;
+    }
+
+    public ISprite CreateFireSprite()
+    {
+        AnimationController fire = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+        fire.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(102, 242, 24, 8),
+                    new Rectangle(102, 252, 24, 8),
+                ],
+                [0.2f, 0.2f],
+                true)
+        );
+        return fire;
     }
 }

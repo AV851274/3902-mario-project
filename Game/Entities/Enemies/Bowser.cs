@@ -27,6 +27,8 @@ public class Bowser : EnemyBase
 
     public event Action<Vector2, Direction> SummonHammer;
 
+    public event Action<Vector2, Direction> SummonFire;
+
     public Bowser(ISprite sprite, Vector2 initialPosition)
         : base(sprite, initialPosition, Width, Height)
     {
@@ -62,6 +64,11 @@ public class Bowser : EnemyBase
                 ThrowHammer();
             }
 
+            if (Random.Shared.NextDouble() < 0.01) // 1% chance to breathe fire each frame
+            {
+                BreatheFire();
+            }
+
             if (IsOnGround && Random.Shared.NextDouble() < 0.01) // 1% chance to jump each frame
             {
                 Velocity = new Vector2(Velocity.X, JumpSpeed);
@@ -87,6 +94,11 @@ public class Bowser : EnemyBase
     public void ThrowHammer()
     {
         SummonHammer?.Invoke(Position, facingDirection);
+    }
+
+    public void BreatheFire()
+    {
+        SummonFire?.Invoke(Position, facingDirection);
     }
 
     protected override void OnWallBounce(float RelativeVelocityBeforeX)

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Animation;
@@ -102,6 +103,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             if (enemy is Bowser bowser)
             {
                 bowser.SummonHammer += SpawnHammer;
+                bowser.SummonFire += SpawnFire;
+            }
+            if (enemy is ParaKoopa paraKoopa)
+            {
+                paraKoopa.Stomped += ReplaceParaKoopaWithTurtle;
             }
         }
 
@@ -173,6 +179,32 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             position + new Vector2(20f * directionSign, -20f),
             new Vector2(250f * directionSign, -350f),
             3f));
+    }
+
+    private void SpawnFire(Vector2 position, Direction direction)
+    {
+        float directionSign = direction == Direction.Left ? -1f : 1f;
+
+        gameEntities.Projectiles.Add(new Fire(
+            spriteFactory.Enemies.CreateFireSprite(),
+            position + new Vector2(20f * directionSign, 0f),
+            new Vector2(250f * directionSign, 0f),
+            3f));
+    }
+
+    private void ReplaceParaKoopaWithTurtle(ParaKoopa paraKoopa)
+    {
+        int index = gameEntities.Enemies.IndexOf(paraKoopa);
+        if (index < 0)
+            throw new InvalidOperationException(
+                "Cannot replace a ParaKoopa that is not in the active enemy list.");
+
+        gameEntities.Enemies[index] = new Turtle(
+            spriteFactory.Enemies.CreateTurtleSprite(),
+            paraKoopa.Position)
+        {
+            Velocity = paraKoopa.Velocity,
+        };
     }
 
     protected override void Update(GameTime gameTime)

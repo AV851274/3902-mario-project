@@ -126,6 +126,25 @@ public class LevelLoader
                                 spriteFactory.Enemies.CreateBowserSprite(),
                                 position));
                         break;
+                    case "Bz":
+                        gameEntities.Enemies.Add(
+                            new BuzzyBeetle(
+                                spriteFactory.Enemies.CreateBuzzyBeetleSprite(),
+                                position));
+                        break;
+                    case "Sp":
+                        gameEntities.Enemies.Add(
+                            new Spiny(
+                                spriteFactory.Enemies.CreateSpinySprite(),
+                                position));
+                        break;
+                    case "Pk":
+                        gameEntities.Enemies.Add(
+                            new ParaKoopa(
+                                spriteFactory.Enemies.CreateParaKoopaSprite(),
+                                position));
+                        break;
+
                     case "GrayCheep":
                         gameEntities.Enemies.Add(
                             new CheepCheep(

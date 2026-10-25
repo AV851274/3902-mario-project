@@ -97,7 +97,7 @@ public sealed class PhysicsEngine
     {
         foreach (var projectile in entities.Projectiles.Distinct())
         {
-            foreach (var enemy in entities.Enemies.Distinct())
+            foreach (var enemy in entities.Enemies.Distinct().ToArray())
                 ResolveCollision(projectile, enemy, previousBounds);
             foreach (var player in entities.Players.Distinct())
                 ResolveCollision(projectile, player, previousBounds);
@@ -113,7 +113,7 @@ public sealed class PhysicsEngine
         {
             foreach (var item in entities.Items.Distinct())
                 ResolveCollision(player, item, previousBounds);
-            foreach (var enemy in entities.Enemies.Distinct())
+            foreach (var enemy in entities.Enemies.Distinct().ToArray())
                 ResolveCollision(player, enemy, previousBounds);
         }
     }
