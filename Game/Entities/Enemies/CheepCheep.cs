@@ -13,7 +13,7 @@ public class CheepCheep : EnemyBase
     public override ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
     public override float GravityScale => StruckByFireball ? 0.2f : 0f;
     private float SwimSpeed = 60f;
-    private const int Size = 32;
+    private const int Size = 40;
     private const float bobHeight = 5f;
     private const float boundSize = 75f;
     private const float turnAcc = 1f;

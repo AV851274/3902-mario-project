@@ -13,14 +13,26 @@ public class Item : IItem, IPhysicsBody
     private const float MushroomSpeed = 100f;
     private const float RiseSpeed = 80f;
     private const int Size = 48;
+    private const int CoinWidth = 24;
     public bool IsCollected { get; private set; }
     public bool Active => !IsCollected;
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(
         Position.X,
         Position.Y,
-        Size,
+        Width,
         Size);
+
+    private int Width
+    {
+        get
+        {
+            if (type == ItemType.Coin)
+                return CoinWidth;
+
+            return Size;
+        }
+    }
 
     private ISprite sprite;
     private ItemType type;

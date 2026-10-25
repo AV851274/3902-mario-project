@@ -17,8 +17,8 @@ public class HammerBro : EnemyBase
 {
     private const float WalkSpeed = 30f;
     private const float JumpSpeed = -500f;
-    private const int Width = 32;
-    private const int Height = 48;
+    private const int Width = 40;
+    private const int Height = 60;
 
     private bool isStomped;
 

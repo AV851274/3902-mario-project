@@ -90,9 +90,13 @@ public static class CollisionManager
 
         bool horizontalOverlap = a.Left < b.Right && a.Right > b.Left;
         bool verticalOverlap = a.Top < b.Bottom && a.Bottom > b.Top;
-        // Prefer the side crossed since the previous step. For ambiguous corners,
-        // vertical takes priority.
-        if (horizontalOverlap)
+        // A landing or head bump only counts if A was already above or below B last step.
+        // Without this, pushing a few pixels into a wall while falling past a seam
+        // between stacked blocks looks like landing on the lower block.
+        bool wasHorizontallyOverlapping = oldA.Left < oldB.Right && oldA.Right > oldB.Left;
+
+        // Prefer the side crossed since the previous step.
+        if (horizontalOverlap && wasHorizontallyOverlapping)
         {
             if (oldA.Bottom <= oldB.Top && a.Bottom >= b.Top)
                 return new CollisionResult(-Vector2.UnitY, a.Bottom - b.Top);

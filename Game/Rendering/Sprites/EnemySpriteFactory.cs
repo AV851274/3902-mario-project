@@ -9,6 +9,8 @@ namespace Mario.Game.Rendering.Sprites;
 
 public class EnemySpriteFactory
 {
+    private const float Scale = 2.5f;
+
     private readonly Texture2D enemyTexture;
 
     public EnemySpriteFactory(ContentManager content)
@@ -18,7 +20,7 @@ public class EnemySpriteFactory
 
     public ISprite CreateGoombaSprite()
     {
-        AnimationController goomba = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+        AnimationController goomba = new AnimationController(enemyTexture, Vector2.Zero, Scale);
 
         goomba.AddClip(new Track(
             "Walk",
@@ -44,7 +46,7 @@ public class EnemySpriteFactory
 
     public ISprite CreateTurtleSprite()
     {
-        AnimationController turtle = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+        AnimationController turtle = new AnimationController(enemyTexture, Vector2.Zero, Scale);
 
         turtle.AddClip(new Track(
             "Walk",
@@ -68,7 +70,7 @@ public class EnemySpriteFactory
 
     public ISprite CreateGreenCheepSprite()
     {
-        AnimationController greenCheep = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+        AnimationController greenCheep = new AnimationController(enemyTexture, Vector2.Zero, Scale);
 
         greenCheep.AddClip(new Track(
             "Swim",
@@ -92,7 +94,7 @@ public class EnemySpriteFactory
 
     public ISprite CreateGrayCheepSprite()
     {
-        AnimationController grayCheep = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+        AnimationController grayCheep = new AnimationController(enemyTexture, Vector2.Zero, Scale);
 
         grayCheep.AddClip(new Track(
             "Swim",
@@ -116,7 +118,7 @@ public class EnemySpriteFactory
 
     public ISprite CreateHammerBroSprite()
     {
-        AnimationController hammerBro = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+        AnimationController hammerBro = new AnimationController(enemyTexture, Vector2.Zero, Scale);
 
         hammerBro.AddClip(new Track(
             "Idle",
@@ -151,7 +153,7 @@ public class EnemySpriteFactory
 
     public ISprite CreateHammerSprite()
     {
-        AnimationController hammer = new AnimationController(enemyTexture, Vector2.Zero, 2f);
+        AnimationController hammer = new AnimationController(enemyTexture, Vector2.Zero, Scale);
         hammer.AddClip(
             new Track(
                 "Idle",

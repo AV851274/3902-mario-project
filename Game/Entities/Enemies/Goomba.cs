@@ -7,7 +7,7 @@ namespace Mario.Game.Entities.Enemies;
 public class Goomba : EnemyBase
 {
     private const float WalkSpeed = 60f;
-    private const int Size = 32;
+    private const int Size = 40;
 
     private bool isStomped;
 

@@ -21,7 +21,7 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
     public virtual float MaxFallSpeed => float.PositiveInfinity;
 
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
-    public Box LocalBounds { get; set; } = new Box(0, 0, 36, 48);
+    public Box LocalBounds { get; set; } = new Box(2, 8, 36, 40);
 
     public Box Bounds => new Box(
         Position.X + LocalBounds.X,

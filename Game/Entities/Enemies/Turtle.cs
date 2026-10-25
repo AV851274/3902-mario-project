@@ -11,8 +11,8 @@ public class Turtle : EnemyBase
     private const float WalkSpeed = 60f;
     private const float KickSpeed = 6 * WalkSpeed;
     private const float KickGraceTime = 0.25f;
-    private const int Width = 32;
-    private const int Height = 48;
+    private const int Width = 40;
+    private const int Height = 60;
 
     // private float leftBound;
     // private float rightBound;
