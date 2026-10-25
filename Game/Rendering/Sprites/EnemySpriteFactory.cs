@@ -151,6 +151,33 @@ public class EnemySpriteFactory
         return hammerBro;
     }
 
+    public ISprite CreateBowserSprite()
+    {
+        AnimationController bowser = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        bowser.AddClip(new Track(
+            "Idle",
+            [
+                new Rectangle(0, 208, 32, 32),
+                new Rectangle(34, 208, 32, 32),
+            ],
+            [0.4f, 0.4f],
+            true));
+
+        bowser.AddClip(new Track(
+            "FireBreath",
+            [
+                new Rectangle(68, 208, 32, 32),
+                new Rectangle(102, 208, 32, 32),
+            ],
+            [0.4f, 0.4f],
+            false));
+
+        bowser.Play("Idle");
+
+        return bowser;
+    }
+
     public ISprite CreateHammerSprite()
     {
         AnimationController hammer = new AnimationController(enemyTexture, Vector2.Zero, Scale);

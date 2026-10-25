@@ -99,6 +99,10 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             {
                 hammerBro.SummonHammer += SpawnHammer;
             }
+            if (enemy is Bowser bowser)
+            {
+                bowser.SummonHammer += SpawnHammer;
+            }
         }
 
         foreach (IBlock block in gameEntities.Blocks)

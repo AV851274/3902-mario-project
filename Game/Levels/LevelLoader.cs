@@ -120,6 +120,12 @@ public class LevelLoader
                                 spriteFactory.Enemies.CreateHammerBroSprite(),
                                 position));
                         break;
+                    case "Bw":
+                        gameEntities.Enemies.Add(
+                            new Bowser(
+                                spriteFactory.Enemies.CreateBowserSprite(),
+                                position));
+                        break;
                     case "GrayCheep":
                         gameEntities.Enemies.Add(
                             new CheepCheep(
