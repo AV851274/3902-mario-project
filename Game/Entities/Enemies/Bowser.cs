@@ -12,9 +12,6 @@ public class Bowser : EnemyBase
     private const float JumpSpeed = -500f;
     private const int Width = 80;
     private const int Height = 80;
-
-    private int Health = 12;
-
     public override bool canBeStomped => false;
 
     private bool isActive = true;
