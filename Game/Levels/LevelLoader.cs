@@ -126,6 +126,12 @@ public class LevelLoader
                                 spriteFactory.Enemies.CreateBowserSprite(),
                                 position));
                         break;
+                    case "Lk":
+                        gameEntities.Enemies.Add(
+                            new Lakitu(
+                                spriteFactory.Enemies.CreateLakituSprite(),
+                                position));
+                        break;
                     case "Bz":
                         gameEntities.Enemies.Add(
                             new BuzzyBeetle(

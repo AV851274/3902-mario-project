@@ -109,6 +109,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             {
                 paraKoopa.Stomped += ReplaceParaKoopaWithTurtle;
             }
+            if (enemy is Lakitu lakitu)
+                lakitu.SummonEgg += SpawnEgg;
         }
 
         foreach (IBlock block in gameEntities.Blocks)
@@ -116,7 +118,18 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             block.ItemReleased += SpawnItem;
         }
 
-        gameEntities.Players.Add(CreateMario(false, marioSpawn));
+        foreach (IProjectile projectile in gameEntities.Projectiles)
+        {
+            if (projectile is Egg egg)
+            {
+                egg.SummonSpiny += ReplaceEggWithSpiny;
+            }
+        }
+
+        IPlayer mario = CreateMario(false, marioSpawn);
+        gameEntities.Players.Add(mario);
+        foreach (Lakitu lakitu in gameEntities.Enemies.OfType<Lakitu>())
+            lakitu.Follow(mario);
     }
 
 
@@ -192,6 +205,17 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             3f));
     }
 
+    private void SpawnEgg(Vector2 position, Direction direction)
+    {
+        Egg egg = new Egg(
+            spriteFactory.Enemies.CreateEggSprite(),
+            position,
+            new Vector2(0f, 0f),
+            3f);
+        egg.SummonSpiny += ReplaceEggWithSpiny;
+        gameEntities.Projectiles.Add(egg);
+    }
+
     private void ReplaceParaKoopaWithTurtle(ParaKoopa paraKoopa)
     {
         int index = gameEntities.Enemies.IndexOf(paraKoopa);
@@ -206,6 +230,15 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             Velocity = paraKoopa.Velocity,
         };
     }
+
+    private void ReplaceEggWithSpiny(Egg egg)
+    {
+        gameEntities.Enemies.Add(new Spiny(
+            spriteFactory.Enemies.CreateSpinySprite(),
+            egg.Position));
+    }
+
+
 
     protected override void Update(GameTime gameTime)
     {

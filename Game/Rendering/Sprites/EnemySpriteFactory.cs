@@ -128,6 +128,31 @@ public class EnemySpriteFactory
         return paraKoopa;
     }
 
+     public ISprite CreateLakituSprite()
+    {
+        AnimationController lakitu = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        lakitu.AddClip(new Track(
+            "Idle",
+            [
+                new Rectangle(54, 138, 16, 24),
+            ],
+            [0.2f],
+            true));
+
+            lakitu.AddClip(new Track(
+            "EggThrow",
+            [
+                new Rectangle(72, 138, 16, 24),
+            ],
+            [0.2f],
+            true));
+
+        lakitu.Play("Idle");
+
+        return lakitu;
+    }
+
     public ISprite CreateGreenCheepSprite()
     {
         AnimationController greenCheep = new AnimationController(enemyTexture, Vector2.Zero, Scale);
@@ -254,6 +279,22 @@ public class EnemySpriteFactory
                 true)
         );
         return hammer;
+    }
+
+    public ISprite CreateEggSprite()
+    {
+        AnimationController egg = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+        egg.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(36, 352, 16, 16),
+                    new Rectangle(54, 352, 16, 16),
+                ],
+                [0.2f, 0.2f],
+                true)
+        );
+        return egg;
     }
 
     public ISprite CreateFireSprite()
