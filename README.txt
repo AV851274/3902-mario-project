@@ -1,26 +1,51 @@
 CURRENT SPRINT: #3
 
-Current features (With Controls):
+## Controls
 
-| Key | Action |
-|-----|--------|
-| W/A/D | Move Mario |
-| S | Crouch (Only big mario) |
+| Input | Action |
+|-------|--------|
+| A / D or Left / Right | Move Mario |
+| W or Up | Jump (swim stroke while swimming) |
+| S or Down | Crouch (Big / Fire Mario only) |
+| Space + direction | Dash |
+| F | Shoot fireball (Fire Mario only) |
+| E | Damage Mario |
 | 1 / 2 / 3 | Small / Big / Fire Mario |
 | 4 / 5 / 6 | Small / Big / Fire swimming Mario |
-| F | Shoot fireball (Fire Mario only) |
-| Q / R | Quit / Reset |
-Animations for all sprites that require such
-Multiple blocks that can be cycled
-Multiple Items that can be cycled
-All mario types
-Three enemies that behave accordingly
-Gravity and Water physics
-Proper mario movement
+| Left click / Right click | Previous room / Next room |
+| R | Reset to the first room |
+| Q | Quit |
 
-Our current "bug" is the sizing of enemies according to mario. As some are a little too small.
+## Current features
 
-## Physics
+- Rooms loaded from CSV files in `Content/levels/` (testRoom, level1, room2, 1-1), switched with the mouse
+- A test room containing every object type
+- Small, Big, and Fire Mario, plus swimming versions of each
+- Mario movement with acceleration, skidding, crouching, dashing, and jumping
+- Enemies: Goomba, Koopa (shell can be kicked), Hammer Bro (throws hammers), and Cheep Cheeps
+- Enemies have gravity, land on blocks, turn around at walls, and can be stomped
+- Taking damage shrinks Mario, with a short invincibility flash; Small Mario plays a death animation and the room restarts
+- Falling into a pit restarts the room
+- Fireballs bounce along blocks and defeat enemies; Hammer Bro's hammers damage Mario
+- ? blocks release their item (coin, mushroom/fire flower, or star), which rises out of the block
+- Big / Fire Mario break bricks; Small Mario bumps them
+- Items: mushroom, fire flower, coin, and star; mushrooms and stars move and bounce off walls
+- Blocks: ground, brick, ? block, hard block, pipes, trees, bridges, and cloud blocks that disappear after being stood on
+- Background scenery: clouds, hills, bushes, and castles
+- Camera follows Mario horizontally; taller rooms zoom out to fit the window
+
+## Known bugs
+
+- A kicked Koopa shell does not knock out other enemies yet.
+
+## Deviations from the original game
+
+- The star can be collected but does not give invincibility yet.
+- Items from ? blocks rise out of the block and can't be collected until they are fully out. Coins stay on top of the block until Mario touches them instead of being collected automatically.
+- Power-up ? blocks release a mushroom for Small Mario and a fire flower if Mario is already big (same as the original).
+- Enemies keep moving during Mario's death animation; in the original, the game freezes.
+- Switching rooms or dying reloads the room, so Mario restarts as Small Mario.
+- Taller rooms zoom out to fit the window instead of scrolling vertically.
 
 ## Project organization
 
@@ -28,36 +53,26 @@ Runtime source is grouped under `Game/` by responsibility:
 
 - `Entities/` contains players, enemies, items, projectiles, blocks, and background objects.
 - `Interfaces/` contains shared contracts.
-- `Physics/` contains the controller, aspects, interfaces, and physics state.
+- `Physics/` contains the physics engine, collision handling, and the `Box` bounds type.
 - `Animation/`, `Controllers/`, and `Commands/` contain animation and input handling.
-- `Rendering/` contains camera and sprite code.
-- `Levels/`, `State/`, and `Bootstrap/` contain level loading/data, game state, and the game entry point.
+- `Rendering/` contains the camera and the sprite factories (Mario, enemy, item, block, and background).
+- `Levels/` and `State/` contain level loading and the collection of game entities.
+- `MarioGame.cs` and `Program.cs` are the game and its entry point.
 
 Content assets and project files remain at the repository root because the MonoGame content pipeline
 and build configuration use those paths. `Code-Reviews/` remains separate from runtime code.
 
 ## Physics
 
-Moving entities use a `PhysicsController` configured with the aspects they need. The physics
-implementation is organized into `Game/Physics/Aspects`, `Game/Physics/Interfaces`, and
-`Game/Physics/State`.
-Aspect constructor arguments hold settings specific to each entity. For example, an entity that
-needs gravity, movement integration, and a custom bounce
-height can be configured as:
+Every moving object implements `IPhysicsBody`. Each frame, `PhysicsEngine.Step`:
 
-```csharp
-var physics = new PhysicsController
-{
-    GravityPhysics = new GravityPhysics(gravity: 1000f),
-    MovementPhysics = new MovementPhysics(),
-    JumpingPhysics = new JumpingPhysics(jumpSpeed: 550f),
-    BouncingPhysics = new BouncingPhysics(bounceHeight: 80f)
-};
-```
+1. Applies each body's acceleration and gravity, then moves it.
+2. Resolves collisions with terrain (solid blocks, and top-only platforms like bridges and clouds).
+3. Resolves projectile collisions (fireballs with enemies, hammers with Mario).
+4. Resolves player interactions (picking up items, stomping or being hurt by enemies).
 
-Aspects are applied in a consistent order. Gravity updates velocity, movement integrates that
-velocity into position, and bouncing resolves contact with its configured ground.
-Player movement uses the same controller with configurable horizontal movement and gravity aspects.
+`CollisionManager` works out which side two objects touched on and calls each object's `OnCollision`,
+so each object decides how to react (for example, an enemy turns around at a wall, a block releases its item).
 
 Credit for Other Mario Sprites:
 This sprite:
@@ -70,13 +85,11 @@ Using this to find the pixels for each sprite:
 http://www.spritecow.com/
 
 
-## ✅ Roslyn check
+## Roslyn check
 
-- Build succeeded
-- No compiler errors were reported
-- The project in `Monogame.csproj` is currently compiling cleanly through Roslyn
+- Build succeeded with 0 compiler errors
+- The .NET analyzers reported 109 warnings (code-quality suggestions, not errors)
 
-Code Review Generalized: 0 ERRORS 109 analyzer warnings
 After running a code check, there were many minor errors within the code. Nothing that broke the code but more
 stylistic decisions (CA1805). Like setting booleans = false when you can just create them and they auto set false. We cleaned up many
 of these small issues, with some warnings being too vague and unnecesary of a change.
@@ -87,6 +100,15 @@ While many of these issues are small, the team is dedicated to lower these warni
 The team used AI agents to help handle bug fixing and to help wrap our heads around the tasks at hand. Claude Code played a role
 in reviewing code errors and cleaning up the project as well. Making sure to not let it go wild as the team needed to understand
 and have readability stay strong in the project.
+
+SPRINT 3 REVIEW:
+
+Sam - Sprint 3 was a pretty good progressive sprint for the team. A lot was done especially with map work and collisions. The game is really starting
+to actually feel like a game instead of a cheap one off knock off. I think introducing a TODO list for the team helped quite a bit, this text file
+lives in the 'TODO/' folder.
+
+Lots of commits to get the project good and ready for the end of sprint 3. Only missing a small small amount of features to be in the game. But
+I think the team was able to get a fair amount of features in for the sprint.
 
 SPRINT 2 REVIEW:
 
