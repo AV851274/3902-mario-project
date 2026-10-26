@@ -236,6 +236,22 @@ public class EnemySpriteFactory
         return hammerBro;
     }
 
+    public ISprite CreatePodoboo()
+    {
+        AnimationController podoboo = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+        podoboo.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(90, 370, 16, 16),
+                ],
+                Enumerable.Repeat(0.12f, 1).ToArray(),
+                true)
+        );
+        podoboo.Play("Idle");
+        return podoboo;
+    }
+
     public ISprite CreateBowserSprite()
     {
         AnimationController bowser = new AnimationController(enemyTexture, Vector2.Zero, Scale);

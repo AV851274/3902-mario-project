@@ -21,7 +21,6 @@ public class ParaKoopa : EnemyBase
 
     public event Action<ParaKoopa> Stomped;
 
-    // Walking Koopas and moving shells hurt; a resting shell (or one just kicked) doesn't
     public override bool CanHurtPlayer => !IsDefeated;
 
     public ParaKoopa(ISprite sprite, Vector2 initialPosition)

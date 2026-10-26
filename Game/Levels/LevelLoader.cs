@@ -156,6 +156,18 @@ public class LevelLoader
                                 spriteFactory.Enemies.CreateSpinySprite(),
                                 position));
                         break;
+                    case "BPb":
+                        gameEntities.Enemies.Add(
+                            new Podoboo(
+                                spriteFactory.Enemies.CreatePodoboo(),
+                                position, -1000f));
+                        break;
+                    case "Pb":
+                        gameEntities.Enemies.Add(
+                            new Podoboo(
+                                spriteFactory.Enemies.CreatePodoboo(),
+                                position, -800f));
+                        break;
                     case "Pk":
                         gameEntities.Enemies.Add(
                             new ParaKoopa(
