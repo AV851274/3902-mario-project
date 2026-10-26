@@ -197,6 +197,7 @@ public class MarioSpriteFactory
                 [0.5f],
                 false)
         );
+        fireball.Play("Idle");
         return fireball;
     }
 }

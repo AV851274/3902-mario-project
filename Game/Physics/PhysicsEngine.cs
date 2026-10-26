@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mario.Game.Entities.Enemies;
 using Mario.Game.Interfaces;
+using Mario.Game.Interfaces.Player;
 using Mario.Game.State;
 using Microsoft.Xna.Framework;
 
@@ -114,7 +116,36 @@ public sealed class PhysicsEngine
             foreach (var item in entities.Items.Distinct())
                 ResolveCollision(player, item, previousBounds);
             foreach (var enemy in entities.Enemies.Distinct().ToArray())
+            {
                 ResolveCollision(player, enemy, previousBounds);
+                if (enemy is FireBar fireBar)
+                    ResolveFireBarFireballs(player, fireBar, previousBounds);
+            }
+        }
+    }
+
+    private static void ResolveFireBarFireballs(
+        IPlayer player,
+        FireBar fireBar,
+        Dictionary<ICollider, Box?> previousBounds)
+    {
+        IReadOnlyList<Box> currentBounds = fireBar.GetFireballBounds();
+        IReadOnlyList<Box> previousFireballBounds = fireBar.GetPreviousFireballBounds();
+        Box? previousPlayerBounds = previousBounds.GetValueOrDefault(player);
+        if (!player.CollisionEnabled || !fireBar.CollisionEnabled || fireBar.IsDefeated)
+            return;
+
+        for (int i = 0; i < currentBounds.Count; i++)
+        {
+            var collision = CollisionManager.CheckCollision(
+                player.Bounds,
+                currentBounds[i],
+                previousPlayerBounds,
+                previousFireballBounds[i]);
+            if (!collision.HasValue)
+                continue;
+
+            player.TakeDamage();
         }
     }
 

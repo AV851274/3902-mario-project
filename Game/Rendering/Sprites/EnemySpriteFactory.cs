@@ -281,6 +281,26 @@ public class EnemySpriteFactory
         return hammer;
     }
 
+    // public ISprite CreateFirebar()
+    // {
+    //     AnimationController fire = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+    //     fire.AddClip(
+    //         new Track(
+    //             "Idle",
+    //             [
+    //                 new Rectangle(98, 154, 8, 8),
+    //                 new Rectangle(108, 154, 8, 8),
+    //                 new Rectangle(118, 154, 8, 8),
+    //                 new Rectangle(128, 154, 8, 8),
+    //             ],
+    //             Enumerable.Repeat(0.2f, 4).ToArray(),
+    //             true)
+    //     );
+
+    //     fire.Play("Idle");
+    //     return fire;
+    // }
+
     public ISprite CreateEggSprite()
     {
         AnimationController egg = new AnimationController(enemyTexture, Vector2.Zero, Scale);

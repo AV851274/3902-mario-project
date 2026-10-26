@@ -138,6 +138,18 @@ public class LevelLoader
                                 spriteFactory.Enemies.CreateBuzzyBeetleSprite(),
                                 position));
                         break;
+                    case "Fb":
+                        gameEntities.Enemies.Add(
+                            new FireBar(
+                                spriteFactory.Mario.CreateFireballSprite(),
+                                new Vector2(position.X + 12, position.Y + 12), 6));
+
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory.Blocks, 
+                                BlockType.UsedQuestion, 
+                                position));
+
+                        break;
                     case "Sp":
                         gameEntities.Enemies.Add(
                             new Spiny(
