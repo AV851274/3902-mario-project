@@ -86,16 +86,19 @@ Using this to find the pixels for each sprite:
 http://www.spritecow.com/
 
 
-## Roslyn check
+## Code analysis (Roslyn .NET analyzers)
 
-- Build succeeded with 0 compiler errors
-- The .NET analyzers reported 109 warnings (code-quality suggestions, not errors)
+Analyzers are enabled in `Monogame.csproj` (`AnalysisMode = All`). Latest run (10/26/2026): 0 errors, 189 warnings.
+None affect how the game runs; we reviewed each type and left them as-is for these reasons:
 
-After running a code check, there were many minor errors within the code. Nothing that broke the code but more
-stylistic decisions (CA1805). Like setting booleans = false when you can just create them and they auto set false. We cleaned up many
-of these small issues, with some warnings being too vague and unnecesary of a change.
-
-While many of these issues are small, the team is dedicated to lower these warnings as the weeks go on.
+| Rules | Count | Why it's minor |
+|-------|-------|----------------|
+| CA1515, CA1062, CA1002 | 139 | Library rules (make types internal, null-check parameters, don't expose `List<T>`). Our game is standalone and only calls its own code. |
+| CA1805, CA1024, CA1052, CA1823 | 16 | Style only (explicit default values, Get-method vs property, non-static `LevelLoader`, two unused constants in `Spiny`). |
+| CA5394 | 10 | `Random` only drives enemy behavior, not security. |
+| CA1003 | 10 | Our events are internal; `Action` is simpler than `EventHandler<T>`. |
+| CA1859, CA1051 | 8 | Intentional design: we depend on interfaces, and base classes share `protected` fields with subclasses. |
+| CA1716, CA1724, CA1034, CA2213 | 6 | Naming/cleanup notes (`Stop` is a VB keyword, `Player` name overlap, nested `CollisionResult`, MonoGame disposes graphics itself). |
 
 
 The team used AI agents to help handle bug fixing and to help wrap our heads around the tasks at hand. Claude Code played a role
