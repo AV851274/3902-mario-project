@@ -1,0 +1,35 @@
+Code Review of MarioSpriteFactory.cs
+
+Code Review By: Aakash Vatti
+Code Written By: Samuel Chandler
+Day of Code Review: 10/26/2026
+Sprint 3
+
+Minutes Spent on Review: 35
+
+Readability: 9/10
+
+Overall, this class is pretty easy to read and understand. The methods have clear names, so it's easy to tell 
+which type of Mario sprite is being created. I also like how the code separates the different Mario forms and 
+swimming animations into their own methods. The comments next to the rectangles are helpful since otherwise 
+it might be difficult to tell what each set of coordinates represents.
+
+One thing that could be improved is the number of hardcoded rectangle coordinates throughout the class. There 
+are a lot of them, which makes the code a little difficult to look through. Some of the comments and formatting 
+are also inconsistent, but this is a pretty minor issue.
+
+Maintainability/Quality: 8/10
+
+I think the class is organized pretty well overall. The use of CreateMarioSprite and CreateSwimmingMarioSprite 
+is good because it avoids repeating the animation setup code for every Mario form. This makes it easier to add 
+new sprites or change how the animations work without having to modify every method.
+
+One issue I noticed is that the animation durations are hardcoded based on the number of frames. For example, 
+the Run animation always uses three durations, and the Swim animation always uses four. If someone wanted to 
+add or remove an animation frame, they would also have to manually update the durations. Using something like 
+Enumerable.Repeat, which is already used for the fireball animation, could make this easier to maintain.
+
+Another minor issue is that the sprite scale values are hardcoded in the helper methods. If we wanted to change 
+the size of Mario's sprites, we would have to update these values in multiple places. Overall though, the class 
+does a good job of keeping sprite creation separate from the rest of the game, and I don't think it needs any 
+major refactoring right now.
