@@ -100,6 +100,48 @@ None affect how the game runs; we reviewed each type and left them as-is for the
 | CA1859, CA1051 | 8 | Intentional design: we depend on interfaces, and base classes share `protected` fields with subclasses. |
 | CA1716, CA1724, CA1034, CA2213 | 6 | Naming/cleanup notes (`Stop` is a VB keyword, `Player` name overlap, nested `CollisionResult`, MonoGame disposes graphics itself). |
 
+~Task remaining (Y)
+36 |█
+   |█ ▓
+30 |  █ ▓
+   |      ▓   █
+24 |        ▓    █
+   |          ▓     █
+18 |            ▓      █
+   |              ▓       █
+12 |                ▓       █
+   |                  ▓
+ 6 |                    ▓     █
+   |                      ▓
+ 0 |________________________▓_█___
+    10/6      10/13    10/19    10/26
+    █ actual   ▓ ideal
+
+Going off a downward linear ideal line compared to our code commits. We lagged behind a little near the end of the sprint. But pulled in and
+finished strong to get what needed to be done in time. Ideally the team will reflect on this and have a bit more of an early push or a linear
+workflow through sprint 4.
+                        LINES OF CODE:
+EnemySpriteFactory.cs   ███████████████████████████████ 307
+MarioGame.cs            ██████████████████████████ 264
+Player.cs               ██████████████████████████ 259
+LevelLoader.cs          ██████████████████████████ 259
+MarioSpriteFactory.cs   ██████████████████ 181
+Item.cs                 ███████████████ 147
+PhysicsEngine.cs        ██████████████ 144
+Block.cs                █████████████ 126
+CollisionManager.cs     ████████████ 116
+Fireball.cs             ███████████ 110
+Lakitu.cs               ███████████ 108
+HammerBro.cs            ██████████ 104
+CheepCheep.cs           ██████████ 98
+AnimationController.cs  ██████████ 97
+Bowser.cs               █████████ 90
+
+This histogram notes the 15 largerst files in the project. The main desire with this graph it to reflect on what can be refactored to be
+closer to the goal of having all files be <150 lines of code. The top four files go high above this goal, the team plans on condensing these
+files as the sprints go to allow for the files to be the best they can be. MarioGame.cs is the most important since the main game file should
+be as short and sweet as possible.
+
 
 The team used AI agents to help handle bug fixing and to help wrap our heads around the tasks at hand. Claude Code played a role
 in reviewing code errors and cleaning up the project as well. Making sure to not let it go wild as the team needed to understand
