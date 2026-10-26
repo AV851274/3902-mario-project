@@ -34,6 +34,7 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
     protected float MoveDirection { get; set; }
     protected bool DashRequested { get; set; }
     protected bool JumpRequested { get; set; }
+    protected bool IsJumpHeld { get; private set; }
     protected bool CrouchRequested { get; set; }
     public bool IsCrouching { get; set; }
     public bool IsSkidding { get; set; }
@@ -98,6 +99,7 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
     public abstract void Move(Direction direction);
     public abstract void Stop();
     public abstract void Jump();
+    public virtual void SetJumpHeld(bool isHeld) => IsJumpHeld = isHeld;
     public abstract void Dash(Direction direction);
     public abstract void Crouch();
     public abstract void Update(GameTime gameTime);

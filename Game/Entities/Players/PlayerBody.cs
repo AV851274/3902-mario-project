@@ -1,3 +1,4 @@
+using System;
 using Mario.Game.Animation;
 using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
@@ -12,7 +13,9 @@ public class PlayerBody : PlayerBodyBase
     private const float TurnAcceleration = 900f;
     private const float DashSpeedMultiplier = 3f;
     private const float DashAccelerationMultiplier = 2f;
-    private const float JumpSpeed = 550f;
+    private float JumpSpeed => Math.Abs(Velocity.X) > 190f ? 550f : 500f;
+    private bool IsRising => Velocity.Y < -20f;
+    public override float GravityScale => IsRising && IsJumpHeld ? 0.62f : IsRising ? 2f : 1f;
     public PlayerBody() { }
 
     public PlayerBody(IPhysicsBody body) : base(body) { }
@@ -31,6 +34,7 @@ public class PlayerBody : PlayerBodyBase
 
     public override void Jump()
     {
+        SetJumpHeld(true);
         if (IsOnGround)
             JumpRequested = true;
     }
