@@ -12,7 +12,6 @@ public class Podoboo : EnemyBase
     private const float waitingY = 720f;
     private float jumpSpeed;
     private bool waiting = false;
-    private bool falling = true;
     public override float GravityScale => waiting? 0f : 1f;
 
     public override bool canBeStomped => false;
