@@ -22,11 +22,13 @@ CURRENT SPRINT: #3
 - A test room containing every object type
 - Small, Big, and Fire Mario, plus swimming versions of each
 - Mario movement with acceleration, skidding, crouching, dashing, and jumping
-- Enemies: Goomba, Koopa (shell can be kicked), Hammer Bro (throws hammers), and Cheep Cheeps
-- Enemies have gravity, land on blocks, turn around at walls, and can be stomped
+- Enemies: Goomba, Koopa (shell can be kicked), Para-Koopa, Buzzy Beetle, Spiny, Hammer Bro (throws hammers),
+  Cheep Cheeps (green and gray), Lakitu (follows Mario and throws eggs that hatch into Spinies),
+  Bowser (jumps, throws hammers, and breathes fire), Fire Bars, Podoboos (big and normal), and Bullet Bills fired from launchers
+- Enemies have gravity, land on blocks, turn around at walls, and can be stomped (except Spiny, Cheep Cheeps, Bowser, Fire Bars, and Podoboos)
 - Taking damage shrinks Mario, with a short invincibility flash; Small Mario plays a death animation and the room restarts
 - Falling into a pit restarts the room
-- Fireballs bounce along blocks and defeat enemies; Hammer Bro's hammers damage Mario
+- Fireballs bounce along blocks and defeat enemies; enemy projectiles (hammers, Bowser's fire, Lakitu's eggs, Bullet Bills) damage Mario
 - ? blocks release their item (coin, mushroom/fire flower, or star), which rises out of the block
 - Big / Fire Mario break bricks; Small Mario bumps them
 - Items: mushroom, fire flower, coin, and star; mushrooms and stars move and bounce off walls
