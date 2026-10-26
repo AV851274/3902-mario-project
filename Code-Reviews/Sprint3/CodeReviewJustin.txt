@@ -1,0 +1,58 @@
+Code Review of PhysicsEngine and IPhysicsBody
+Code Review By: Justin Kumar
+Code Written By: Michael Sidoti (and others, but he made the base)
+Day of Code Review: 10/25/2026
+Minutes Spent on it: 90
+
+Readability: 9/10
+
+IPhysicsBody is an interface, so it doesn't have much to be confusing for a person to read.
+All of the parameters make sense: our physics bodies have position, velocity, and 
+acceleration. They experience certain amounts of gravity and have maximum vertical and 
+horizontal speeds. They also detect if they are on the ground. These all make sense. The 
+only things that could be improved are PendingAcceleration, which I cannot find a reason in
+the code to be named that instead of just Acceleration (either indicating I couldn't tell 
+what it needs to be named that for or that it is unnecessary), and combining MaxFallSpeed 
+and MaxHorizontalSpeed into one vector for simplicity.
+
+PhysicsEngine has more stuff to read but is also still generally clear as to what it is 
+doing. A lot of the meat and potatoes is handled by collider functions, which allows for 
+its code to be read a lot more easily. In its Step function, it is very easy to read that 
+it first updates the positions of all objects in accordance to their positions, velocities, 
+accelerations, and time change. Then, it handles all the collision resulting from these 
+position changes. The collision resolution functions just resolve collision between all the 
+objects that can collide with each other. Reading names of variables and functions gives 
+good insight into what they do, and there's also a few comments explaining things further. 
+The use of "previous" in previousBounds without an obvious "current" or "future" equivalent 
+makes it a little more confusing but not enough to cause serious problems.
+
+
+Maintainability/Quality: 7/10
+
+I think the same feedback for Readability largely applies for the IPhysicsBody interface. 
+All of the attributes themselves make sense, and possibly the quality would improve if the 
+MaxFallSpeed and MaxHorizontalSpeed were combined into one vector. What needs to 
+additionally be considered here is how difficult it is to debug and add features. Since 
+it's an interface, there may not be a whole lot that changes when debugging the physics. 
+But if additional functionality needeed to be added to this interface, I think it could 
+take a lot of effort to add it to everything that uses this, which includes players and 
+enemies. But a change significant enough to require overhauls or new features in existing 
+code that implements it would in and of itself be a very significant change that might more 
+understandably warrant large code changes anyways. So while changing this interface could 
+take a lot of effort, the sort of change to require that is so large that this is somewhat 
+acceptable.
+
+For handling ALL position adjustment, including collisions, the PhysicsEngine code manages 
+to be relatively short. Again, since lots of the collision functionality is left in 
+Collider code, a lot of potential adjustments that could be made would end up there 
+instead. I added functionality for projectiles hitting the player at one point which 
+required modification to this file, and it was very easy to add the feature I was going for 
+(added loop to check player and projectile collisions for hammers hitting Mario). Different
+features may be more challenging to add, though: since the code is relatively simple, a 
+necessary change could result in a lot of things needing to be fixed or reworked, 
+especially in files outside of this one. Potential changes would include possibly combining 
+the ResolveXCollisions/Interactions functions in the event something simpler could still get 
+the job done or possibly splitting this into two files, since it fulfills two distinct 
+purposes (updating positions based on pos/vel/acc + updating positions based on collision). 
+But as of now, the file is simple enough that I don't think this is necessary if our 
+collision doesn't need significant changes for something unexpected.
