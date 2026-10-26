@@ -1,0 +1,25 @@
+Code Review of CheepCheep
+Code Review By: Michael Sidoti
+Code Written By: Samuel Chandler
+Day of Code Review: 10/25/2026
+Minutes Spent on it: 56
+
+Readability: 8/10
+
+The class is short, and the main behaviors are easy to identify: gray fish swim in one
+direction, green fish turn around within bounds, and fish hit by fireballs are defeated.
+Names such as `SwimSpeed`, `bobTimer`, and `facingDirection` are pretty good.
+However, the capitalization of the names are inconsistent. The empty `Stomp` method and commented-out `OnWallBounce'
+leave it unclear whether these are unfinished behaviors.
+
+Maintainability/Quality: 8/10
+
+The main problem that I see is that green fish change their horizontal velocity by
+`turnAcc` amount on every update, rather than using the elapsed time. The
+physics engine applies velocity to position using elapsed time, so the turn acceleration 
+depend on the game's update rate. Using `deltaTime` would make the movement consistent
+across frame rates.
+
+The bobbing calculation also does not match the comment: `sin(pi * progress)`. This can make the fish bob more slowly than the stated
+cycle time. Finally, `adjustGreenPosition` returns `Position.X`, but its caller ignores
+that value, so the return type and value can be removed.
