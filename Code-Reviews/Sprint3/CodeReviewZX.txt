@@ -1,0 +1,24 @@
+Code Review of MarioGame.cs
+Reviewer: Zhenxiang "ZX" Ning
+Code authored by: Aakash Vatti, Brannon Hill, Sam Chandler, and ZX Ning
+Day of Code Review: 10/26/2026.
+Based on commit: 1c7ac5fc75760635f8f1e42445c1901a13a1464b
+
+Sprint 3
+
+Readability: 8/10
+
+This class is quite long but still have a good readbility. 
+Most methods are clear and short, and have self-explanatory naming.  
+
+
+Maintainability/Quality: 5/10
+
+Currently, this class contains about 310 lines of code and handles a wide range of functions. 
+Furthermore, it suffers from high coupling.  I believe that a key focus for future refactoring 
+should be to split this class according to its responsibilities, moving some of the logic into 
+a 'Scene' or similar classes. Additionally, the callback methods for handling projectiles have 
+become bloated and deserve the design of a separate mechanism to handle them. 
+In particular, lines 101–123 contain code that appears to be an antipattern; 
+since there are no specific handling methods for projectiles, this has resulted in a
+large number of 'if' statements for type checking.
