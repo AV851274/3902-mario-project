@@ -46,6 +46,7 @@ CURRENT SPRINT: #3
 - Enemies keep moving during Mario's death animation; in the original, the game freezes.
 - Switching rooms or dying reloads the room, so Mario restarts as Small Mario.
 - Taller rooms zoom out to fit the window instead of scrolling vertically.
+- Mario taking damage freeze frames are replaced with invincibility frames instead.
 
 ## Project organization
 
