@@ -27,9 +27,11 @@ public class KeyboardController : IController
     private Dictionary<Keys, ICommand> pressCommands;
     private Dictionary<PlayerActions, ICommand> playerCommands;
     private KeyboardState previousState;
+    private readonly IPlayer player;
 
     public KeyboardController(MarioGame game, IPlayer player)
     {
+        this.player = player;
         pressCommands = new Dictionary<Keys, ICommand> {
             { Keys.Q, new QuitCommand(game) },
             { Keys.R, new ResetCommand(game) },
@@ -79,6 +81,8 @@ public class KeyboardController : IController
         bool left = keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A);
         bool right = keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D);
         bool dash = keyboardState.IsKeyDown(Keys.Space);
+        bool jumpHeld = keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W);
+        player.BodyAction.SetJumpHeld(jumpHeld);
 
         PlayerActions action;
 
@@ -90,7 +94,7 @@ public class KeyboardController : IController
             action = dash ? PlayerActions.DashR : PlayerActions.MoveR;
         playerCommands[action].Execute();
 
-        if (keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W))
+        if (jumpHeld)
             playerCommands[PlayerActions.Jump].Execute();
 
         if (keyboardState.IsKeyDown(Keys.Down) || keyboardState.IsKeyDown(Keys.S))
