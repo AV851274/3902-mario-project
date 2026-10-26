@@ -33,7 +33,7 @@ public abstract class StaticEnemyBase : IEnemy
     public abstract void Draw(SpriteBatch spriteBatch);
     public abstract void Stomp();
 
-    public void HitByFireball()
+    public virtual void HitByFireball()
     {
         if (IsDefeated)
             return;

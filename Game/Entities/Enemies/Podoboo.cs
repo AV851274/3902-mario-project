@@ -28,20 +28,13 @@ public class Podoboo : EnemyBase
 
     public override void Draw(SpriteBatch spriteBatch)
     {
-        SpriteEffects effects = falling ? SpriteEffects.FlipVertically : SpriteEffects.None;
+        SpriteEffects effects = Velocity.Y > 0 ? SpriteEffects.FlipVertically : SpriteEffects.None;
         sprite.Draw(spriteBatch, Position, effects: effects);
     }
 
     public override void Update(GameTime gameTime)
     {
-        if (Velocity.Y > 0)
-        {
-            falling = true;
-        } else
-        {
-            falling = false;
-        }
-        
+
         if(Position.Y >= waitingY)
         {
             Velocity = Vector2.Zero;

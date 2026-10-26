@@ -20,4 +20,7 @@ public enum BlockType
     TreeRight,
     TreeMiddle,
     TreeRoot,
+    LauncherHead,
+    LauncherNeck,
+    LauncherBody
 }

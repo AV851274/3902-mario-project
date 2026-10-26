@@ -91,6 +91,14 @@ public class LevelLoader
                         gameEntities.Blocks.Add(
                             new Block(spriteFactory.Blocks, BlockType.TreeRoot, position));
                         break;
+                    case "launcherNeck":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory.Blocks, BlockType.LauncherNeck, position));
+                        break;
+                    case "launcherBody":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory.Blocks, BlockType.LauncherBody, position));
+                        break;
                     case "smCastle":
                         gameEntities.Background.Add(
                             new BackgroundObject(spriteFactory.Background, BackgroundType.SmallCastle, position));
@@ -161,6 +169,14 @@ public class LevelLoader
                             new Podoboo(
                                 spriteFactory.Enemies.CreatePodoboo(),
                                 position, -1000f));
+                        break;
+                    case "Bbl":
+                        gameEntities.Enemies.Add(
+                            new BillLauncher(
+                                null,
+                                position));
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory.Blocks, BlockType.LauncherHead, position));
                         break;
                     case "Pb":
                         gameEntities.Enemies.Add(

@@ -31,6 +31,8 @@ public class Lakitu : EnemyBase
 
     public override float GravityScale => DefeatedByFireball ? 1f : 0f;
 
+    public override ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
+
     public Direction FacingDirection => facingDirection;
 
     public event Action<Vector2, Direction> SummonEgg;

@@ -252,6 +252,22 @@ public class EnemySpriteFactory
         return podoboo;
     }
 
+    public ISprite CreateBulletBill()
+    {
+        AnimationController bill = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+        bill.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(54, 53, 16, 16),
+                ],
+                Enumerable.Repeat(0.12f, 1).ToArray(),
+                true)
+        );
+        bill.Play("Idle");
+        return bill;
+    }
+
     public ISprite CreateBowserSprite()
     {
         AnimationController bowser = new AnimationController(enemyTexture, Vector2.Zero, Scale);

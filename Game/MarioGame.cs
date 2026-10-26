@@ -16,6 +16,8 @@ using Mario.Game.State;
 using Mario.Game.Levels;
 using Mario.Game.Rendering.Camera;
 using Mario.Game.Physics;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Mario.Game;
 
@@ -30,6 +32,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private IController mouseController;
     private SpriteFactory spriteFactory;
     private GameEntities gameEntities = new GameEntities();
+    private GameEntities entityBuffer = new GameEntities();
     private Camera2D camera = new Camera2D();
     private int levelWidth;
     private readonly PhysicsEngine physicsEngine;
@@ -84,6 +87,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         currentRoom = roomIndex;
         gameEntities.Reset();
+        entityBuffer.Reset();
 
         var level = LevelLoader.LoadLevel(Content, RoomFiles[currentRoom], gameEntities, spriteFactory);
 
@@ -109,10 +113,14 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             {
                 paraKoopa.Stomped += ReplaceParaKoopaWithTurtle;
             }
-            if (enemy is Lakitu lakitu)
+            if (enemy is Lakitu lakitu) {
                 lakitu.SummonEgg += SpawnEgg;
+            }
+            if (enemy is BillLauncher billLauncher)
+            {
+                billLauncher.SummonBill += SpawnBill;
+            }
         }
-
         foreach (IBlock block in gameEntities.Blocks)
         {
             block.ItemReleased += SpawnItem;
@@ -130,6 +138,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         gameEntities.Players.Add(mario);
         foreach (Lakitu lakitu in gameEntities.Enemies.OfType<Lakitu>())
             lakitu.Follow(mario);
+        foreach (BillLauncher billLauncher in gameEntities.Enemies.OfType<BillLauncher>())
+            billLauncher.Follow(mario);
     }
 
 
@@ -216,6 +226,15 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         gameEntities.Projectiles.Add(egg);
     }
 
+    private void SpawnBill(Vector2 position, Direction direction)
+    {
+        float directionSign = direction == Direction.Left ? -1f : 1f;
+        entityBuffer.Enemies.Add(new BulletBill(
+            spriteFactory.Enemies.CreateBulletBill(),
+            position,
+            new Vector2(250f * directionSign, 0f)));
+    }
+
     private void ReplaceParaKoopaWithTurtle(ParaKoopa paraKoopa)
     {
         int index = gameEntities.Enemies.IndexOf(paraKoopa);
@@ -251,6 +270,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         gameEntities.Update(gameTime);
         physicsEngine.Step(gameEntities, gameTime);
+        gameEntities.Enemies.AddRange(entityBuffer.Enemies);
+        entityBuffer.Enemies.Clear();
 
         foreach (IPlayer player in gameEntities.Players)
         {
