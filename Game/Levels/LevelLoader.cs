@@ -91,6 +91,14 @@ public class LevelLoader
                         gameEntities.Blocks.Add(
                             new Block(spriteFactory.Blocks, BlockType.TreeRoot, position));
                         break;
+                    case "launcherNeck":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory.Blocks, BlockType.LauncherNeck, position));
+                        break;
+                    case "launcherBody":
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory.Blocks, BlockType.LauncherBody, position));
+                        break;
                     case "smCastle":
                         gameEntities.Background.Add(
                             new BackgroundObject(spriteFactory.Background, BackgroundType.SmallCastle, position));
@@ -126,6 +134,63 @@ public class LevelLoader
                                 spriteFactory.Enemies.CreateBowserSprite(),
                                 position));
                         break;
+                    case "Lk":
+                        gameEntities.Enemies.Add(
+                            new Lakitu(
+                                spriteFactory.Enemies.CreateLakituSprite(),
+                                position));
+                        break;
+                    case "Bz":
+                        gameEntities.Enemies.Add(
+                            new BuzzyBeetle(
+                                spriteFactory.Enemies.CreateBuzzyBeetleSprite(),
+                                position));
+                        break;
+                    case "Fb":
+                        gameEntities.Enemies.Add(
+                            new FireBar(
+                                spriteFactory.Mario.CreateFireballSprite(),
+                                new Vector2(position.X + 12, position.Y + 12), 6));
+
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory.Blocks, 
+                                BlockType.UsedQuestion, 
+                                position));
+
+                        break;
+                    case "Sp":
+                        gameEntities.Enemies.Add(
+                            new Spiny(
+                                spriteFactory.Enemies.CreateSpinySprite(),
+                                position));
+                        break;
+                    case "BPb":
+                        gameEntities.Enemies.Add(
+                            new Podoboo(
+                                spriteFactory.Enemies.CreatePodoboo(),
+                                position, -1000f));
+                        break;
+                    case "Bbl":
+                        gameEntities.Enemies.Add(
+                            new BillLauncher(
+                                null,
+                                position));
+                        gameEntities.Blocks.Add(
+                            new Block(spriteFactory.Blocks, BlockType.LauncherHead, position));
+                        break;
+                    case "Pb":
+                        gameEntities.Enemies.Add(
+                            new Podoboo(
+                                spriteFactory.Enemies.CreatePodoboo(),
+                                position, -800f));
+                        break;
+                    case "Pk":
+                        gameEntities.Enemies.Add(
+                            new ParaKoopa(
+                                spriteFactory.Enemies.CreateParaKoopaSprite(),
+                                position));
+                        break;
+
                     case "GrayCheep":
                         gameEntities.Enemies.Add(
                             new CheepCheep(

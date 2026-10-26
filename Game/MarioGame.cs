@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Animation;
@@ -15,6 +16,8 @@ using Mario.Game.State;
 using Mario.Game.Levels;
 using Mario.Game.Rendering.Camera;
 using Mario.Game.Physics;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Mario.Game;
 
@@ -29,6 +32,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private IController mouseController;
     private SpriteFactory spriteFactory;
     private GameEntities gameEntities = new GameEntities();
+    private GameEntities entityBuffer = new GameEntities();
     private Camera2D camera = new Camera2D();
     private int levelWidth;
     private readonly PhysicsEngine physicsEngine;
@@ -83,6 +87,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         currentRoom = roomIndex;
         gameEntities.Reset();
+        entityBuffer.Reset();
 
         var level = LevelLoader.LoadLevel(Content, RoomFiles[currentRoom], gameEntities, spriteFactory);
 
@@ -102,15 +107,39 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             if (enemy is Bowser bowser)
             {
                 bowser.SummonHammer += SpawnHammer;
+                bowser.SummonFire += SpawnFire;
+            }
+            if (enemy is ParaKoopa paraKoopa)
+            {
+                paraKoopa.Stomped += ReplaceParaKoopaWithTurtle;
+            }
+            if (enemy is Lakitu lakitu) {
+                lakitu.SummonEgg += SpawnEgg;
+            }
+            if (enemy is BillLauncher billLauncher)
+            {
+                billLauncher.SummonBill += SpawnBill;
             }
         }
-
         foreach (IBlock block in gameEntities.Blocks)
         {
             block.ItemReleased += SpawnItem;
         }
 
-        gameEntities.Players.Add(CreateMario(false, marioSpawn));
+        foreach (IProjectile projectile in gameEntities.Projectiles)
+        {
+            if (projectile is Egg egg)
+            {
+                egg.SummonSpiny += ReplaceEggWithSpiny;
+            }
+        }
+
+        IPlayer mario = CreateMario(false, marioSpawn);
+        gameEntities.Players.Add(mario);
+        foreach (Lakitu lakitu in gameEntities.Enemies.OfType<Lakitu>())
+            lakitu.Follow(mario);
+        foreach (BillLauncher billLauncher in gameEntities.Enemies.OfType<BillLauncher>())
+            billLauncher.Follow(mario);
     }
 
 
@@ -175,6 +204,61 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             3f));
     }
 
+    private void SpawnFire(Vector2 position, Direction direction)
+    {
+        float directionSign = direction == Direction.Left ? -1f : 1f;
+
+        gameEntities.Projectiles.Add(new Fire(
+            spriteFactory.Enemies.CreateFireSprite(),
+            position + new Vector2(20f * directionSign, 0f),
+            new Vector2(250f * directionSign, 0f),
+            3f));
+    }
+
+    private void SpawnEgg(Vector2 position, Direction direction)
+    {
+        Egg egg = new Egg(
+            spriteFactory.Enemies.CreateEggSprite(),
+            position,
+            new Vector2(0f, 0f),
+            3f);
+        egg.SummonSpiny += ReplaceEggWithSpiny;
+        gameEntities.Projectiles.Add(egg);
+    }
+
+    private void SpawnBill(Vector2 position, Direction direction)
+    {
+        float directionSign = direction == Direction.Left ? -1f : 1f;
+        entityBuffer.Enemies.Add(new BulletBill(
+            spriteFactory.Enemies.CreateBulletBill(),
+            position,
+            new Vector2(250f * directionSign, 0f)));
+    }
+
+    private void ReplaceParaKoopaWithTurtle(ParaKoopa paraKoopa)
+    {
+        int index = gameEntities.Enemies.IndexOf(paraKoopa);
+        if (index < 0)
+            throw new InvalidOperationException(
+                "Cannot replace a ParaKoopa that is not in the active enemy list.");
+
+        gameEntities.Enemies[index] = new Turtle(
+            spriteFactory.Enemies.CreateTurtleSprite(),
+            paraKoopa.Position)
+        {
+            Velocity = paraKoopa.Velocity,
+        };
+    }
+
+    private void ReplaceEggWithSpiny(Egg egg)
+    {
+        gameEntities.Enemies.Add(new Spiny(
+            spriteFactory.Enemies.CreateSpinySprite(),
+            egg.Position));
+    }
+
+
+
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
@@ -186,6 +270,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         gameEntities.Update(gameTime);
         physicsEngine.Step(gameEntities, gameTime);
+        gameEntities.Enemies.AddRange(entityBuffer.Enemies);
+        entityBuffer.Enemies.Clear();
 
         foreach (IPlayer player in gameEntities.Players)
         {

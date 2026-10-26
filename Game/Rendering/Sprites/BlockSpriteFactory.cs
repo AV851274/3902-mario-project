@@ -40,6 +40,9 @@ public class BlockSpriteFactory
             BlockType.TreeMiddle => new StaticSprite(tileSet, new Rectangle(628, 200, 16, 16)),
             BlockType.Bridge => new StaticSprite(tileSet, new Rectangle(558, 33, 16, 16)),
             BlockType.Cloud => new StaticSprite(tileSet, new Rectangle(366, 16, 16, 16)),
+            BlockType.LauncherHead => new StaticSprite(tileSet, new Rectangle(119, 16, 16, 16)),
+            BlockType.LauncherNeck => new StaticSprite(tileSet, new Rectangle(119, 33, 16, 16)),
+            BlockType.LauncherBody => new StaticSprite(tileSet, new Rectangle(119, 50, 16, 16)),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }

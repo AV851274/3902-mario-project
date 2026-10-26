@@ -20,7 +20,7 @@ public class Fireball : IProjectile
     public Vector2 PendingAcceleration { get; set; }
     public bool IsOnGround { get; set; }
     public float BounceSpeed { get; }
-    public bool CollisionEnabled => Active;
+    public bool CollisionEnabled => Active && !dead;
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(Position.X, Position.Y, 24, 24);
     public bool Active { get; private set; }
@@ -64,17 +64,22 @@ public class Fireball : IProjectile
 
             if (elapsedTime > lifeTime)
             {
-                if (!dead) {
-                    Velocity = Vector2.Zero;
-                    dead = true;
-                    timeOfDeath = elapsedTime; 
-                }
+                Explode();
                 return;
             }
 
             sprite.Play("Idle");
             sprite.UpdateAnimation(gameTime);
         } 
+    }
+
+    private void Explode()
+    {
+        if (!dead) {
+            Velocity = Vector2.Zero;
+            dead = true;
+            timeOfDeath = elapsedTime; 
+        }
     }
 
     public void OnCollision(CollisionEvent collision)
@@ -94,21 +99,13 @@ public class Fireball : IProjectile
                 }
             }
             else {
-                if (!dead) {
-                    Velocity = Vector2.Zero;
-                    dead = true;
-                    timeOfDeath = elapsedTime; 
-                }
+                Explode();
             }
         }
         else if (collision.Other is IEnemy enemy)
         {
             enemy.HitByFireball();
-            if (!dead) {
-                Velocity = Vector2.Zero;
-                dead = true;
-                timeOfDeath = elapsedTime;
-            }
+            Explode();
         }
 
     }

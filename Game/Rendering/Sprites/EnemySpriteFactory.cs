@@ -68,6 +68,91 @@ public class EnemySpriteFactory
         return turtle;
     }
 
+    public ISprite CreateBuzzyBeetleSprite()
+    {
+        AnimationController buzzyBeetle = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        buzzyBeetle.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(0, 34, 16, 16),
+                new Rectangle(18, 34, 16, 16)
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        buzzyBeetle.AddClip(new Track(
+            "Stomped",
+            [new Rectangle(36, 34, 16, 16)],
+            [1f],
+            false));
+
+        buzzyBeetle.Play("Walk");
+
+        return buzzyBeetle;
+    }
+
+    public ISprite CreateSpinySprite()
+    {
+        AnimationController spiny = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        spiny.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(72, 352, 16, 16),
+                new Rectangle(90, 352, 16, 16)
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        spiny.Play("Walk");
+
+        return spiny;
+    }
+
+    public ISprite CreateParaKoopaSprite()
+    {
+        AnimationController paraKoopa = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        paraKoopa.AddClip(new Track(
+            "Walk",
+            [
+                new Rectangle(36, 112, 16, 24),
+                new Rectangle(54, 112, 16, 24)
+            ],
+            [0.2f, 0.2f],
+            true));
+
+        paraKoopa.Play("Walk");
+
+        return paraKoopa;
+    }
+
+     public ISprite CreateLakituSprite()
+    {
+        AnimationController lakitu = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+
+        lakitu.AddClip(new Track(
+            "Idle",
+            [
+                new Rectangle(54, 138, 16, 24),
+            ],
+            [0.2f],
+            true));
+
+            lakitu.AddClip(new Track(
+            "EggThrow",
+            [
+                new Rectangle(72, 138, 16, 24),
+            ],
+            [0.2f],
+            true));
+
+        lakitu.Play("Idle");
+
+        return lakitu;
+    }
+
     public ISprite CreateGreenCheepSprite()
     {
         AnimationController greenCheep = new AnimationController(enemyTexture, Vector2.Zero, Scale);
@@ -151,6 +236,38 @@ public class EnemySpriteFactory
         return hammerBro;
     }
 
+    public ISprite CreatePodoboo()
+    {
+        AnimationController podoboo = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+        podoboo.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(90, 370, 16, 16),
+                ],
+                Enumerable.Repeat(0.12f, 1).ToArray(),
+                true)
+        );
+        podoboo.Play("Idle");
+        return podoboo;
+    }
+
+    public ISprite CreateBulletBill()
+    {
+        AnimationController bill = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+        bill.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(54, 53, 16, 16),
+                ],
+                Enumerable.Repeat(0.12f, 1).ToArray(),
+                true)
+        );
+        bill.Play("Idle");
+        return bill;
+    }
+
     public ISprite CreateBowserSprite()
     {
         AnimationController bowser = new AnimationController(enemyTexture, Vector2.Zero, Scale);
@@ -194,5 +311,57 @@ public class EnemySpriteFactory
                 true)
         );
         return hammer;
+    }
+
+    // public ISprite CreateFirebar()
+    // {
+    //     AnimationController fire = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+    //     fire.AddClip(
+    //         new Track(
+    //             "Idle",
+    //             [
+    //                 new Rectangle(98, 154, 8, 8),
+    //                 new Rectangle(108, 154, 8, 8),
+    //                 new Rectangle(118, 154, 8, 8),
+    //                 new Rectangle(128, 154, 8, 8),
+    //             ],
+    //             Enumerable.Repeat(0.2f, 4).ToArray(),
+    //             true)
+    //     );
+
+    //     fire.Play("Idle");
+    //     return fire;
+    // }
+
+    public ISprite CreateEggSprite()
+    {
+        AnimationController egg = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+        egg.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(36, 352, 16, 16),
+                    new Rectangle(54, 352, 16, 16),
+                ],
+                [0.2f, 0.2f],
+                true)
+        );
+        return egg;
+    }
+
+    public ISprite CreateFireSprite()
+    {
+        AnimationController fire = new AnimationController(enemyTexture, Vector2.Zero, Scale);
+        fire.AddClip(
+            new Track(
+                "Idle",
+                [
+                    new Rectangle(102, 242, 24, 8),
+                    new Rectangle(102, 252, 24, 8),
+                ],
+                [0.2f, 0.2f],
+                true)
+        );
+        return fire;
     }
 }

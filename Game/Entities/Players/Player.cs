@@ -15,6 +15,7 @@ public class Player : IPlayer
 {
     private const float ThrowAnimationTime = 0.3f;
     private const float InvincibleDuration = 1.5f;
+    private const float StompGraceDuration = 0.2f;
     private const float DeathJumpSpeed = 500f;
     private const float FallOffScreenY = 1000f;
 
@@ -30,6 +31,7 @@ public class Player : IPlayer
     private bool isSwimming;
     private bool attackPressed;
     private float invincibleTimer;
+    private float stompGraceTimer;
     private bool isDying;
 
 
@@ -176,10 +178,15 @@ public class Player : IPlayer
     {
         if (collision.Other is IEnemy enemy && !enemy.IsDefeated)
         {
-            bool stomped = collision.Normal.Y < 0f && collision.RelativeVelocityBefore.Y > 0f;
+            if (stompGraceTimer > 0f)
+                return;
+
+            bool stomped = (collision.Normal.Y < 0f && collision.RelativeVelocityBefore.Y > 0f)
+                || Velocity.Y > 0f;
             if (stomped && enemy.canBeStomped)
             {
                 enemy.Stomp();
+                stompGraceTimer = StompGraceDuration;
                 Velocity = new Vector2(Velocity.X, -350f);
                 IsOnGround = false;
             }
@@ -220,6 +227,7 @@ public class Player : IPlayer
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         timeSinceThrow += deltaTime;
         invincibleTimer = Math.Max(0f, invincibleTimer - deltaTime);
+        stompGraceTimer = Math.Max(0f, stompGraceTimer - deltaTime);
 
         // Attack
         if (attackPressed && MarioPowerState.CanShootFireball)
