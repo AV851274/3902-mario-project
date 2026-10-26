@@ -1,0 +1,20 @@
+Code Review of Background Objects (BackgroundObject.cs, BackgroundType.cs, and BackgroundSpriteFactory.cs) by Brannon Hill
+Code authored by: Michael Sidoti & Sam Chandler
+Day of Code Review: 10/26/2026
+Sprint 3
+
+Minutes spent on review: 25
+
+Readability: 10/10
+This new object type was created to help seperate the non-colliding background groups from the blocks with collision. 
+These objects also can be different sizes unlike blocks which are all 16 by 16 in spritesheet. Because of all of this
+background objects are very simple and the code is extremely consise.  
+
+
+
+Maintainability/Quality: 10/10
+One problem posed by the variable size of background objects that the position of the object is not always obvious, which
+can make placing them in the level.csv files more difficult, but the utility of not placing each tile manually is more than worth it. 
+Adding new background objects is a simple process; you just assign a name to a rectangle and it's implemented in 2 lines of code. 
+Really robust code. No refactoring necessary. 
+
