@@ -17,6 +17,7 @@ public class Item : IItem, IPhysicsBody
     public bool IsCollected { get; private set; }
     public bool Active => !IsCollected;
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
+    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Foreground;
     public Box Bounds => new Box(
         Position.X,
         Position.Y,

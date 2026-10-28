@@ -10,4 +10,5 @@ public interface IBlock: IGameObject, ICollider
     Vector2 Position { get; }
     event Action<ItemType, Vector2> ItemReleased;
     void Hit(bool big);
+
 }

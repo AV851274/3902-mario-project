@@ -24,6 +24,7 @@ public class Fireball : IProjectile
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(Position.X, Position.Y, 24, 24);
     public bool Active { get; private set; }
+    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Effects;
 
     public float GravityScale => dead ? 0f : 1f;
 

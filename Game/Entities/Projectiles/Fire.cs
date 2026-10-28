@@ -21,6 +21,7 @@ public class Fire : IProjectile
     public Box Bounds => new Box(Position.X, Position.Y, 72, 24);
     public bool Active { get; private set; }
     public Vector2 Velocity { get; set; }
+    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Effects;
 
     public Fire(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime)
     {

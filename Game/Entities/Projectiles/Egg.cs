@@ -23,6 +23,8 @@ public class Egg : IProjectile
     public bool Active { get; private set; }
     public Vector2 Velocity { get; set; }
 
+    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Effects;
+
     public event Action<Egg> SummonSpiny;
 
     public Egg(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime)
