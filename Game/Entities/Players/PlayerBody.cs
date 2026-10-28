@@ -51,7 +51,7 @@ public class PlayerBody : PlayerBodyBase
     {
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         IsCrouching = CrouchRequested && IsOnGround;
-        if (JumpRequested && IsOnGround)
+        if (JumpRequested && !PreviousJumpHeld && IsOnGround)
         {
             Velocity = new Vector2(Velocity.X, -JumpSpeed);
             IsOnGround = false;

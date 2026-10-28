@@ -35,6 +35,7 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
     protected bool DashRequested { get; set; }
     protected bool JumpRequested { get; set; }
     protected bool IsJumpHeld { get; private set; }
+    protected bool PreviousJumpHeld { get; private set; }
     protected bool CrouchRequested { get; set; }
     public bool IsCrouching { get; set; }
     public bool IsSkidding { get; set; }
@@ -93,6 +94,7 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
         MoveDirection = 0f;
         DashRequested = false;
         JumpRequested = false;
+        PreviousJumpHeld = IsJumpHeld;
         CrouchRequested = false;
     }
 

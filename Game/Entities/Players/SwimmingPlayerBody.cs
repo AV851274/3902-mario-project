@@ -48,7 +48,7 @@ public class SwimmingPlayerBody : PlayerBodyBase
     public override void Update(GameTime gameTime)
     {
         timeSinceStroke += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        if (JumpRequested)
+        if (JumpRequested && !PreviousJumpHeld)
         {
             Velocity = new Vector2(Velocity.X, -StrokeSpeed);
             IsOnGround = false;
