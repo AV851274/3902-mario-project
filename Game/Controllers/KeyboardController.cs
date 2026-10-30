@@ -80,7 +80,7 @@ public class KeyboardController : IController
     {
         bool left = keyboardState.IsKeyDown(Keys.Left) || keyboardState.IsKeyDown(Keys.A);
         bool right = keyboardState.IsKeyDown(Keys.Right) || keyboardState.IsKeyDown(Keys.D);
-        bool dash = keyboardState.IsKeyDown(Keys.Space);
+        bool dash = keyboardState.IsKeyDown(Keys.Space) || keyboardState.IsKeyDown(Keys.LeftShift);
         bool jumpHeld = keyboardState.IsKeyDown(Keys.Up) || keyboardState.IsKeyDown(Keys.W);
         player.BodyAction.SetJumpHeld(jumpHeld);
 
