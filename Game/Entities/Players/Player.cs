@@ -34,6 +34,8 @@ public class Player : IPlayer
     private float stompGraceTimer;
     private bool isDying;
 
+    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Foreground;
+
 
     public IPlayerBodyAction BodyAction => body;
 

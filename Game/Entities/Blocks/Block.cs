@@ -52,6 +52,8 @@ public class Block : IBlock
 
     public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
 
+    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Block;
+
     public event Action<ItemType, Vector2> ItemReleased;
 
     public Block(BlockSpriteFactory spriteFactory, BlockType type, Vector2 position, ItemType? contents = null)

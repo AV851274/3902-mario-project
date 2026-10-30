@@ -20,6 +20,7 @@ public abstract class StaticEnemyBase : IEnemy
     public bool CollisionEnabled => Active && !IsDefeated;
     public virtual bool IsDefeated => DefeatedByFireball;
     public virtual bool CanHurtPlayer => !IsDefeated;
+    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Foreground;
 
     protected StaticEnemyBase(ISprite sprite, Vector2 position, float width, float height)
     {

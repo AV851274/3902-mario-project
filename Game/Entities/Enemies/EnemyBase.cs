@@ -31,6 +31,7 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
     public bool CollisionEnabled => Active && !IsDefeated;
     public virtual bool IsDefeated => DefeatedByFireball;
     public virtual bool CanHurtPlayer => !IsDefeated;
+    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Foreground;
 
     protected EnemyBase(ISprite sprite, Vector2 position, float width, float height)
     {

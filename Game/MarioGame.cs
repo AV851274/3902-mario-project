@@ -303,8 +303,31 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         foreach (var gameObj in gameEntities.GetAllGameObjects())
         {
+            if (gameObj.layer == IGameObject.DrawLayer.Background) {
             gameObj.Draw(spriteBatch);
+            }
         }
+        foreach (var gameObj in gameEntities.GetAllGameObjects())
+        {
+            if (gameObj.layer == IGameObject.DrawLayer.Block) {
+            gameObj.Draw(spriteBatch);
+            }
+        }
+        foreach (var gameObj in gameEntities.GetAllGameObjects())
+        {
+            if (gameObj.layer == IGameObject.DrawLayer.Foreground) {
+            gameObj.Draw(spriteBatch);
+            }
+        }
+        foreach (var gameObj in gameEntities.GetAllGameObjects())
+        {
+            if (gameObj.layer == IGameObject.DrawLayer.Effects) {
+            gameObj.Draw(spriteBatch);
+            }
+        }
+        //definitely a way to make this more efficient
+
+        //draw HUD
 
         spriteBatch.End();
 
