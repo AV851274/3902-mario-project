@@ -333,31 +333,17 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             null,
             camera.Transform);
 
-        foreach (var gameObj in gameEntities.GetAllGameObjects())
+        // Layers are drawn in enum order: Background, Item, Block, Foreground, Effects
+        foreach (IGameObject.DrawLayer layer in Enum.GetValues<IGameObject.DrawLayer>())
         {
-            if (gameObj.layer == IGameObject.DrawLayer.Background) {
-            gameObj.Draw(spriteBatch);
+            foreach (IGameObject gameObj in gameEntities.GetAllGameObjects())
+            {
+                if (gameObj.layer == layer)
+                {
+                    gameObj.Draw(spriteBatch);
+                }
             }
         }
-        foreach (var gameObj in gameEntities.GetAllGameObjects())
-        {
-            if (gameObj.layer == IGameObject.DrawLayer.Block) {
-            gameObj.Draw(spriteBatch);
-            }
-        }
-        foreach (var gameObj in gameEntities.GetAllGameObjects())
-        {
-            if (gameObj.layer == IGameObject.DrawLayer.Foreground) {
-            gameObj.Draw(spriteBatch);
-            }
-        }
-        foreach (var gameObj in gameEntities.GetAllGameObjects())
-        {
-            if (gameObj.layer == IGameObject.DrawLayer.Effects) {
-            gameObj.Draw(spriteBatch);
-            }
-        }
-        //definitely a way to make this more efficient
 
         spriteBatch.End();
 
