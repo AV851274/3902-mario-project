@@ -295,6 +295,13 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         gameEntities.Update(gameTime);
         physicsEngine.Step(gameEntities, gameTime);
         stats.Update(gameTime);
+        if (stats.IsOutOfTime)
+        {
+            foreach (IPlayer player in gameEntities.Players)
+            {
+                player.SetPower(MarioPower.Dead);
+            }
+        }
         gameEntities.Enemies.AddRange(entityBuffer.Enemies);
         entityBuffer.Enemies.Clear();
 
