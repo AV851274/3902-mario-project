@@ -26,6 +26,13 @@
 /processorParam:Version=3.8.5.1
 /build:enemies.png
 
+#begin HudFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:HudFont.spritefont
+
 #begin itemsAndBlocks.png
 /importer:TextureImporter
 /processor:TextureProcessor

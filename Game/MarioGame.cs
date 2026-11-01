@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Mario.Game.State;
 using Mario.Game.Levels;
+using Mario.Game.Rendering;
 using Mario.Game.Rendering.Camera;
 using Mario.Game.Physics;
 using System.Collections;
@@ -24,6 +25,7 @@ namespace Mario.Game;
 public class MarioGame : Microsoft.Xna.Framework.Game
 {
     private const int MaxFireBall = 4;
+    private const int PowerUpScore = 1000;
     
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
@@ -36,6 +38,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private Camera2D camera = new Camera2D();
     private int levelWidth;
     private readonly PhysicsEngine physicsEngine;
+    private readonly GameStats stats = new GameStats();
+    private Hud hud;
 
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
     private static readonly string[] RoomFiles = { "testRoom.csv", "level1.csv", "room2.csv", "1-1.csv" };
@@ -63,6 +67,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         spriteFactory = new SpriteFactory();
         spriteFactory.LoadTextures(Content);
+        hud = new Hud(Content.Load<SpriteFont>("HudFont"), stats);
 
         ResetGame();
     }
@@ -70,6 +75,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     public void ResetGame()
     {
+        stats.Reset();
         LoadRoom(0);
     }
 
@@ -125,6 +131,10 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         {
             block.ItemReleased += SpawnItem;
         }
+        foreach (IItem item in gameEntities.Items)
+        {
+            item.Collected += OnItemCollected;
+        }
 
         foreach (IProjectile projectile in gameEntities.Projectiles)
         {
@@ -167,6 +177,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     // Mario can die in the middle of a collision loop, so the room is reloaded at the end of Update instead
     private void OnMarioDied()
     {
+        stats.LoseLife();
         reloadRoomRequested = true;
     }
 
@@ -190,7 +201,20 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         Item item = new Item(spriteFactory.Items, type, position);
         item.StartEmerging();
+        item.Collected += OnItemCollected;
         gameEntities.Items.Add(item);
+    }
+
+    private void OnItemCollected(ItemType type)
+    {
+        if (type == ItemType.Coin)
+        {
+            stats.AddCoin();
+        }
+        else
+        {
+            stats.AddScore(PowerUpScore);
+        }
     }
 
     private void SpawnHammer(Vector2 position, Direction direction)
@@ -270,6 +294,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         gameEntities.Update(gameTime);
         physicsEngine.Step(gameEntities, gameTime);
+        stats.Update(gameTime);
         gameEntities.Enemies.AddRange(entityBuffer.Enemies);
         entityBuffer.Enemies.Clear();
 
@@ -327,8 +352,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         }
         //definitely a way to make this more efficient
 
-        //draw HUD
+        spriteBatch.End();
 
+        // HUD is drawn without the camera transform so it stays fixed on screen
+        spriteBatch.Begin();
+        hud.Draw(spriteBatch, GraphicsDevice.Viewport.Width);
         spriteBatch.End();
 
         base.Draw(gameTime);
