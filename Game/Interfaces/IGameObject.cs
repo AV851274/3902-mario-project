@@ -7,8 +7,9 @@ public interface IGameObject
 {
     public enum DrawLayer
     {
-        Background, 
-        Block, 
+        Background,
+        Item,
+        Block,
         Foreground,
         Effects
     }
