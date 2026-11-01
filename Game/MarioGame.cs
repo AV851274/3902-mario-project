@@ -355,7 +355,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         spriteBatch.End();
 
         // HUD is drawn without the camera transform so it stays fixed on screen
-        spriteBatch.Begin();
+        spriteBatch.Begin(samplerState: SamplerState.PointClamp);
         hud.Draw(spriteBatch, GraphicsDevice.Viewport.Width);
         spriteBatch.End();
 
