@@ -307,7 +307,14 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         if (reloadRoomRequested)
         {
             reloadRoomRequested = false;
-            LoadRoom(currentRoom);
+            if (stats.Lives <= 0)
+            {
+                ResetGame();
+            }
+            else
+            {
+                LoadRoom(currentRoom);
+            }
         }
 
         base.Update(gameTime);

@@ -7,7 +7,6 @@ public class GameStats
 {
     private const int StartingLives = 3;
     private const float StartingTime = 400f;
-    private const float SecondsPerTimeUnit = 0.4f;
     private const int CoinsPerExtraLife = 100;
     private const int CoinScore = 200;
     private const string StartingWorld = "1-1";
@@ -37,7 +36,7 @@ public class GameStats
     public void Update(GameTime gameTime)
     {
         float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-        Time = Math.Max(0f, Time - elapsed / SecondsPerTimeUnit);
+        Time = Math.Max(0f, Time - elapsed);
     }
 
     public void AddScore(int points)
