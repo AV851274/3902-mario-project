@@ -1,4 +1,13 @@
 namespace Mario.Game.Physics;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Mario.Game.Physics;
+using System;
+using Mario.Game.Interfaces;
+using Mario.Game.Entities.Items;
+using Mario.Game.Interfaces.Player;
+
+using Mario.Game.Rendering.Sprites;
 
 // Floating-point axis-aligned bounds for collision detection.
 public readonly record struct Box
