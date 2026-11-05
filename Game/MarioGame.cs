@@ -26,7 +26,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 {
     private const int MaxFireBall = 4;
     private const int PowerUpScore = 1000;
-    
+    private bool showHitboxes = false;
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
 
@@ -87,6 +87,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     public void PreviousRoom()
     {
         LoadRoom((currentRoom - 1 + RoomFiles.Length) % RoomFiles.Length);
+    }
+
+    public void ToggleHitboxes()
+    {
+        showHitboxes = !showHitboxes;
     }
 
     private void LoadRoom(int roomIndex)
@@ -352,9 +357,12 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             }
         }
 
-        foreach (ICollider collider in gameEntities.GetAllColliders())
+        if (showHitboxes)
         {
-            spriteFactory.Hitboxes.DrawHitbox(spriteBatch, collider.Bounds.Left, collider.Bounds.Right, collider.Bounds.Top, collider.Bounds.Bottom);
+            foreach (ICollider collider in gameEntities.GetAllColliders())
+            {
+                spriteFactory.Hitboxes.DrawHitbox(spriteBatch, collider.Bounds.Left, collider.Bounds.Right, collider.Bounds.Top, collider.Bounds.Bottom);
+            }
         }
 
         spriteBatch.End();
