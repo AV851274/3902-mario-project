@@ -39,6 +39,7 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
     protected bool CrouchRequested { get; set; }
     public bool IsCrouching { get; set; }
     public bool IsSkidding { get; set; }
+    public bool JumpedThisFrame { get; protected set; }
 
     protected PlayerBodyBase() { }
 

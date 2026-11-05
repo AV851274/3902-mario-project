@@ -48,8 +48,10 @@ public class SwimmingPlayerBody : PlayerBodyBase
     public override void Update(GameTime gameTime)
     {
         timeSinceStroke += (float)gameTime.ElapsedGameTime.TotalSeconds;
+        JumpedThisFrame = false;
         if (JumpRequested && !PreviousJumpHeld)
         {
+            JumpedThisFrame = true;
             Velocity = new Vector2(Velocity.X, -StrokeSpeed);
             IsOnGround = false;
         }
