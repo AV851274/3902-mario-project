@@ -28,6 +28,11 @@ public class GameEntities
             .Concat(Players);
     }
 
+    public IEnumerable<ICollider> GetAllColliders()
+    {
+        return GetAllGameObjects().OfType<ICollider>();
+    }
+
     public void Update(GameTime gameTime)
     {
         Players.RemoveAll(p => !p.Active);

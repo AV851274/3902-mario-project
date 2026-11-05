@@ -9,6 +9,7 @@ public class SpriteFactory
     public ItemSpriteFactory Items { get; private set; }
     public BlockSpriteFactory Blocks { get; private set; }
     public BackgroundSpriteFactory Background { get; private set; }
+    public HitboxSpriteFactory Hitboxes { get; private set; }
 
     public void LoadTextures(ContentManager content)
     {
@@ -17,5 +18,6 @@ public class SpriteFactory
         Items = new ItemSpriteFactory(content);
         Blocks = new BlockSpriteFactory(content);
         Background = new BackgroundSpriteFactory(content);
+        Hitboxes = new HitboxSpriteFactory(content);
     }
 }

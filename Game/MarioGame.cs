@@ -352,6 +352,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             }
         }
 
+        foreach (ICollider collider in gameEntities.GetAllColliders())
+        {
+            spriteFactory.Hitboxes.DrawHitbox(spriteBatch, collider.Bounds.Left, collider.Bounds.Right, collider.Bounds.Top, collider.Bounds.Bottom);
+        }
+
         spriteBatch.End();
 
         // HUD is drawn without the camera transform so it stays fixed on screen
