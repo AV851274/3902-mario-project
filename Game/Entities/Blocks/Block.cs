@@ -1,5 +1,6 @@
 using Mario.Game.Physics;
 using System;
+using Mario.Game.Audio;
 using Mario.Game.Interfaces;
 using Mario.Game.Entities.Items;
 using Mario.Game.Rendering.Sprites;
@@ -55,6 +56,7 @@ public class Block : IBlock
     public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Block;
 
     public event Action<ItemType, Vector2> ItemReleased;
+    public event Action<SoundType> SoundRequested;
 
     public Block(BlockSpriteFactory spriteFactory, BlockType type, Vector2 position, ItemType? contents = null)
     {
@@ -98,6 +100,15 @@ public class Block : IBlock
         }
 
         isIntact = !(type == BlockType.Brick && big);
+
+        if (!isIntact)
+        {
+            SoundRequested?.Invoke(SoundType.Brick);
+        }
+        else if (type == BlockType.Brick)
+        {
+            SoundRequested?.Invoke(SoundType.Bump);
+        }
     }
 
     private void ReleaseContents(bool big)

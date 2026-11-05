@@ -2,6 +2,7 @@ using Mario.Game.Physics;
 using System;
 using System.Collections.Generic;
 using Mario.Game.Animation;
+using Mario.Game.Audio;
 using Mario.Game.Interfaces;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Entities.Players.PlayerStates;
@@ -79,6 +80,8 @@ public class Player : IPlayer
 
 
     public event Action<Vector2, Direction> SummonFireball;
+    public event Action<SoundType> SoundRequested;
+    public event Action DeathStarted;
     public event Action Died;
 
     public Vector2 Velocity
@@ -160,6 +163,7 @@ public class Player : IPlayer
     private void StartDying()
     {
         isDying = true;
+        DeathStarted?.Invoke();
         appearance = appearancesTable[new AppearanceKey(MarioPower.Small, false)];
         Velocity = new Vector2(0f, -DeathJumpSpeed);
         IsOnGround = false;
@@ -188,6 +192,7 @@ public class Player : IPlayer
             if (stomped && enemy.canBeStomped)
             {
                 enemy.Stomp();
+                SoundRequested?.Invoke(SoundType.StompSwim);
                 stompGraceTimer = StompGraceDuration;
                 Velocity = new Vector2(Velocity.X, -350f);
                 IsOnGround = false;
@@ -200,6 +205,21 @@ public class Player : IPlayer
         else if (collision.Other is IBlock block && collision.Normal.Y > 0f &&
                  collision.RelativeVelocityBefore.Y < 0f) 
             block.Hit(MarioPowerState.CanCrouch);
+    }
+
+    private SoundType JumpSound()
+    {
+        if (isSwimming)
+        {
+            return SoundType.StompSwim;
+        }
+
+        if (MarioPowerState.Power == MarioPower.Small)
+        {
+            return SoundType.SmallJump;
+        }
+
+        return SoundType.BigJump;
     }
 
     public void Crouch()
@@ -217,6 +237,11 @@ public class Player : IPlayer
     {
         if (Position.Y > FallOffScreenY)
         {
+            // Falling into a pit skips the death animation, so the death starts here
+            if (!isDying)
+            {
+                DeathStarted?.Invoke();
+            }
             Died?.Invoke();
             return;
         }
@@ -225,6 +250,10 @@ public class Player : IPlayer
             return;
 
         body.Update(gameTime);
+        if (body.JumpedThisFrame)
+        {
+            SoundRequested?.Invoke(JumpSound());
+        }
         facingDirection = body.FacingDirection;
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         timeSinceThrow += deltaTime;

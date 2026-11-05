@@ -13,6 +13,41 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin bigJump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:bigJump.wav
+
+#begin brick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:brick.wav
+
+#begin bump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:bump.wav
+
+#begin coin.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:coin.wav
+
+#begin death.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:death.wav
+
 #begin enemies.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -26,6 +61,13 @@
 /processorParam:Version=3.8.5.1
 /build:enemies.png
 
+#begin fireball.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:fireball.wav
+
 #begin HudFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -33,6 +75,13 @@
 /processorParam:TextureFormat=Compressed
 /processorParam:Version=3.8.5.1
 /build:HudFont.spritefont
+
+#begin item.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:item.wav
 
 #begin itemsAndBlocks.png
 /importer:TextureImporter
@@ -75,6 +124,34 @@
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
 /build:Mariogif.gif
+
+#begin overworld.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:overworld.mp3
+
+#begin powerup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:powerup.wav
+
+#begin smallJump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:smallJump.wav
+
+#begin stompswim.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/processorParam:Version=3.8.5.1
+/build:stompswim.wav
 
 #begin Super Mario Bros. NES.ttf
 /importer:FontImporter

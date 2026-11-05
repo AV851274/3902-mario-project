@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Animation;
+using Mario.Game.Audio;
 using Mario.Game.Controllers;
 using Mario.Game.Entities.Enemies;
 using Mario.Game.Entities.Items;
@@ -40,6 +41,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private readonly PhysicsEngine physicsEngine;
     private readonly GameStats stats = new GameStats();
     private Hud hud;
+    private readonly SoundManager sounds = new SoundManager();
 
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
     private static readonly string[] RoomFiles = { "testRoom.csv", "level1.csv", "room2.csv", "1-1.csv" };
@@ -68,6 +70,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         spriteFactory = new SpriteFactory();
         spriteFactory.LoadTextures(Content);
         hud = new Hud(Content.Load<SpriteFont>("HudFont"), stats);
+        sounds.LoadContent(Content);
 
         ResetGame();
     }
@@ -94,6 +97,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         currentRoom = roomIndex;
         gameEntities.Reset();
         entityBuffer.Reset();
+        sounds.PlayMusic();
 
         var level = LevelLoader.LoadLevel(Content, RoomFiles[currentRoom], gameEntities, spriteFactory);
 
@@ -130,6 +134,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         foreach (IBlock block in gameEntities.Blocks)
         {
             block.ItemReleased += SpawnItem;
+            block.SoundRequested += sounds.Play;
         }
         foreach (IItem item in gameEntities.Items)
         {
@@ -168,10 +173,18 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         IPlayer player = new Player(spriteFactory.Mario, position);
         player.SetSwimming(swimming);
         player.SummonFireball += SpawnFireball;
+        player.SoundRequested += sounds.Play;
+        player.DeathStarted += OnMarioDeathStarted;
         player.Died += OnMarioDied;
         keyboardController = new KeyboardController(this, player);
         mouseController = new MouseController(this);
         return player;
+    }
+
+    private void OnMarioDeathStarted()
+    {
+        sounds.StopMusic();
+        sounds.Play(SoundType.Death);
     }
 
     // Mario can die in the middle of a collision loop, so the room is reloaded at the end of Update instead
@@ -186,6 +199,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         if (gameEntities.Projectiles.OfType<Fireball>().Count(fireball => fireball.Active) >= MaxFireBall)
             return;
 
+        sounds.Play(SoundType.Fireball);
         float flip = direction == Direction.Left ? -1f : 1f;
         var velocity = new Vector2(500f * flip, 200f);
         gameEntities.Projectiles.Add(new Fireball(
@@ -203,6 +217,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         item.StartEmerging();
         item.Collected += OnItemCollected;
         gameEntities.Items.Add(item);
+
+        if (type != ItemType.Coin)
+        {
+            sounds.Play(SoundType.Item);
+        }
     }
 
     private void OnItemCollected(ItemType type)
@@ -210,10 +229,12 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         if (type == ItemType.Coin)
         {
             stats.AddCoin();
+            sounds.Play(SoundType.Coin);
         }
         else
         {
             stats.AddScore(PowerUpScore);
+            sounds.Play(SoundType.PowerUp);
         }
     }
 
