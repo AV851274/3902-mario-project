@@ -3,10 +3,10 @@ SPRINT 4 - STILL NEEDED
 Due dates: check-in Mon 11/9 (aim for 2/3 of features), final Mon 11/16, CATME Tue 11/17
 
 1) Sound
-   [ ] Add sound effects and overworld music to Content (none in the project yet)
-   [ ] SoundManager class: load sounds, play effects, loop the music
+   [DONE] Add sound effects and overworld music to Content (none in the project yet)
+   [DONE] SoundManager class: load sounds, play effects, loop the music
    [ ] Mute key for background music (M), required by the rubric
-   [ ] Play sounds for jump, coin, stomp, power-up, block bump, brick break, fireball, and death
+   [DONE] Play sounds for jump, coin, stomp, power-up, block bump, brick break, fireball, and death
        - Jump, stomp, bump, and brick break need new events in Player / Block
 
 2) Game states (nothing started; everything in this section depends on the state machine)
@@ -24,13 +24,13 @@ Due dates: check-in Mon 11/9 (aim for 2/3 of features), final Mon 11/16, CATME T
    [ ] Underground bonus room, reached through a pipe
    [ ] Goombas and Koopas in 1-1.csv (only H and Lk are placed; they don't belong in 1-1)
 
-4) Test room
+4) Test room OPTIONAL
    [ ] Add a star (st or ?s) and a normal Podoboo (Pb) to testRoom.csv
    [ ] Add launcherNeck and ground the Bullet Bill launcher
 
 5) Gameplay
    [ ] Points for stomping enemies and fireball kills (the HUD score only counts items right now)
-   [ ] Star power: star item makes Mario invincible for a few seconds
+   [TBD] Star power: star item makes Mario invincible for a few seconds
    [ ] Kicked Koopa shell <-> other enemies: shell knocks them out
    [ ] Attack also on Z and N (spec key mapping), keep F
    [ ] Hitboxes are always drawn in MarioGame.Draw: add a debug toggle key before the check-in
