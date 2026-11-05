@@ -1,77 +1,63 @@
-SPRINT 3 - STILL NEEDED
+SPRINT 4 - STILL NEEDED
 
-1) New blocks, placed into the map from level1.csv
-   [DONE] Cloud blocks
-       - Mario can stand on them
-       - Disappear after a short delay once Mario lands on them
-       - Add a BlockType, a sprite in SpriteFactory, and a CSV code in LevelLoader
-   [DONE] Pipes
-       - Solid on top and sides (Mario lands on them and can't walk through)
-       - Pipe top and pipe body pieces so pipes can be different heights
-       - Add BlockTypes, sprites in SpriteFactory, and CSV codes in LevelLoader
-   [WIP] Place all new blocks into level1.csv
+Due dates: check-in Mon 11/9 (aim for 2/3 of features), final Mon 11/16, CATME Tue 11/17
 
-2) Enemies: gravity, block collision, and player collision (stomping)
-   [DONE] Gravity for all enemies (Goomba, Koopa, Hammer Bro)
-       - Always fall, so they can walk off ledges
-   [DONE] Enemy <-> block collision
-       - Land on top of blocks (fixes the Goomba floating too high)
-       - Turn around when walking into a wall/block (replaces the patrol bounds)
-   [DONE] Enemy <-> player collision
-       - Mario landing on top of an enemy = Stomp() and Mario bounces up
-       - Mario touching an enemy from the side = Mario takes damage
-   [DONE] Enemies placed from level1.csv only (remove the hard-coded ones in MarioGame.ResetGame)
+1) Sound
+   [ ] Add sound effects and overworld music to Content (none in the project yet)
+   [ ] SoundManager class: load sounds, play effects, loop the music
+   [ ] Mute key for background music (M), required by the rubric
+   [ ] Play sounds for jump, coin, stomp, power-up, block bump, brick break, fireball, and death
+       - Jump, stomp, bump, and brick break need new events in Player / Block
 
+2) Game states (nothing started; everything in this section depends on the state machine)
+   [ ] Game state machine: IGameState with Update and Draw, MarioGame runs the current state
+   [ ] Pausing (P key)
+   [ ] Game over screen (0 lives currently just restarts the game with ResetGame)
+   [ ] Win state on reaching the flagpole / castle
+   [ ] Title or item selection screen, with transitions to and from gameplay
+       - Confirm the Mario version of "item selection" with the grader
+   [ ] Transition between rooms (entering and leaving a pipe)
 
+3) World 1-1
+   [ ] Flagpole: BlockType, sprite, CSV code in LevelLoader, placed in 1-1.csv
+   [ ] Castle at the end of 1-1.csv (bgCastle / smCastle not placed yet)
+   [ ] Underground bonus room, reached through a pipe
+   [ ] Goombas and Koopas in 1-1.csv (only H and Lk are placed; they don't belong in 1-1)
 
-3) Rooms / level segments (required by the rubric)
-   [DONE] Split the level into multiple rooms/screens, each in its own CSV file (room1.csv, room2.csv, ...)
-   [DONE] Keep a list of rooms and load/clear objects when switching rooms
-   [DONE] Include an "artificial" test room that has every object type (all blocks, items, enemies, Mario)
-   [DONE] Mouse controller switches rooms: left click = previous room, right click = next room
-       (MouseController is currently all commented out)
+4) Test room
+   [ ] Add a star (st or ?s) and a normal Podoboo (Pb) to testRoom.csv
+   [ ] Add launcherNeck and ground the Bullet Bill launcher
 
-4) Remaining collisions (rubric: "all types of collisions")
-   [DONE] Item <-> block: mushroom/star land on blocks and turn around at walls (then remove GroundY from Item)
-   [DONE] Fireball <-> enemy: fireball kills the enemy and disappears
-   [DONE] Fireball <-> block: bounces on blocks instead of a fixed ground height, disappears when hitting a wall
-   [DONE] Hammer <-> Mario: Hammer Bro's hammer damages Mario
+5) Gameplay
+   [ ] Points for stomping enemies and fireball kills (the HUD score only counts items right now)
+   [ ] Star power: star item makes Mario invincible for a few seconds
    [ ] Kicked Koopa shell <-> other enemies: shell knocks them out
-   [DONE] Shared collision code: CollisionManager repeats the same overlap logic for player/enemy/item;
-       consider one helper that works for any object with Bounds
+   [ ] Attack also on Z and N (spec key mapping), keep F
+   [ ] Hitboxes are always drawn in MarioGame.Draw: add a debug toggle key before the check-in
 
-5) Blocks
-   [DONE] Question blocks release their item when hit (mushroom / fire flower / coin), item info read from the CSV
-   [DONE] Big/Fire Mario breaks bricks when hitting them from below (Small Mario only bumps them)
-   [DONE] Bushes in the background (big + small), placed from the CSV
-   [DONE] Background sprites aligned to the ground (hill rectangles 48 / 32 px tall so their bottoms touch the ground)
+6) Code quality (about 30-40% of the project score)
+   [ ] Move magic numbers to constants: start with MarioGame, Player, PlayerBodyBase, PlayerBody, and Block
+   [ ] (Optional) Load constants from a file, or change some at runtime (e.g. movement speed)
+   [ ] Rename the lowercase members `layer` and `canBeStomped` to Layer and CanBeStomped
+   [ ] Share duplicate code: Egg / Fire, Turtle / BuzzyBeetle shells, EnemyBase / StaticEnemyBase
+   [ ] Shorten the tile code chain in LevelLoader
 
-6) Mario
-   [WIP] Death: Small Mario taking damage should die (Player.SetPower currently ignores MarioPower.Dead)
-       -> death animation, then reset the room
-   [DONE] Brief invincibility (flashing) after taking damage so one enemy can't hit twice in a row
-   [ ] Star power: star item makes Mario invincible for a few seconds (currently the star does nothing)
-   [DONE] Falling off the bottom of the level = death
-   [DONE] Attack also on Z and N (spec key mapping), keep F
-
-7) Game info LEAVE FOR SPRINT 4 (HUD)
-   [ ] Coin counter in GameState that goes up when a coin is collected
-   [ ] (Optional) Simple HUD showing coins, can wait for Sprint 4
-
-8) Clean up dev/test code
-   [DONE] Remove O / P enemy cycling and K stomp keys, plus EnemyCycler, once enemies come from the CSV
-   [DONE] Remove the commented-out code (old fireball sprite in MarioGame, commented Stomped clips, etc.)
-   [DONE] Even out level CSV rows (some rows have 104 cells, others 106)
-   [ ] (Optional) GamepadController class - rubric suggests it but it's not required
-
-9) Documentation and process (graded)
-   [ ] README: update the controls table (remove T/Y/U/I, add mouse room switching, crouch, dash, arrow keys)
-   [ ] README: list known bugs AND deviations from the original game (e.g. star does nothing yet),
-       otherwise they can be marked as bugs
-   [ ] Code analysis: table of every analyzer warning -> fixed or suppressed + reason
-       (optionally an .editorconfig with the suppressions)
-   [ ] Code reviews in Code-Reviews/Sprint3: every member does 1 readability + 1 maintainability review
-       and has their own code reviewed
-   [ ] Sprint reflection based on the burndown chart (team write-up, not just one person)
+7) Documentation and process (graded)
    [ ] Task board: backlog items + tasks with estimates, kept up to date; meet with grader
-   [ ] Functionality check-in on Carmen (aim for 2/3 of features)
+   [ ] Functionality check-in on Carmen by 11/9
+   [ ] Code reviews in Code-Reviews/Sprint4 (folder not created yet): every member does 1 readability
+       + 1 maintainability review and has their own code reviewed
+   [ ] README: HUD, new controls (M, P, hitbox toggle), known bugs, and deviations
+   [ ] README: credit the HUD font and sound sources
+   [ ] Code analysis: rerun the analyzers and update the warning table
+   [ ] Sprint reflection based on the burndown chart (team write-up, not just one person)
+   [ ] Research feature ideas for Sprint 5
+   [ ] Zip and submit on Carmen by 11/16; CATME by 11/17
+
+8) Finished this sprint
+   [DONE] HUD: score, coins, world, time, and lives with a pixel font
+   [DONE] GameStats: coins, extra life at 100 coins, lives, and countdown timer
+   [DONE] Death resets the room and costs a life; timer at 0 kills Mario
+   [DONE] Draw layers: items are drawn behind blocks again
+   [DONE] Holding jump doesn't repeat jumps
+   [DONE] Hitbox display added
