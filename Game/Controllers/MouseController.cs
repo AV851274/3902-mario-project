@@ -9,12 +9,14 @@ public class MouseController : IController
 {
     private ICommand previousRoomCommand;
     private ICommand nextRoomCommand;
+    private ICommand toggleHitboxesCommand;
     private MouseState previousState;
 
     public MouseController(MarioGame game)
     {
         previousRoomCommand = new PreviousRoomCommand(game);
         nextRoomCommand = new NextRoomCommand(game);
+        toggleHitboxesCommand = new ToggleHitboxesCommand(game);
 
         // Start from the real mouse state so a click held during a room switch isn't treated as a new click
         previousState = Mouse.GetState();
@@ -32,6 +34,11 @@ public class MouseController : IController
         if (mouseState.RightButton == ButtonState.Pressed && previousState.RightButton == ButtonState.Released)
         {
             nextRoomCommand.Execute();
+        }
+
+        if (mouseState.MiddleButton == ButtonState.Pressed && previousState.MiddleButton == ButtonState.Released)
+        {
+            toggleHitboxesCommand.Execute();
         }
 
         previousState = mouseState;
