@@ -74,7 +74,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         spriteFactory = new SpriteFactory();
         spriteFactory.LoadTextures(Content);
-        hud = new Hud(Content.Load<SpriteFont>("HudFont"), stats);
+        hud = new Hud(Content.Load<SpriteFont>("fonts/HudFont"), stats);
         sounds.LoadContent(Content);
 
         ResetGame();

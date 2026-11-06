@@ -14,8 +14,8 @@ public class MarioSpriteFactory
 
     public MarioSpriteFactory(ContentManager content)
     {
-        marioTexture = content.Load<Texture2D>("mario");
-        marioGifTexture = content.Load<Texture2D>("Mariogif");
+        marioTexture = content.Load<Texture2D>("textures/mario");
+        marioGifTexture = content.Load<Texture2D>("textures/Mariogif");
     }
 
     public ISprite CreateSmallMarioSprite()

@@ -14,7 +14,7 @@ public class ItemSpriteFactory
 
     public ItemSpriteFactory(ContentManager content)
     {
-        itemTexture = content.Load<Texture2D>("itemsAndBlocks");
+        itemTexture = content.Load<Texture2D>("textures/itemsAndBlocks");
     }
 
     public ISprite CreateItemSprite(ItemType type)

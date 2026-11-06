@@ -13,7 +13,7 @@ public class BackgroundSpriteFactory
 
     public BackgroundSpriteFactory(ContentManager content)
     {
-        tileSet = content.Load<Texture2D>("tileset");
+        tileSet = content.Load<Texture2D>("textures/tileset");
     }
 
     public ISprite CreateBackgroundSprite(BackgroundType type)

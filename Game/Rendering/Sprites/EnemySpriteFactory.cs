@@ -15,7 +15,7 @@ public class EnemySpriteFactory
 
     public EnemySpriteFactory(ContentManager content)
     {
-        enemyTexture = content.Load<Texture2D>("enemies");
+        enemyTexture = content.Load<Texture2D>("textures/enemies");
     }
 
     public ISprite CreateGoombaSprite()

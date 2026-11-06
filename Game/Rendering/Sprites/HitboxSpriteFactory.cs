@@ -13,7 +13,7 @@ public class HitboxSpriteFactory
     private readonly Rectangle tileSource = new(323, 26, 1, 1);
     public HitboxSpriteFactory(ContentManager content)
     {
-        tileSet = content.Load<Texture2D>("tileset");
+        tileSet = content.Load<Texture2D>("textures/tileset");
     }
 
     public void DrawHitbox(SpriteBatch spriteBatch, float left, float right, float top, float bottom)

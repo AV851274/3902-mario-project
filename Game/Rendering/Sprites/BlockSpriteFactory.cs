@@ -15,8 +15,8 @@ public class BlockSpriteFactory
 
     public BlockSpriteFactory(ContentManager content)
     {
-        tileSet = content.Load<Texture2D>("tileset");
-        blockTexture = content.Load<Texture2D>("itemsAndBlocks");
+        tileSet = content.Load<Texture2D>("textures/tileset");
+        blockTexture = content.Load<Texture2D>("textures/itemsAndBlocks");
     }
 
     public ISprite CreateBlockSprite(BlockType type) //need to add Moving Platform
