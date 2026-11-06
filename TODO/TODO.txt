@@ -50,13 +50,13 @@ SPRINT 3 - STILL NEEDED
    [WIP] Death: Small Mario taking damage should die (Player.SetPower currently ignores MarioPower.Dead)
        -> death animation, then reset the room
    [DONE] Brief invincibility (flashing) after taking damage so one enemy can't hit twice in a row
-   [ ] Star power: star item makes Mario invincible for a few seconds (currently the star does nothing)
+   [DONE] Star power: star item makes Mario invincible for a few seconds
    [DONE] Falling off the bottom of the level = death
    [DONE] Attack also on Z and N (spec key mapping), keep F
 
 7) Game info LEAVE FOR SPRINT 4 (HUD)
-   [ ] Coin counter in GameState that goes up when a coin is collected
-   [ ] (Optional) Simple HUD showing coins, can wait for Sprint 4
+   [DONE] Coin counter in GameState that goes up when a coin is collected
+   [DONE] Simple HUD showing coins
 
 8) Clean up dev/test code
    [DONE] Remove O / P enemy cycling and K stomp keys, plus EnemyCycler, once enemies come from the CSV

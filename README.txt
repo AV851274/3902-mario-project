@@ -28,6 +28,7 @@ CURRENT SPRINT: #3
 - Falling into a pit restarts the room
 - Fireballs bounce along blocks and defeat enemies; Hammer Bro's hammers damage Mario
 - ? blocks release their item (coin, mushroom/fire flower, or star), which rises out of the block
+- Collected coins increase the on-screen coin counter
 - Big / Fire Mario break bricks; Small Mario bumps them
 - Items: mushroom, fire flower, coin, and star; mushrooms and stars move and bounce off walls
 - Blocks: ground, brick, ? block, hard block, pipes, trees, bridges, and cloud blocks that disappear after being stood on
@@ -40,7 +41,7 @@ CURRENT SPRINT: #3
 
 ## Deviations from the original game
 
-- The star can be collected but does not give invincibility yet.
+- Star power grants temporary invincibility.
 - Items from ? blocks rise out of the block and can't be collected until they are fully out. Coins stay on top of the block until Mario touches them instead of being collected automatically.
 - Power-up ? blocks release a mushroom for Small Mario and a fire flower if Mario is already big (same as the original).
 - Enemies keep moving during Mario's death animation; in the original, the game freezes.

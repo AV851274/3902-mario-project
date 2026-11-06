@@ -1,3 +1,4 @@
+using System;
 using Mario.Game.Physics;
 using Mario.Game.Interfaces;
 using Mario.Game.Rendering.Sprites;
@@ -16,6 +17,7 @@ public class Item : IItem, IPhysicsBody
     private const int CoinWidth = 24;
     public bool IsCollected { get; private set; }
     public bool Active => !IsCollected;
+    public event Action CoinCollected;
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(
         Position.X,
@@ -101,14 +103,12 @@ public class Item : IItem, IPhysicsBody
                 player.SetPower(MarioPower.Fire);
             }
         }
-        //else if (type == ItemType.Coin)
-        //{
-        // TODO: add to a coin counter once there's a HUD
-        //}
-        //else if (type == ItemType.Star)
-        //{
-        // TODO: star invincibility
-        //}
+        else if (type == ItemType.Star)
+        {
+            player.ActivateStarPower();
+        }
+        else if (type == ItemType.Coin)
+            CoinCollected?.Invoke();
     }
 
     public void StartEmerging()

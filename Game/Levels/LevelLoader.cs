@@ -209,16 +209,16 @@ public class LevelLoader
                     case "":
                         break;
                     case "mu":
-                        gameEntities.Items.Add(new Item(spriteFactory.Items, ItemType.Mushroom, position));
+                        gameEntities.AddItem(new Item(spriteFactory.Items, ItemType.Mushroom, position));
                         break;
                     case "fi":
-                        gameEntities.Items.Add(new Item(spriteFactory.Items, ItemType.FireFlower, position));
+                        gameEntities.AddItem(new Item(spriteFactory.Items, ItemType.FireFlower, position));
                         break;
                     case "co":
-                        gameEntities.Items.Add(new Item(spriteFactory.Items, ItemType.Coin, new Vector2(position.X + 12, position.Y)));
+                        gameEntities.AddItem(new Item(spriteFactory.Items, ItemType.Coin, new Vector2(position.X + 12, position.Y)));
                         break;
                     case "st":
-                        gameEntities.Items.Add(new Item(spriteFactory.Items, ItemType.Star, position));
+                        gameEntities.AddItem(new Item(spriteFactory.Items, ItemType.Star, position));
                         break;
                     case "cl":
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory.Background, BackgroundType.Cloud, new Vector2(position.X + 24, position.Y - 24)));

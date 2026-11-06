@@ -14,6 +14,7 @@ public interface IPlayer : IGameObject, IPhysicsBody
     void Attack();
     void Crouch();
     void TakeDamage();
+    void ActivateStarPower();
     void SetPower(MarioPower power);
     void SetSwimming(bool swimming);
     void UpdateAnimation(GameTime gameTime);

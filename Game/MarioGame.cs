@@ -27,6 +27,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     
     private GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch;
+    private SpriteFont coinCounterFont;
+    private ISprite coinCounterSprite;
 
     private IController keyboardController;
     private IController mouseController;
@@ -60,9 +62,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
+        coinCounterFont = Content.Load<SpriteFont>("coinCounter");
 
         spriteFactory = new SpriteFactory();
         spriteFactory.LoadTextures(Content);
+        coinCounterSprite = spriteFactory.Items.CreateItemSprite(ItemType.Coin);
 
         ResetGame();
     }
@@ -70,6 +74,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     public void ResetGame()
     {
+        gameEntities.ResetCoinCount();
         LoadRoom(0);
     }
 
@@ -190,7 +195,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         Item item = new Item(spriteFactory.Items, type, position);
         item.StartEmerging();
-        gameEntities.Items.Add(item);
+        gameEntities.AddItem(item);
     }
 
     private void SpawnHammer(Vector2 position, Direction direction)
@@ -277,6 +282,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         {
             player.UpdateAnimation(gameTime);
         }
+        coinCounterSprite.UpdateAnimation(gameTime);
         camera.Follow(gameEntities.Players[0].Position, GraphicsDevice.Viewport.Width, levelWidth);
 
         if (reloadRoomRequested)
@@ -306,6 +312,13 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             gameObj.Draw(spriteBatch);
         }
 
+        spriteBatch.End();
+
+        spriteBatch.Begin();
+        string coinCount = $"x{gameEntities.CoinCount:D2}";
+        coinCounterSprite.Draw(spriteBatch, new Vector2(20f, 12f));
+        spriteBatch.DrawString(coinCounterFont, coinCount, new Vector2(51f, 18f), Color.Black);
+        spriteBatch.DrawString(coinCounterFont, coinCount, new Vector2(50f, 17f), Color.White);
         spriteBatch.End();
 
         base.Draw(gameTime);

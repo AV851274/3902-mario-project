@@ -15,6 +15,7 @@ public class Player : IPlayer
 {
     private const float ThrowAnimationTime = 0.3f;
     private const float InvincibleDuration = 1.5f;
+    private const float StarPowerDuration = 8f;
     private const float StompGraceDuration = 0.2f;
     private const float DeathJumpSpeed = 500f;
     private const float FallOffScreenY = 1000f;
@@ -172,6 +173,12 @@ public class Player : IPlayer
 
         SetPower(MarioPowerState.TakeDamage());
         invincibleTimer = InvincibleDuration;
+    }
+
+    public void ActivateStarPower()
+    {
+        if (!isDying)
+            invincibleTimer = Math.Max(invincibleTimer, StarPowerDuration);
     }
 
     public void OnCollision(CollisionEvent collision)

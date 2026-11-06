@@ -17,6 +17,18 @@ public class GameEntities
     public List<IEnemy> Enemies { get; } = new();
     public List<IProjectile> Projectiles { get; } = new();
     public List<IGameObject> Background { get; } = new();
+    public int CoinCount { get; private set; }
+
+    public void AddItem(IItem item)
+    {
+        item.CoinCollected += IncrementCoinCount;
+        Items.Add(item);
+    }
+
+    public void ResetCoinCount()
+    {
+        CoinCount = 0;
+    }
 
     public IEnumerable<IGameObject> GetAllGameObjects()
     {
@@ -51,5 +63,10 @@ public class GameEntities
         Enemies.Clear();
         Projectiles.Clear();
         Background.Clear();
+    }
+
+    private void IncrementCoinCount()
+    {
+        CoinCount++;
     }
 }
