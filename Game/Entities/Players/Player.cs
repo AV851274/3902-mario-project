@@ -155,7 +155,7 @@ public class Player : IPlayer
     private void RefreshSprite()
     {
         bool isSmall = MarioPowerState.Power == MarioPower.Small;
-        body.LocalBounds = new Box(2, isSmall ? 8 : -32, 36, isSmall ? 40 : 80);
+        body.LocalBounds = new Box(2, isSmall ? 8 : -32, isSmall ? 34 : 40, isSmall ? 40 : 76);
         appearance = appearancesTable[new AppearanceKey(MarioPowerState.Power, isSwimming)];
         timeSinceThrow = float.PositiveInfinity;
     }
