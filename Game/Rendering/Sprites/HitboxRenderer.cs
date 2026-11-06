@@ -1,19 +1,18 @@
-using Mario.Game.Entities.Background;
-using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+using Mario.Game.Assets;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 
 namespace Mario.Game.Rendering.Sprites;
 
-public class HitboxSpriteFactory
+public class HitboxRenderer
 {
     private readonly Texture2D tileSet;
-    private readonly Rectangle tileSource = new(323, 26, 1, 1);
-    public HitboxSpriteFactory(ContentManager content)
+    private readonly Rectangle tileSource;
+    public HitboxRenderer(AssetManager assets)
     {
-        tileSet = content.Load<Texture2D>("textures/tileset");
+        var definition = assets.GetSpriteDefinition("debug", "hitbox");
+        tileSet = assets.GetTexture(definition.Texture);
+        tileSource = definition.Rect;
     }
 
     public void DrawHitbox(SpriteBatch spriteBatch, float left, float right, float top, float bottom)

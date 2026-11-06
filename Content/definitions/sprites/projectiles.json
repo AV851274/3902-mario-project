@@ -1,0 +1,178 @@
+{
+  "sprites": {
+    "hammer": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 1,
+                "y": 78,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.12
+            },
+            {
+              "rect": {
+                "x": 18,
+                "y": 78,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.12
+            },
+            {
+              "rect": {
+                "x": 36,
+                "y": 78,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.12
+            },
+            {
+              "rect": {
+                "x": 54,
+                "y": 78,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.12
+            }
+          ]
+        }
+      }
+    },
+    "egg": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 36,
+                "y": 352,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 54,
+                "y": 352,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            }
+          ]
+        }
+      }
+    },
+    "fire": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 102,
+                "y": 242,
+                "width": 24,
+                "height": 8
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 102,
+                "y": 252,
+                "width": 24,
+                "height": 8
+              },
+              "duration": 0.2
+            }
+          ]
+        }
+      }
+    },
+    "fireball": {
+      "kind": "animated",
+      "texture": "marioSwimming",
+      "scale": 3,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 7,
+                "y": 140,
+                "width": 8,
+                "height": 8
+              },
+              "duration": 0.12
+            },
+            {
+              "rect": {
+                "x": 21,
+                "y": 140,
+                "width": 8,
+                "height": 8
+              },
+              "duration": 0.12
+            },
+            {
+              "rect": {
+                "x": 35,
+                "y": 140,
+                "width": 8,
+                "height": 8
+              },
+              "duration": 0.12
+            },
+            {
+              "rect": {
+                "x": 49,
+                "y": 139,
+                "width": 8,
+                "height": 8
+              },
+              "duration": 0.12
+            }
+          ]
+        },
+        "Explode": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 61,
+                "y": 135,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.5
+            }
+          ]
+        }
+      }
+    }
+  }
+}

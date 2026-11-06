@@ -1,0 +1,275 @@
+{
+  "sprites": {
+    "brick": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 17,
+        "y": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "block": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 0,
+        "y": 33,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "usedQuestion": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 349,
+        "y": 78,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "ground": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 0,
+        "y": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "blueBrick": {
+      "kind": "static",
+      "texture": "itemsAndBlocks",
+      "scale": 3,
+      "rect": {
+        "x": 180,
+        "y": 116,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "greyBlock": {
+      "kind": "static",
+      "texture": "itemsAndBlocks",
+      "scale": 3,
+      "rect": {
+        "x": 180,
+        "y": 332,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "pipeTopLeft": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 119,
+        "y": 196,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "pipeTopRight": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 136,
+        "y": 196,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "pipeLeft": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 119,
+        "y": 213,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "pipeRight": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 136,
+        "y": 213,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "treeRoot": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 628,
+        "y": 216,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "treeLeft": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 611,
+        "y": 200,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "treeRight": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 660,
+        "y": 200,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "treeMiddle": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 628,
+        "y": 200,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "bridge": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 558,
+        "y": 33,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "cloud": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 366,
+        "y": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "launcherHead": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 119,
+        "y": 16,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "launcherNeck": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 119,
+        "y": 33,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "launcherBody": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 119,
+        "y": 50,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "question": {
+      "kind": "animated",
+      "texture": "tileset",
+      "scale": 3,
+      "initialClip": "Spin",
+      "clips": {
+        "Spin": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 298,
+                "y": 78,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 315,
+                "y": 78,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 332,
+                "y": 78,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            }
+          ]
+        }
+      }
+    },
+    "warpPipeTopLeft": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 119,
+        "y": 196,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "warpPipeTopRight": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 136,
+        "y": 196,
+        "width": 16,
+        "height": 16
+      }
+    }
+  }
+}

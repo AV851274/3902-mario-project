@@ -1,0 +1,674 @@
+{
+  "sprites": {
+    "small": {
+      "kind": "animated",
+      "texture": "mario",
+      "scale": 2.5,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 181,
+                "y": 0,
+                "width": 13,
+                "height": 16
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Run": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 150,
+                "y": 0,
+                "width": 16,
+                "height": 15
+              },
+              "duration": 0.15
+            },
+            {
+              "rect": {
+                "x": 121,
+                "y": 0,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.15
+            },
+            {
+              "rect": {
+                "x": 89,
+                "y": 0,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.15
+            }
+          ]
+        },
+        "Jump": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 29,
+                "y": 0,
+                "width": 17,
+                "height": 16
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Skid": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 60,
+                "y": 0,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Dead": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 390,
+                "y": 16,
+                "width": 15,
+                "height": 14
+              },
+              "duration": 1
+            }
+          ]
+        }
+      }
+    },
+    "big": {
+      "kind": "animated",
+      "texture": "mario",
+      "scale": 2.5,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 180,
+                "y": 52,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Run": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 150,
+                "y": 52,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.15
+            },
+            {
+              "rect": {
+                "x": 121,
+                "y": 52,
+                "width": 16,
+                "height": 31
+              },
+              "duration": 0.15
+            },
+            {
+              "rect": {
+                "x": 90,
+                "y": 53,
+                "width": 16,
+                "height": 30
+              },
+              "duration": 0.15
+            }
+          ]
+        },
+        "Jump": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 30,
+                "y": 52,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Skid": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 329,
+                "y": 52,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Crouch": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 57,
+                "width": 16,
+                "height": 22
+              },
+              "duration": 1
+            }
+          ]
+        }
+      }
+    },
+    "fire": {
+      "kind": "animated",
+      "texture": "mario",
+      "scale": 2.5,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 180,
+                "y": 122,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Run": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 152,
+                "y": 122,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.15
+            },
+            {
+              "rect": {
+                "x": 128,
+                "y": 122,
+                "width": 16,
+                "height": 31
+              },
+              "duration": 0.15
+            },
+            {
+              "rect": {
+                "x": 102,
+                "y": 123,
+                "width": 16,
+                "height": 30
+              },
+              "duration": 0.15
+            }
+          ]
+        },
+        "Jump": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 27,
+                "y": 122,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Skid": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 337,
+                "y": 122,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Crouch": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 127,
+                "width": 16,
+                "height": 22
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Throw": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 77,
+                "y": 123,
+                "width": 16,
+                "height": 30
+              },
+              "duration": 1
+            }
+          ]
+        }
+      }
+    },
+    "small.swimming": {
+      "kind": "animated",
+      "texture": "marioSwimming",
+      "scale": 2.5,
+      "initialClip": "Stand",
+      "clips": {
+        "Stand": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 6,
+                "y": 7,
+                "width": 12,
+                "height": 16
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Walk": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 21,
+                "y": 8,
+                "width": 14,
+                "height": 15
+              },
+              "duration": 0.3
+            },
+            {
+              "rect": {
+                "x": 38,
+                "y": 7,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 0.3
+            },
+            {
+              "rect": {
+                "x": 57,
+                "y": 7,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 0.3
+            }
+          ]
+        },
+        "Float": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 124,
+                "y": 6,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 140,
+                "y": 6,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 0.05
+            }
+          ]
+        },
+        "Swim": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 140,
+                "y": 6,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 156,
+                "y": 6,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 173,
+                "y": 7,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 189,
+                "y": 7,
+                "width": 14,
+                "height": 16
+              },
+              "duration": 0.05
+            }
+          ]
+        }
+      }
+    },
+    "big.swimming": {
+      "kind": "animated",
+      "texture": "marioSwimming",
+      "scale": 2.5,
+      "initialClip": "Stand",
+      "clips": {
+        "Stand": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 6,
+                "y": 61,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Walk": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 29,
+                "y": 62,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.3
+            },
+            {
+              "rect": {
+                "x": 52,
+                "y": 63,
+                "width": 16,
+                "height": 30
+              },
+              "duration": 0.3
+            },
+            {
+              "rect": {
+                "x": 74,
+                "y": 62,
+                "width": 14,
+                "height": 31
+              },
+              "duration": 0.3
+            }
+          ]
+        },
+        "Float": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 160,
+                "y": 60,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 179,
+                "y": 61,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            }
+          ]
+        },
+        "Swim": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 179,
+                "y": 61,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 199,
+                "y": 61,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 220,
+                "y": 60,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 241,
+                "y": 59,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            }
+          ]
+        }
+      }
+    },
+    "fire.swimming": {
+      "kind": "animated",
+      "texture": "marioSwimming",
+      "scale": 2.5,
+      "initialClip": "Stand",
+      "clips": {
+        "Stand": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 6,
+                "y": 101,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        },
+        "Walk": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 48,
+                "y": 101,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.3
+            },
+            {
+              "rect": {
+                "x": 70,
+                "y": 100,
+                "width": 16,
+                "height": 30
+              },
+              "duration": 0.3
+            },
+            {
+              "rect": {
+                "x": 92,
+                "y": 98,
+                "width": 14,
+                "height": 31
+              },
+              "duration": 0.3
+            }
+          ]
+        },
+        "Float": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 175,
+                "y": 95,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 194,
+                "y": 96,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            }
+          ]
+        },
+        "Swim": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 194,
+                "y": 96,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 214,
+                "y": 96,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 235,
+                "y": 95,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            },
+            {
+              "rect": {
+                "x": 256,
+                "y": 94,
+                "width": 16,
+                "height": 32
+              },
+              "duration": 0.05
+            }
+          ]
+        },
+        "Throw": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 173,
+                "y": 95,
+                "width": 20,
+                "height": 32
+              },
+              "duration": 1
+            }
+          ]
+        }
+      }
+    }
+  }
+}

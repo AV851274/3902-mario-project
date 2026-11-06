@@ -1,0 +1,36 @@
+{
+  "textures": {
+    "mario": "textures/mario",
+    "marioSwimming": "textures/Mariogif",
+    "enemies": "textures/enemies",
+    "itemsAndBlocks": "textures/itemsAndBlocks",
+    "tileset": "textures/tileset"
+  },
+  "sounds": {
+    "smallJump": "audio/sfx/smallJump",
+    "bigJump": "audio/sfx/bigJump",
+    "brick": "audio/sfx/brick",
+    "bump": "audio/sfx/bump",
+    "coin": "audio/sfx/coin",
+    "death": "audio/sfx/death",
+    "fireball": "audio/sfx/fireball",
+    "item": "audio/sfx/item",
+    "powerUp": "audio/sfx/powerup",
+    "stompSwim": "audio/sfx/stompswim"
+  },
+  "music": {
+    "overworld": "audio/music/overworld"
+  },
+  "fonts": {
+    "hud": "fonts/HudFont"
+  },
+  "spriteFiles": {
+    "mario": "sprites/mario.json",
+    "enemies": "sprites/enemies.json",
+    "projectiles": "sprites/projectiles.json",
+    "items": "sprites/items.json",
+    "blocks": "sprites/blocks.json",
+    "background": "sprites/background.json",
+    "debug": "sprites/debug.json"
+  }
+}

@@ -183,3 +183,27 @@
 
 #begin levels/testRoom.csv
 /copy:levels/testRoom.csv
+
+#begin definitions/assets.json
+/copy:definitions/assets.json
+
+#begin definitions/sprites/mario.json
+/copy:definitions/sprites/mario.json
+
+#begin definitions/sprites/enemies.json
+/copy:definitions/sprites/enemies.json
+
+#begin definitions/sprites/projectiles.json
+/copy:definitions/sprites/projectiles.json
+
+#begin definitions/sprites/items.json
+/copy:definitions/sprites/items.json
+
+#begin definitions/sprites/blocks.json
+/copy:definitions/sprites/blocks.json
+
+#begin definitions/sprites/background.json
+/copy:definitions/sprites/background.json
+
+#begin definitions/sprites/debug.json
+/copy:definitions/sprites/debug.json
