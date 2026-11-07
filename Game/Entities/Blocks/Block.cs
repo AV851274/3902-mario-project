@@ -63,7 +63,7 @@ public class Block : IBlock
         this.spriteFactory = spriteFactory;
         this.type = type;
         this.contents = contents;
-        sprite = spriteFactory.Create(type);
+        sprite = spriteFactory.Create("blocks", type);
         Position = position;
     }
 
@@ -96,7 +96,7 @@ public class Block : IBlock
         {
             ReleaseContents(big);
             type = BlockType.UsedQuestion;
-            sprite = spriteFactory.Create(BlockType.UsedQuestion);
+            sprite = spriteFactory.Create("blocks", BlockType.UsedQuestion);
         }
 
         isIntact = !(type == BlockType.Brick && big);

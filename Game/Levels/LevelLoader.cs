@@ -113,43 +113,43 @@ public class LevelLoader
                     case "E":
                         gameEntities.Enemies.Add(
                             new Goomba(
-                                spriteFactory.CreateEnemy("goomba"),
+                                spriteFactory.Create("enemies", "goomba"),
                                 position));
                         break;
                     case "K":
                         gameEntities.Enemies.Add(
                             new Turtle(
-                                spriteFactory.CreateEnemy("turtle"),
+                                spriteFactory.Create("enemies", "turtle"),
                                 position));
                         break;
                     case "H":
                         gameEntities.Enemies.Add(
                             new HammerBro(
-                                spriteFactory.CreateEnemy("hammerBro"),
+                                spriteFactory.Create("enemies", "hammerBro"),
                                 position));
                         break;
                     case "Bw":
                         gameEntities.Enemies.Add(
                             new Bowser(
-                                spriteFactory.CreateEnemy("bowser"),
+                                spriteFactory.Create("enemies", "bowser"),
                                 position));
                         break;
                     case "Lk":
                         gameEntities.Enemies.Add(
                             new Lakitu(
-                                spriteFactory.CreateEnemy("lakitu"),
+                                spriteFactory.Create("enemies", "lakitu"),
                                 position));
                         break;
                     case "Bz":
                         gameEntities.Enemies.Add(
                             new BuzzyBeetle(
-                                spriteFactory.CreateEnemy("buzzyBeetle"),
+                                spriteFactory.Create("enemies", "buzzyBeetle"),
                                 position));
                         break;
                     case "Fb":
                         gameEntities.Enemies.Add(
                             new FireBar(
-                                spriteFactory.CreateProjectile("fireball"),
+                                spriteFactory.Create("projectiles", "fireball"),
                                 new Vector2(position.X + 12, position.Y + 12), 6));
 
                         gameEntities.Blocks.Add(
@@ -161,13 +161,13 @@ public class LevelLoader
                     case "Sp":
                         gameEntities.Enemies.Add(
                             new Spiny(
-                                spriteFactory.CreateEnemy("spiny"),
+                                spriteFactory.Create("enemies", "spiny"),
                                 position));
                         break;
                     case "BPb":
                         gameEntities.Enemies.Add(
                             new Podoboo(
-                                spriteFactory.CreateEnemy("podoboo"),
+                                spriteFactory.Create("enemies", "podoboo"),
                                 position, -1000f));
                         break;
                     case "Bbl":
@@ -181,27 +181,27 @@ public class LevelLoader
                     case "Pb":
                         gameEntities.Enemies.Add(
                             new Podoboo(
-                                spriteFactory.CreateEnemy("podoboo"),
+                                spriteFactory.Create("enemies", "podoboo"),
                                 position, -800f));
                         break;
                     case "Pk":
                         gameEntities.Enemies.Add(
                             new ParaKoopa(
-                                spriteFactory.CreateEnemy("paraKoopa"),
+                                spriteFactory.Create("enemies", "paraKoopa"),
                                 position));
                         break;
 
                     case "GrayCheep":
                         gameEntities.Enemies.Add(
                             new CheepCheep(
-                                spriteFactory.CreateEnemy("grayCheep"),
+                                spriteFactory.Create("enemies", "grayCheep"),
                                 position,
                                 FishColor.Gray));
                         break;
                     case "GreenCheep":
                         gameEntities.Enemies.Add(
                             new CheepCheep(
-                                spriteFactory.CreateEnemy("greenCheep"),
+                                spriteFactory.Create("enemies", "greenCheep"),
                                 position,
                                 FishColor.Green));
                         break;

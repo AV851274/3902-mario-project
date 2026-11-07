@@ -106,17 +106,17 @@ public class Player : IPlayer
     {
         appearancesTable = new() {
             [new AppearanceKey(MarioPower.Small, false)] =
-                new Appearance(factory.CreateMario("small"), Vector2.Zero),
+                new Appearance(factory.Create("mario", "small"), Vector2.Zero),
             [new AppearanceKey(MarioPower.Big, false)] =
-                new Appearance(factory.CreateMario("big"), new Vector2(0f, -40f)),
+                new Appearance(factory.Create("mario", "big"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Fire, false)] =
-                new Appearance(factory.CreateMario("fire"), new Vector2(0f, -40f)),
+                new Appearance(factory.Create("mario", "fire"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Small, true)] =
-                new Appearance(factory.CreateMario("small.swimming"), Vector2.Zero),
+                new Appearance(factory.Create("mario", "small.swimming"), Vector2.Zero),
             [new AppearanceKey(MarioPower.Big, true)] =
-                new Appearance(factory.CreateMario("big.swimming"), new Vector2(0f, -40f)),
+                new Appearance(factory.Create("mario", "big.swimming"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Fire, true)] =
-                new Appearance(factory.CreateMario("fire.swimming"), new Vector2(0f, -40f)),
+                new Appearance(factory.Create("mario", "fire.swimming"), new Vector2(0f, -40f)),
         };
         body = new PlayerBody { Position = position };
         RefreshSprite();

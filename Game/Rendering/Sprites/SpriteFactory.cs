@@ -1,15 +1,15 @@
 using System.Linq;
-using System.Text.Json;
+using System;
 using Mario.Game.Animation;
 using Mario.Game.Assets;
-using Mario.Game.Entities.Background;
-using Mario.Game.Entities.Blocks;
-using Mario.Game.Entities.Items;
 using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 
 namespace Mario.Game.Rendering.Sprites;
 
+
+// Builds a fresh sprite from a JSON definition using AssetManager's shared texture.
+// Static definitions provide a rectangle; animated definitions provide named clips.
 public sealed class SpriteFactory
 {
     private readonly AssetManager assets;
@@ -39,16 +39,11 @@ public sealed class SpriteFactory
         return sprite;
     }
 
-    public ISprite Create(BlockType type) =>
-        Create(assets.GetSpriteDefinition("blocks", JsonNamingPolicy.CamelCase.ConvertName(type.ToString())));
+    // String IDs match JSON keys exactly, e.g. Create("enemies", "goomba").
+    public ISprite Create(string category, string id) =>
+        Create(assets.GetSpriteDefinition(category, id));
 
-    public ISprite Create(ItemType type) =>
-        Create(assets.GetSpriteDefinition("items", JsonNamingPolicy.CamelCase.ConvertName(type.ToString())));
-
-    public ISprite Create(BackgroundType type) =>
-        Create(assets.GetSpriteDefinition("background", JsonNamingPolicy.CamelCase.ConvertName(type.ToString())));
-
-    public ISprite CreateMario(string id) => Create(assets.GetSpriteDefinition("mario", id));
-    public ISprite CreateEnemy(string id) => Create(assets.GetSpriteDefinition("enemies", id));
-    public ISprite CreateProjectile(string id) => Create(assets.GetSpriteDefinition("projectiles", id));
+    // Enum names use camelCase JSON keys, e.g. UsedQuestion -> "usedQuestion".
+    public ISprite Create(string category, Enum type) =>
+        Create(category, AssetManager.Naming.ConvertName(type.ToString()));
 }

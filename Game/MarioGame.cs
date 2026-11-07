@@ -239,7 +239,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         float flip = direction == Direction.Left ? -1f : 1f;
         var velocity = new Vector2(500f * flip, 200f);
         gameEntities.Projectiles.Add(new Fireball(
-            spriteFactory.CreateProjectile("fireball"), // new animation contoller for each fireball
+            spriteFactory.Create("projectiles", "fireball"), // new animation contoller for each fireball
             position + new Vector2(25 * flip, -20f),
             velocity,
             2f,
@@ -279,7 +279,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         float directionSign = direction == Direction.Left ? -1f : 1f;
 
         gameEntities.Projectiles.Add(new Hammer(
-            spriteFactory.CreateProjectile("hammer"),
+            spriteFactory.Create("projectiles", "hammer"),
             position + new Vector2(20f * directionSign, -20f),
             new Vector2(250f * directionSign, -350f),
             3f));
@@ -290,7 +290,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         float directionSign = direction == Direction.Left ? -1f : 1f;
 
         gameEntities.Projectiles.Add(new Fire(
-            spriteFactory.CreateProjectile("fire"),
+            spriteFactory.Create("projectiles", "fire"),
             position + new Vector2(20f * directionSign, 0f),
             new Vector2(250f * directionSign, 0f),
             3f));
@@ -299,7 +299,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private void SpawnEgg(Vector2 position, Direction direction)
     {
         Egg egg = new Egg(
-            spriteFactory.CreateProjectile("egg"),
+            spriteFactory.Create("projectiles", "egg"),
             position,
             new Vector2(0f, 0f),
             3f);
@@ -311,7 +311,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         float directionSign = direction == Direction.Left ? -1f : 1f;
         entityBuffer.Enemies.Add(new BulletBill(
-            spriteFactory.CreateEnemy("bulletBill"),
+            spriteFactory.Create("enemies", "bulletBill"),
             position,
             new Vector2(250f * directionSign, 0f)));
     }
@@ -324,7 +324,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
                 "Cannot replace a ParaKoopa that is not in the active enemy list.");
 
         gameEntities.Enemies[index] = new Turtle(
-            spriteFactory.CreateEnemy("turtle"),
+            spriteFactory.Create("enemies", "turtle"),
             paraKoopa.Position)
         {
             Velocity = paraKoopa.Velocity,
@@ -334,7 +334,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private void ReplaceEggWithSpiny(Egg egg)
     {
         gameEntities.Enemies.Add(new Spiny(
-            spriteFactory.CreateEnemy("spiny"),
+            spriteFactory.Create("enemies", "spiny"),
             egg.Position));
     }
 

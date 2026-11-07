@@ -9,10 +9,14 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Mario.Game.Assets;
 
+// Loads the JSON manifest and sprite definitions once; callers use logical IDs
+// instead of content paths to retrieve shared textures, audio, and fonts.
 public sealed class AssetManager
 {
+
+    public static readonly JsonNamingPolicy Naming = JsonNamingPolicy.CamelCase;
     private static readonly JsonSerializerOptions JsonOptions =
-        new() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, IncludeFields = true };
+        new() { PropertyNamingPolicy = Naming, IncludeFields = true };
 
     private readonly Dictionary<string, Texture2D> textures;
     private readonly Dictionary<string, SoundEffect> sounds;
@@ -31,6 +35,7 @@ public sealed class AssetManager
         music = LoadAssets<Song>(content, manifest.Music);
         fonts = LoadAssets<SpriteFont>(content, manifest.Fonts);
 
+        // Sprite definition file paths are relative to the manifest's directory.
         string directory = Path.GetDirectoryName(path)!;
         foreach (var (category, file) in manifest.SpriteFiles)
         {
@@ -39,8 +44,10 @@ public sealed class AssetManager
         }
     }
 
+    // Definitions are grouped by category, e.g. ("mario", "small.swimming").
     public SpriteDefinition GetSpriteDefinition(string category, string id) => sprites[category][id];
 
+    // Getters return loaded resources; they do not reload or create copies.
     public Texture2D GetTexture(string id) => textures[id];
     public SoundEffect GetSound(string id) => sounds[id];
     public Song GetMusic(string id) => music[id];
@@ -49,6 +56,7 @@ public sealed class AssetManager
     private static Dictionary<string, T> LoadAssets<T>(ContentManager content, Dictionary<string, string> names)
     {
         var assets = new Dictionary<string, T>();
+        // Manifest values are ContentManager asset paths, relative to its root.
         foreach (var (id, name) in names)
             assets.Add(id, content.Load<T>(name));
         return assets;
