@@ -154,8 +154,6 @@ public class Player : IPlayer
 
     private void RefreshSprite()
     {
-        bool isSmall = MarioPowerState.Power == MarioPower.Small;
-        body.LocalBounds = new Box(2, isSmall ? 8 : -32, 36, isSmall ? 40 : 80);
         appearance = appearancesTable[new AppearanceKey(MarioPowerState.Power, isSwimming)];
         timeSinceThrow = float.PositiveInfinity;
     }
@@ -222,6 +220,18 @@ public class Player : IPlayer
         return SoundType.BigJump;
     }
 
+    private void adjustBoundsForSprite()
+    {
+        bool isSmall = MarioPowerState.Power == MarioPower.Small;
+        //Horizontal and vertical offset
+        body.LocalBounds = new Box(0, isSmall ? 8 : body.IsCrouching ? -8: -32, 
+        //Width
+        isSmall && (body.IsOnGround || isSwimming) ? ((body.IsOnGround && isSwimming && body.Velocity.X == 0f) ? 32 
+        : (body.IsOnGround && isSwimming) ? 36 : (body.IsOnGround && body.Velocity.X != 0f) ? 42 : 34) : 42, 
+        //Height
+        isSmall ? 40 : (body.IsCrouching ? 56 : 80));
+    }
+
     public void Crouch()
     {
         if (MarioPowerState.CanCrouch)
@@ -235,6 +245,8 @@ public class Player : IPlayer
 
     public void Update(GameTime gameTime)
     {
+        adjustBoundsForSprite();
+
         if (Position.Y > FallOffScreenY)
         {
             // Falling into a pit skips the death animation, so the death starts here

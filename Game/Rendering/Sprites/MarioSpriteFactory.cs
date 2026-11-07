@@ -21,45 +21,45 @@ public class MarioSpriteFactory
     public ISprite CreateSmallMarioSprite()
     {
         return CreateMarioSprite(
-            new Rectangle(180, 0, 16, 16), // idle
+            new Rectangle(181, 0, 13, 16), // idle
             [
-                new Rectangle(149, 0, 15, 16),
-                new Rectangle(120, 0, 13, 16),
-                new Rectangle(88, 0, 17, 16)
+                new Rectangle(150, 0, 16, 15), // walk
+                new Rectangle(121, 0, 16, 16),
+                new Rectangle(89, 0, 16, 16)
             ],
-            new Rectangle(26, 0, 20, 16), // jump
+            new Rectangle(29, 0, 17, 16), // jump
             new Rectangle(60, 0, 14, 16), // small skid
-            death: new Rectangle(390, 16, 16, 16)); //small death pose
+            death: new Rectangle(390, 16, 15, 14)); //small death pose
     }
 
     public ISprite CreateBigMarioSprite()
     {
         return CreateMarioSprite(
-            new Rectangle(180, 50, 16, 34), //big idle
+            new Rectangle(180, 52, 16, 32), //big idle
             [
-                new Rectangle(150, 50, 16, 32), //big run frames
-                new Rectangle(120, 50, 16, 32),
-                new Rectangle(90, 50, 16, 32)
+                new Rectangle(150, 52, 16, 32), //big run frames
+                new Rectangle(121, 52, 16, 31),
+                new Rectangle(90, 53, 16, 30)
             ],
-            new Rectangle(28, 50, 20, 32), //big jump
-            new Rectangle(325, 50, 20, 32), //big skid
-            new Rectangle(0, 47, 16, 34)); //  big crouch
+            new Rectangle(30, 52, 16, 32), //big jump
+            new Rectangle(329, 52, 16, 32), //big skid
+            new Rectangle(0, 57, 16, 22)); //  big crouch
     }
 
     public ISprite CreateFireMarioSprite()
     {
         // Same shapes as Big Mario, just the white/red rows of the sheet
         return CreateMarioSprite(
-            idle: new Rectangle(180, 120, 16, 32), //fire idle
+            idle: new Rectangle(180, 122, 16, 32), //fire idle
             run: [
-                new Rectangle(150, 120, 20, 32), //fire run frames
-                new Rectangle(125, 120, 20, 32),
-                new Rectangle(100, 120, 20, 32)
+                new Rectangle(152, 122, 16, 32), //fire run frames
+                new Rectangle(128, 122, 16, 31),
+                new Rectangle(102, 123, 16, 30)
             ],
-            jump: new Rectangle(25, 120, 20, 32), //fire jump
-            skid: new Rectangle(335, 120, 20, 32), //fire skid
-            crouch: new Rectangle(0, 117, 16, 34), // fire crouch
-            throwP: new Rectangle(77, 122, 20, 32) // Throwing pose
+            jump: new Rectangle(27, 122, 16, 32), //fire jump
+            skid: new Rectangle(337, 122, 16, 32), //fire skid
+            crouch: new Rectangle(0, 127, 16, 22), // fire crouch
+            throwP: new Rectangle(77, 123, 16, 30) // Throwing pose
         );
     }
 
@@ -95,19 +95,19 @@ public class MarioSpriteFactory
         return CreateSwimmingMarioSprite(
             new Rectangle(6, 7, 12, 16), // stand
             [
-                new Rectangle(21, 8, 13, 15), // walk
-                new Rectangle(38, 7, 15, 16),
-                new Rectangle(57, 7, 11, 16)
+                new Rectangle(21, 8, 14, 15), // walk
+                new Rectangle(38, 7, 14, 16),
+                new Rectangle(57, 7, 14, 16)
             ],
             [
-                new Rectangle(124, 6, 13, 15), // float
-                new Rectangle(140, 6, 13, 15)
+                new Rectangle(124, 6, 14, 16), // float
+                new Rectangle(140, 6, 14, 16)
             ],
             [
-                new Rectangle(140, 6, 13, 15), // swim stroke
-                new Rectangle(156, 6, 13, 15),
-                new Rectangle(173, 6, 13, 15),
-                new Rectangle(189, 6, 13, 15)
+                new Rectangle(140, 6, 14, 16), // swim stroke
+                new Rectangle(156, 6, 14, 16),
+                new Rectangle(173, 7, 14, 16),
+                new Rectangle(189, 7, 14, 16)
             ]);
     }
 
