@@ -22,5 +22,7 @@ public enum BlockType
     TreeRoot,
     LauncherHead,
     LauncherNeck,
-    LauncherBody
+    LauncherBody,
+    WarpPipeTopLeft,
+    WarpPipeTopRight,
 }

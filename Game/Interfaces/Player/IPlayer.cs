@@ -20,4 +20,5 @@ public interface IPlayer : IGameObject, IPhysicsBody
     void SetPower(MarioPower power);
     void SetSwimming(bool swimming);
     void UpdateAnimation(GameTime gameTime);
+    event Action WarpRequested;
 }

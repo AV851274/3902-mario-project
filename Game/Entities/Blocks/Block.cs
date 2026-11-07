@@ -27,7 +27,7 @@ public class Block : IBlock
     private float cloudTimer = 0;
     public bool Active => true;
     private bool isIntact = true;
-
+    public bool IsWarpPipe => type == BlockType.WarpPipeTopLeft || type == BlockType.WarpPipeTopRight;
 
     public Vector2 Position { get; private set; }
 
