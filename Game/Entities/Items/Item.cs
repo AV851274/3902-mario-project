@@ -68,7 +68,7 @@ public class Item : IItem, IPhysicsBody
     {
         this.type = type;
         Position = position;
-        sprite = spriteFactory.Create(type);
+        sprite = spriteFactory.Create("items", type);
         if (!float.IsFinite(bounceSpeed) || bounceSpeed < 0f)
             throw new System.ArgumentOutOfRangeException(nameof(bounceSpeed));
         BounceSpeed = type == ItemType.Star ? bounceSpeed : 0f;
