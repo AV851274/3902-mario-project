@@ -12,5 +12,6 @@ public interface IBlock: IGameObject, ICollider
     event Action<ItemType, Vector2> ItemReleased;
     event Action<SoundType> SoundRequested;
     void Hit(bool big);
+    bool IsWarpPipe { get; }
 
 }

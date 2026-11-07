@@ -44,9 +44,14 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private readonly SoundManager sounds = new SoundManager();
 
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
-    private static readonly string[] RoomFiles = { "testRoom.csv", "level1.csv", "room2.csv", "1-1.csv" };
+    private static readonly string[] RoomFiles = { "1-1.csv", "underwater.csv" };
     private int currentRoom;
     private bool reloadRoomRequested;
+    private const int OverworldRoom = 0;
+    private const int UnderwaterRoom = 1;
+    private const float PipeExitOffset = 144f;
+    private Vector2 returnPosition;
+    private bool warpRequested;
 
     public MarioGame()
     {
@@ -97,7 +102,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         showHitboxes = !showHitboxes;
     }
 
-    private void LoadRoom(int roomIndex)
+    private void LoadRoom(int roomIndex, MarioPower power = MarioPower.Small, Vector2? spawn = null)
     {
         currentRoom = roomIndex;
         gameEntities.Reset();
@@ -106,7 +111,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         var level = LevelLoader.LoadLevel(Content, RoomFiles[currentRoom], gameEntities, spriteFactory);
 
-        Vector2 marioSpawn = level.spawn;
+        Vector2 marioSpawn = spawn ?? level.spawn;
         levelWidth = level.width;
 
         // Zoom so the whole level height fits in the window
@@ -153,8 +158,9 @@ public class MarioGame : Microsoft.Xna.Framework.Game
                 egg.SummonSpiny += ReplaceEggWithSpiny;
             }
         }
-
-        IPlayer mario = CreateMario(false, marioSpawn);
+        
+        IPlayer mario = CreateMario(roomIndex == UnderwaterRoom, marioSpawn);
+        mario.SetPower(power);
         gameEntities.Players.Add(mario);
         foreach (Lakitu lakitu in gameEntities.Enemies.OfType<Lakitu>())
             lakitu.Follow(mario);
@@ -176,6 +182,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private IPlayer CreateMario(bool swimming, Vector2 position)
     {
         IPlayer player = new Player(spriteFactory.Mario, position);
+        player.WarpRequested += OnWarpRequested;
         player.SetSwimming(swimming);
         player.SummonFireball += SpawnFireball;
         player.SoundRequested += sounds.Play;
@@ -184,6 +191,27 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         keyboardController = new KeyboardController(this, player);
         mouseController = new MouseController(this);
         return player;
+    }
+
+    private void OnWarpRequested()
+    {
+        warpRequested = true;
+    }
+
+    private void Warp()
+    {
+        MarioPower power = gameEntities.Players[0].MarioPowerState.Power;
+
+        if (currentRoom == UnderwaterRoom)
+        {
+            LoadRoom(OverworldRoom, power, returnPosition);
+        }
+        else
+        {
+            // Land past the pipe so holding Down doesn't warp Mario straight back
+            returnPosition = gameEntities.Players[0].Position + new Vector2(PipeExitOffset, 0f);
+            LoadRoom(UnderwaterRoom, power);
+        }
     }
 
     private void OnMarioDeathStarted()
@@ -348,6 +376,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             {
                 LoadRoom(currentRoom);
             }
+        }
+        if (warpRequested)
+        {
+            warpRequested = false;
+            Warp();
         }
 
         base.Update(gameTime);

@@ -255,6 +255,12 @@ public class LevelLoader
                     case "pr":
                         gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.PipeRight, position));
                         break;
+                    case "warpL":
+                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.WarpPipeTopLeft, position));
+                        break;
+                    case "warpR":
+                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.WarpPipeTopRight, position));
+                        break;
                     case "bridge":
                         gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.Bridge, position));
                         break;

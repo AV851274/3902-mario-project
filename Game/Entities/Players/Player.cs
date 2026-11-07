@@ -36,6 +36,8 @@ public class Player : IPlayer
     private bool isDying;
 
     public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Foreground;
+    public event Action WarpRequested;
+    private bool isHoldingDown;
 
 
     public IPlayerBodyAction BodyAction => body;
@@ -180,6 +182,10 @@ public class Player : IPlayer
 
     public void OnCollision(CollisionEvent collision)
     {
+        if (collision.Other is IBlock pipe && pipe.IsWarpPipe && collision.Normal.Y < 0f && isHoldingDown)
+        {
+            WarpRequested?.Invoke();
+        }
         if (collision.Other is IEnemy enemy && !enemy.IsDefeated)
         {
             if (stompGraceTimer > 0f)
@@ -234,6 +240,7 @@ public class Player : IPlayer
 
     public void Crouch()
     {
+        isHoldingDown = true;
         if (MarioPowerState.CanCrouch)
             body.Crouch();
     }
@@ -284,6 +291,7 @@ public class Player : IPlayer
 
     public void UpdateAnimation(GameTime gameTime)
     {
+        isHoldingDown = false;
         if (isDying)
         {
             appearance.Sprite.Play("Dead");
