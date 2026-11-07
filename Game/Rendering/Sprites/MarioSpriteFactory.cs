@@ -23,8 +23,8 @@ public class MarioSpriteFactory
         return CreateMarioSprite(
             new Rectangle(181, 0, 13, 16), // idle
             [
-                new Rectangle(150, 0, 14, 15), // walk
-                new Rectangle(121, 0, 12, 16),
+                new Rectangle(150, 0, 16, 15), // walk
+                new Rectangle(121, 0, 16, 16),
                 new Rectangle(89, 0, 16, 16)
             ],
             new Rectangle(29, 0, 17, 16), // jump
@@ -38,7 +38,7 @@ public class MarioSpriteFactory
             new Rectangle(180, 52, 16, 32), //big idle
             [
                 new Rectangle(150, 52, 16, 32), //big run frames
-                new Rectangle(121, 52, 14, 31),
+                new Rectangle(121, 52, 16, 31),
                 new Rectangle(90, 53, 16, 30)
             ],
             new Rectangle(30, 52, 16, 32), //big jump
@@ -53,7 +53,7 @@ public class MarioSpriteFactory
             idle: new Rectangle(180, 122, 16, 32), //fire idle
             run: [
                 new Rectangle(152, 122, 16, 32), //fire run frames
-                new Rectangle(128, 122, 14, 31),
+                new Rectangle(128, 122, 16, 31),
                 new Rectangle(102, 123, 16, 30)
             ],
             jump: new Rectangle(27, 122, 16, 32), //fire jump
@@ -95,19 +95,19 @@ public class MarioSpriteFactory
         return CreateSwimmingMarioSprite(
             new Rectangle(6, 7, 12, 16), // stand
             [
-                new Rectangle(21, 8, 15, 20), // walk
-                new Rectangle(38, 7, 15, 20),
-                new Rectangle(57, 7, 15, 20)
+                new Rectangle(21, 8, 14, 15), // walk
+                new Rectangle(38, 7, 14, 16),
+                new Rectangle(57, 7, 14, 16)
             ],
             [
-                new Rectangle(124, 6, 15, 20), // float
-                new Rectangle(140, 6, 15, 20)
+                new Rectangle(124, 6, 14, 16), // float
+                new Rectangle(140, 6, 14, 16)
             ],
             [
-                new Rectangle(140, 6, 15, 20), // swim stroke
-                new Rectangle(156, 6, 15, 20),
-                new Rectangle(173, 7, 15, 20),
-                new Rectangle(189, 7, 15, 20)
+                new Rectangle(140, 6, 14, 16), // swim stroke
+                new Rectangle(156, 6, 14, 16),
+                new Rectangle(173, 7, 14, 16),
+                new Rectangle(189, 7, 14, 16)
             ]);
     }
 
@@ -121,14 +121,14 @@ public class MarioSpriteFactory
                 new Rectangle(74, 62, 14, 31)
             ],
             [
-                new Rectangle(162, 61, 14, 30), // float
-                new Rectangle(179, 62, 16, 29)
+                new Rectangle(160, 60, 16, 32), // float
+                new Rectangle(179, 61, 16, 32)
             ],
             [
-                new Rectangle(179, 62, 16, 29), // swim stroke
-                new Rectangle(201, 62, 14, 30),
-                new Rectangle(220, 61, 16, 29),
-                new Rectangle(241, 60, 16, 30)
+                new Rectangle(179, 61, 16, 32), // swim stroke
+                new Rectangle(199, 61, 16, 32),
+                new Rectangle(220, 60, 16, 32),
+                new Rectangle(241, 59, 16, 32)
             ]);
     }
 
@@ -142,16 +142,16 @@ public class MarioSpriteFactory
                 new Rectangle(92, 98, 14, 31)
             ],
             floatFrames: [
-                new Rectangle(177, 96, 14, 30), // float
-                new Rectangle(194, 97, 16, 29)
+                new Rectangle(175, 95, 16, 32), // float
+                new Rectangle(194, 96, 16, 32)
             ],
             swim: [
-                new Rectangle(194, 97, 16, 29), // swim stroke
-                new Rectangle(216, 97, 14, 30),
-                new Rectangle(235, 96, 16, 29),
-                new Rectangle(256, 95, 16, 30)
+                new Rectangle(194, 96, 16, 32), // swim stroke
+                new Rectangle(214, 96, 16, 32),
+                new Rectangle(235, 95, 16, 32),
+                new Rectangle(256, 94, 16, 32)
             ],
-            throwP: new Rectangle(177, 96, 14, 30) // throw
+            throwP: new Rectangle(173, 95, 20, 32) // throw
         );
     }
 
