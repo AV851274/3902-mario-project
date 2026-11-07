@@ -6,11 +6,11 @@ namespace Mario.Game.Entities.Players;
 
 public class SwimmingPlayerBody : PlayerBodyBase
 {
-    private const float MoveAcceleration = 90f;
-    private const float StopAcceleration = 90f;
-    private const float MaxSpeed = 100f;
-    private const float MaxGroundSpeed = 50f;
-    private const float StrokeSpeed = 75f;
+    private const float MoveAcceleration = 250f;
+    private const float StopAcceleration = 200f;
+    private const float MaxSpeed = 200f;
+    private const float MaxGroundSpeed = 100f;
+    private const float StrokeSpeed = 200f;
     private const float StrokeAnimationTime = 0.4f;
     private float timeSinceStroke = float.PositiveInfinity;
 

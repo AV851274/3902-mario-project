@@ -98,6 +98,28 @@
         "width": 80,
         "height": 80
       }
+    },
+    "wave": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 637,
+        "y": 15,
+        "width": 16,
+        "height": 16
+      }
+    },
+    "water": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 637,
+        "y": 33,
+        "width": 16,
+        "height": 16
+      }
     }
   }
 }

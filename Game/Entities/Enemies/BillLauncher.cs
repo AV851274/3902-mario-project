@@ -12,7 +12,10 @@ public class BillLauncher : StaticEnemyBase
 {
     private const int Width = 40;
     private const int Height = 40;
+    private const float ShootCooldown = 3f;
+    private const float MinShootDistance = 72f;
     private IPlayer target;
+    private float cooldownTimer = ShootCooldown;
 
     public Direction FacingDirection =>
         target is not null && target.Position.X < Position.X ? Direction.Left : Direction.Right;
@@ -41,13 +44,14 @@ public class BillLauncher : StaticEnemyBase
         if (target is null)
             return;
 
-        if (Math.Abs(target.Position.X - Position.X) > 72) {
-            if (Random.Shared.NextDouble() < 0.01) // 1% chance to shoot each frame
-            {
-                ShootBill();
-            } 
+        cooldownTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        // Don't fire when Mario is standing right next to the launcher, like the original
+        if (cooldownTimer <= 0f && Math.Abs(target.Position.X - Position.X) > MinShootDistance)
+        {
+            ShootBill();
+            cooldownTimer = ShootCooldown;
         }
-        
     }
 
     public void ShootBill()

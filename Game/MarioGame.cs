@@ -40,6 +40,10 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private GameEntities entityBuffer = new GameEntities();
     private Camera2D camera = new Camera2D();
     private int levelWidth;
+    private int levelHeight;
+    private Texture2D pixel;
+    private const int WaterTopY = 48;
+    private static readonly Color WaterColor = new Color(0x42, 0x42, 0xFF);
     private readonly PhysicsEngine physicsEngine;
     private readonly GameStats stats = new GameStats();
     private Hud hud;
@@ -73,6 +77,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     protected override void LoadContent()
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
+        pixel = new Texture2D(GraphicsDevice, 1, 1);
+        pixel.SetData(new[] { Color.White });
 
         var assets = new AssetManager(Content, "definitions/assets.json");
         spriteFactory = new SpriteFactory(assets);
@@ -116,6 +122,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         Vector2 marioSpawn = spawn ?? level.spawn;
         levelWidth = level.width;
+        levelHeight = level.height;
 
         // Zoom so the whole level height fits in the window
         camera = new Camera2D(GraphicsDevice.Viewport.Height / (float)level.height);
@@ -401,6 +408,12 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             null,
             null,
             camera.Transform);
+
+        // Water fills the underwater room below the surface, behind everything else
+        if (currentRoom == UnderwaterRoom)
+        {
+            spriteBatch.Draw(pixel, new Rectangle(0, WaterTopY, levelWidth, levelHeight - WaterTopY), WaterColor);
+        }
 
         // Layers are drawn in enum order: Background, Item, Block, Foreground, Effects
         foreach (IGameObject.DrawLayer layer in Enum.GetValues<IGameObject.DrawLayer>())

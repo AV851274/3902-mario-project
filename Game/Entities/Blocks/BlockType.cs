@@ -25,4 +25,5 @@ public enum BlockType
     LauncherBody,
     WarpPipeTopLeft,
     WarpPipeTopRight,
+    WaterRock,
 }
