@@ -8,7 +8,7 @@ namespace Mario.Game.Entities.Enemies;
 public class BulletBill : EnemyBase
 {
     private const int Size = 40;
-    private const float MaxFlightTime = 8f;
+    private const float MaxFlightTime = 4f;
 
     private bool isStomped;
     private float flightTime;

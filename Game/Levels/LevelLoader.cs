@@ -267,7 +267,15 @@ public class LevelLoader
                     case "cloud":
                         gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.Cloud, position));
                         break;
-
+                    case "w":
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Water, new Vector2(position.X, position.Y + 24)));
+                        break;
+                    case "/":
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Wave, new Vector2(position.X, position.Y + 24)));
+                        break;
+                    case "waterRock":
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.WaterRock, position));
+                        break;
                     default:
                         throw new FormatException(
                             $"Unknown tile '{tile}' at row {row + 1}, column {col + 1}");

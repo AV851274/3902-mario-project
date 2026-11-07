@@ -270,6 +270,17 @@
         "width": 16,
         "height": 16
       }
+    },
+    "waterRock": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 147,
+        "y": 134,
+        "width": 16,
+        "height": 16
+      }
     }
   }
 }

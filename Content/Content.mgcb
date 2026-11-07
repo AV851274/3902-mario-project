@@ -96,9 +96,6 @@
 /processorParam:Version=3.8.5.1
 /build:textures/itemsAndBlocks.png
 
-#begin levels/level1.csv
-/copy:levels/level1.csv
-
 #begin textures/mario.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -178,11 +175,8 @@
 #begin levels/1-1.csv
 /copy:levels/1-1.csv
 
-#begin levels/room2.csv
-/copy:levels/room2.csv
-
-#begin levels/testRoom.csv
-/copy:levels/testRoom.csv
+#begin levels/underwater.csv
+/copy:levels/underwater.csv
 
 #begin definitions/assets.json
 /copy:definitions/assets.json
