@@ -51,61 +51,61 @@ public class LevelLoader
                 {
                     case "G":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.Ground, position));
+                            new Block(spriteFactory, BlockType.Ground, position));
                         break;
 
                     case "B":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.Brick, position));
+                            new Block(spriteFactory, BlockType.Brick, position));
                         break;
 
                     case "?":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.Question, position, ItemType.Coin));
+                            new Block(spriteFactory, BlockType.Question, position, ItemType.Coin));
                         break;
                     case "?m":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.Question, position, ItemType.Mushroom));
+                            new Block(spriteFactory, BlockType.Question, position, ItemType.Mushroom));
                         break;
                     case "?s":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.Question, position, ItemType.Star));
+                            new Block(spriteFactory, BlockType.Question, position, ItemType.Star));
                         break;
                     case "Bl":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.Block, position));
+                            new Block(spriteFactory, BlockType.Block, position));
                         break;
                     case "treeLeft":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.TreeLeft, position));
+                            new Block(spriteFactory, BlockType.TreeLeft, position));
                         break;
                     case "treeRight":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.TreeRight, position));
+                            new Block(spriteFactory, BlockType.TreeRight, position));
                         break;
                     case "treeMiddle":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.TreeMiddle, position));
+                            new Block(spriteFactory, BlockType.TreeMiddle, position));
                         break;
                     case "treeRoot":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.TreeRoot, position));
+                            new Block(spriteFactory, BlockType.TreeRoot, position));
                         break;
                     case "launcherNeck":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.LauncherNeck, position));
+                            new Block(spriteFactory, BlockType.LauncherNeck, position));
                         break;
                     case "launcherBody":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.LauncherBody, position));
+                            new Block(spriteFactory, BlockType.LauncherBody, position));
                         break;
                     case "smCastle":
                         gameEntities.Background.Add(
-                            new BackgroundObject(spriteFactory.Background, BackgroundType.SmallCastle, position));
+                            new BackgroundObject(spriteFactory, BackgroundType.SmallCastle, position));
                         break;
                     case "bgCastle":
                         gameEntities.Background.Add(
-                            new BackgroundObject(spriteFactory.Background, BackgroundType.BigCastle, position));
+                            new BackgroundObject(spriteFactory, BackgroundType.BigCastle, position));
                         break;
                     case "M":
                         marioSpawn = position;
@@ -113,47 +113,47 @@ public class LevelLoader
                     case "E":
                         gameEntities.Enemies.Add(
                             new Goomba(
-                                spriteFactory.Enemies.CreateGoombaSprite(),
+                                spriteFactory.CreateEnemy("goomba"),
                                 position));
                         break;
                     case "K":
                         gameEntities.Enemies.Add(
                             new Turtle(
-                                spriteFactory.Enemies.CreateTurtleSprite(),
+                                spriteFactory.CreateEnemy("turtle"),
                                 position));
                         break;
                     case "H":
                         gameEntities.Enemies.Add(
                             new HammerBro(
-                                spriteFactory.Enemies.CreateHammerBroSprite(),
+                                spriteFactory.CreateEnemy("hammerBro"),
                                 position));
                         break;
                     case "Bw":
                         gameEntities.Enemies.Add(
                             new Bowser(
-                                spriteFactory.Enemies.CreateBowserSprite(),
+                                spriteFactory.CreateEnemy("bowser"),
                                 position));
                         break;
                     case "Lk":
                         gameEntities.Enemies.Add(
                             new Lakitu(
-                                spriteFactory.Enemies.CreateLakituSprite(),
+                                spriteFactory.CreateEnemy("lakitu"),
                                 position));
                         break;
                     case "Bz":
                         gameEntities.Enemies.Add(
                             new BuzzyBeetle(
-                                spriteFactory.Enemies.CreateBuzzyBeetleSprite(),
+                                spriteFactory.CreateEnemy("buzzyBeetle"),
                                 position));
                         break;
                     case "Fb":
                         gameEntities.Enemies.Add(
                             new FireBar(
-                                spriteFactory.Mario.CreateFireballSprite(),
+                                spriteFactory.CreateProjectile("fireball"),
                                 new Vector2(position.X + 12, position.Y + 12), 6));
 
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, 
+                            new Block(spriteFactory,
                                 BlockType.UsedQuestion, 
                                 position));
 
@@ -161,13 +161,13 @@ public class LevelLoader
                     case "Sp":
                         gameEntities.Enemies.Add(
                             new Spiny(
-                                spriteFactory.Enemies.CreateSpinySprite(),
+                                spriteFactory.CreateEnemy("spiny"),
                                 position));
                         break;
                     case "BPb":
                         gameEntities.Enemies.Add(
                             new Podoboo(
-                                spriteFactory.Enemies.CreatePodoboo(),
+                                spriteFactory.CreateEnemy("podoboo"),
                                 position, -1000f));
                         break;
                     case "Bbl":
@@ -176,32 +176,32 @@ public class LevelLoader
                                 null,
                                 position));
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory.Blocks, BlockType.LauncherHead, position));
+                            new Block(spriteFactory, BlockType.LauncherHead, position));
                         break;
                     case "Pb":
                         gameEntities.Enemies.Add(
                             new Podoboo(
-                                spriteFactory.Enemies.CreatePodoboo(),
+                                spriteFactory.CreateEnemy("podoboo"),
                                 position, -800f));
                         break;
                     case "Pk":
                         gameEntities.Enemies.Add(
                             new ParaKoopa(
-                                spriteFactory.Enemies.CreateParaKoopaSprite(),
+                                spriteFactory.CreateEnemy("paraKoopa"),
                                 position));
                         break;
 
                     case "GrayCheep":
                         gameEntities.Enemies.Add(
                             new CheepCheep(
-                                spriteFactory.Enemies.CreateGrayCheepSprite(),
+                                spriteFactory.CreateEnemy("grayCheep"),
                                 position,
                                 FishColor.Gray));
                         break;
                     case "GreenCheep":
                         gameEntities.Enemies.Add(
                             new CheepCheep(
-                                spriteFactory.Enemies.CreateGreenCheepSprite(),
+                                spriteFactory.CreateEnemy("greenCheep"),
                                 position,
                                 FishColor.Green));
                         break;
@@ -209,63 +209,63 @@ public class LevelLoader
                     case "":
                         break;
                     case "mu":
-                        gameEntities.Items.Add(new Item(spriteFactory.Items, ItemType.Mushroom, position));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.Mushroom, position));
                         break;
                     case "fi":
-                        gameEntities.Items.Add(new Item(spriteFactory.Items, ItemType.FireFlower, position));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.FireFlower, position));
                         break;
                     case "co":
-                        gameEntities.Items.Add(new Item(spriteFactory.Items, ItemType.Coin, new Vector2(position.X + 12, position.Y)));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.Coin, new Vector2(position.X + 12, position.Y)));
                         break;
                     case "st":
-                        gameEntities.Items.Add(new Item(spriteFactory.Items, ItemType.Star, position));
+                        gameEntities.Items.Add(new Item(spriteFactory, ItemType.Star, position));
                         break;
                     case "cl":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory.Background, BackgroundType.Cloud, new Vector2(position.X + 24, position.Y - 24)));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud, new Vector2(position.X + 24, position.Y - 24)));
                         break;
                     case "smcl":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory.Background, BackgroundType.SmallCloud, new Vector2(position.X + 24, position.Y - 24)));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallCloud, new Vector2(position.X + 24, position.Y - 24)));
                         break;
                     case "bcl":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory.Background, BackgroundType.BigCloud, new Vector2(position.X + 24, position.Y - 24)));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigCloud, new Vector2(position.X + 24, position.Y - 24)));
                         break;
                     case "bh":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory.Background, BackgroundType.BigHill, new Vector2(position.X, position.Y + 48)));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, new Vector2(position.X, position.Y + 48)));
                         break;
                     case "sh":
                         gameEntities.Background.Add(
-                            new BackgroundObject(spriteFactory.Background, BackgroundType.SmallHill, new Vector2(position.X, position.Y - 48)));
+                            new BackgroundObject(spriteFactory, BackgroundType.SmallHill, new Vector2(position.X, position.Y - 48)));
                         break;
                     case "sb":
                         gameEntities.Background.Add(
-                            new BackgroundObject(spriteFactory.Background, BackgroundType.SmallBush, new Vector2(position.X + 24, position.Y)));
+                            new BackgroundObject(spriteFactory, BackgroundType.SmallBush, new Vector2(position.X + 24, position.Y)));
                         break;
                     case "bb":
-                        gameEntities.Background.Add(new BackgroundObject(spriteFactory.Background, BackgroundType.BigBush, new Vector2(position.X + 24, position.Y)));
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, new Vector2(position.X + 24, position.Y)));
                         break;
                     case "PL":
-                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.PipeTopLeft, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopLeft, position));
                         break;
                     case "PR":
-                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.PipeTopRight, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopRight, position));
                         break;
                     case "pl":
-                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.PipeLeft, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeLeft, position));
                         break;
                     case "pr":
-                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.PipeRight, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeRight, position));
                         break;
                     case "warpL":
-                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.WarpPipeTopLeft, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.WarpPipeTopLeft, position));
                         break;
                     case "warpR":
-                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.WarpPipeTopRight, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.WarpPipeTopRight, position));
                         break;
                     case "bridge":
-                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.Bridge, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.Bridge, position));
                         break;
                     case "cloud":
-                        gameEntities.Blocks.Add(new Block(spriteFactory.Blocks, BlockType.Cloud, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.Cloud, position));
                         break;
 
                     default:

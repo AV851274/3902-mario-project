@@ -13,42 +13,42 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin bigJump.wav
-/importer:WavImporter
+#begin audio/sfx/bigJump.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:bigJump.wav
+/build:audio/sfx/bigJump.ogg
 
-#begin brick.wav
-/importer:WavImporter
+#begin audio/sfx/brick.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:brick.wav
+/build:audio/sfx/brick.ogg
 
-#begin bump.wav
-/importer:WavImporter
+#begin audio/sfx/bump.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:bump.wav
+/build:audio/sfx/bump.ogg
 
-#begin coin.wav
-/importer:WavImporter
+#begin audio/sfx/coin.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:coin.wav
+/build:audio/sfx/coin.ogg
 
-#begin death.wav
-/importer:WavImporter
+#begin audio/sfx/death.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:death.wav
+/build:audio/sfx/death.ogg
 
-#begin enemies.png
+#begin textures/enemies.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=146,144,255,255
@@ -59,31 +59,31 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:enemies.png
+/build:textures/enemies.png
 
-#begin fireball.wav
-/importer:WavImporter
+#begin audio/sfx/fireball.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:fireball.wav
+/build:audio/sfx/fireball.ogg
 
-#begin HudFont.spritefont
+#begin fonts/HudFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /processorParam:Version=3.8.5.1
-/build:HudFont.spritefont
+/build:fonts/HudFont.spritefont
 
-#begin item.wav
-/importer:WavImporter
+#begin audio/sfx/item.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:item.wav
+/build:audio/sfx/item.ogg
 
-#begin itemsAndBlocks.png
+#begin textures/itemsAndBlocks.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=146,144,255,255
@@ -94,12 +94,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:itemsAndBlocks.png
+/build:textures/itemsAndBlocks.png
 
 #begin levels/level1.csv
 /copy:levels/level1.csv
 
-#begin mario.png
+#begin textures/mario.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -110,9 +110,9 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:mario.png
+/build:textures/mario.png
 
-#begin Mariogif.gif
+#begin textures/Mariogif.gif
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -123,45 +123,45 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:Mariogif.gif
+/build:textures/Mariogif.gif
 
-#begin overworld.mp3
-/importer:Mp3Importer
+#begin audio/music/overworld.ogg
+/importer:OggImporter
 /processor:SongProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:overworld.mp3
+/build:audio/music/overworld.ogg
 
-#begin powerup.wav
-/importer:WavImporter
+#begin audio/sfx/powerup.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:powerup.wav
+/build:audio/sfx/powerup.ogg
 
-#begin smallJump.wav
-/importer:WavImporter
+#begin audio/sfx/smallJump.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:smallJump.wav
+/build:audio/sfx/smallJump.ogg
 
-#begin stompswim.wav
-/importer:WavImporter
+#begin audio/sfx/stompswim.ogg
+/importer:OggImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /processorParam:Version=3.8.5.1
-/build:stompswim.wav
+/build:audio/sfx/stompswim.ogg
 
-#begin Super Mario Bros. NES.ttf
+#begin fonts/Super Mario Bros. NES.ttf
 /importer:FontImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /processorParam:Version=3.8.5.1
-/build:Super Mario Bros. NES.ttf
+/build:fonts/Super Mario Bros. NES.ttf
 
-#begin tileset.png
+#begin textures/tileset.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -172,5 +172,38 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /processorParam:Version=3.8.5.1
-/build:tileset.png
+/build:textures/tileset.png
 
+
+#begin levels/1-1.csv
+/copy:levels/1-1.csv
+
+#begin levels/room2.csv
+/copy:levels/room2.csv
+
+#begin levels/testRoom.csv
+/copy:levels/testRoom.csv
+
+#begin definitions/assets.json
+/copy:definitions/assets.json
+
+#begin definitions/sprites/mario.json
+/copy:definitions/sprites/mario.json
+
+#begin definitions/sprites/enemies.json
+/copy:definitions/sprites/enemies.json
+
+#begin definitions/sprites/projectiles.json
+/copy:definitions/sprites/projectiles.json
+
+#begin definitions/sprites/items.json
+/copy:definitions/sprites/items.json
+
+#begin definitions/sprites/blocks.json
+/copy:definitions/sprites/blocks.json
+
+#begin definitions/sprites/background.json
+/copy:definitions/sprites/background.json
+
+#begin definitions/sprites/debug.json
+/copy:definitions/sprites/debug.json

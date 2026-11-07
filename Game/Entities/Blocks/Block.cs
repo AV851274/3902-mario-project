@@ -16,7 +16,7 @@ public class Block : IBlock
     private const float BumpHeight = 12f;
     private const float BumpDuration = 0.15f;
 
-    private BlockSpriteFactory spriteFactory;
+    private SpriteFactory spriteFactory;
     private ISprite sprite;
     private BlockType type;
     private ItemType? contents;
@@ -58,12 +58,12 @@ public class Block : IBlock
     public event Action<ItemType, Vector2> ItemReleased;
     public event Action<SoundType> SoundRequested;
 
-    public Block(BlockSpriteFactory spriteFactory, BlockType type, Vector2 position, ItemType? contents = null)
+    public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position, ItemType? contents = null)
     {
         this.spriteFactory = spriteFactory;
         this.type = type;
         this.contents = contents;
-        sprite = spriteFactory.CreateBlockSprite(type);
+        sprite = spriteFactory.Create(type);
         Position = position;
     }
 
@@ -96,7 +96,7 @@ public class Block : IBlock
         {
             ReleaseContents(big);
             type = BlockType.UsedQuestion;
-            sprite = spriteFactory.CreateBlockSprite(BlockType.UsedQuestion);
+            sprite = spriteFactory.Create(BlockType.UsedQuestion);
         }
 
         isIntact = !(type == BlockType.Brick && big);

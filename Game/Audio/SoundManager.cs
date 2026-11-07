@@ -1,34 +1,24 @@
-using System.Collections.Generic;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
+using System.Text.Json;
+using Mario.Game.Assets;
 using Microsoft.Xna.Framework.Media;
 
 namespace Mario.Game.Audio;
 
 public class SoundManager
 {
-    private readonly Dictionary<SoundType, SoundEffect> effects = new Dictionary<SoundType, SoundEffect>();
-    private Song music;
+    private readonly AssetManager assets;
+    private readonly Song music;
 
-    public void LoadContent(ContentManager content)
+    public SoundManager(AssetManager assets)
     {
-        effects[SoundType.SmallJump] = content.Load<SoundEffect>("smallJump");
-        effects[SoundType.BigJump] = content.Load<SoundEffect>("bigJump");
-        effects[SoundType.Brick] = content.Load<SoundEffect>("brick");
-        effects[SoundType.Bump] = content.Load<SoundEffect>("bump");
-        effects[SoundType.Coin] = content.Load<SoundEffect>("coin");
-        effects[SoundType.Death] = content.Load<SoundEffect>("death");
-        effects[SoundType.Fireball] = content.Load<SoundEffect>("fireball");
-        effects[SoundType.Item] = content.Load<SoundEffect>("item");
-        effects[SoundType.PowerUp] = content.Load<SoundEffect>("powerup");
-        effects[SoundType.StompSwim] = content.Load<SoundEffect>("stompswim");
-
-        music = content.Load<Song>("overworld");
+        this.assets = assets;
+        music = assets.GetMusic("overworld");
     }
 
     public void Play(SoundType sound)
     {
-        effects[sound].Play();
+        string id = JsonNamingPolicy.CamelCase.ConvertName(sound.ToString());
+        assets.GetSound(id).Play();
     }
 
     public void PlayMusic()

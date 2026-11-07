@@ -1,3 +1,4 @@
+using Mario.Game.Assets;
 using System;
 using System.Linq;
 using Mario.Game.Interfaces.Player;
@@ -34,6 +35,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private IController keyboardController;
     private IController mouseController;
     private SpriteFactory spriteFactory;
+    private HitboxRenderer hitboxes;
     private GameEntities gameEntities = new GameEntities();
     private GameEntities entityBuffer = new GameEntities();
     private Camera2D camera = new Camera2D();
@@ -41,7 +43,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private readonly PhysicsEngine physicsEngine;
     private readonly GameStats stats = new GameStats();
     private Hud hud;
-    private readonly SoundManager sounds = new SoundManager();
+    private SoundManager sounds;
 
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
     private static readonly string[] RoomFiles = { "1-1.csv", "underwater.csv" };
@@ -72,10 +74,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         spriteBatch = new SpriteBatch(GraphicsDevice);
 
-        spriteFactory = new SpriteFactory();
-        spriteFactory.LoadTextures(Content);
-        hud = new Hud(Content.Load<SpriteFont>("HudFont"), stats);
-        sounds.LoadContent(Content);
+        var assets = new AssetManager(Content, "definitions/assets.json");
+        spriteFactory = new SpriteFactory(assets);
+        hitboxes = new HitboxRenderer(assets);
+        hud = new Hud(assets.GetFont("hud"), stats);
+        sounds = new SoundManager(assets);
 
         ResetGame();
     }
@@ -181,7 +184,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     private IPlayer CreateMario(bool swimming, Vector2 position)
     {
-        IPlayer player = new Player(spriteFactory.Mario, position);
+        IPlayer player = new Player(spriteFactory, position);
         player.WarpRequested += OnWarpRequested;
         player.SetSwimming(swimming);
         player.SummonFireball += SpawnFireball;
@@ -236,7 +239,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         float flip = direction == Direction.Left ? -1f : 1f;
         var velocity = new Vector2(500f * flip, 200f);
         gameEntities.Projectiles.Add(new Fireball(
-            spriteFactory.Mario.CreateFireballSprite(), // new animation contoller for each fireball
+            spriteFactory.CreateProjectile("fireball"), // new animation contoller for each fireball
             position + new Vector2(25 * flip, -20f),
             velocity,
             2f,
@@ -246,7 +249,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     private void SpawnItem(ItemType type, Vector2 position)
     {
-        Item item = new Item(spriteFactory.Items, type, position);
+        Item item = new Item(spriteFactory, type, position);
         item.StartEmerging();
         item.Collected += OnItemCollected;
         gameEntities.Items.Add(item);
@@ -276,7 +279,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         float directionSign = direction == Direction.Left ? -1f : 1f;
 
         gameEntities.Projectiles.Add(new Hammer(
-            spriteFactory.Enemies.CreateHammerSprite(),
+            spriteFactory.CreateProjectile("hammer"),
             position + new Vector2(20f * directionSign, -20f),
             new Vector2(250f * directionSign, -350f),
             3f));
@@ -287,7 +290,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         float directionSign = direction == Direction.Left ? -1f : 1f;
 
         gameEntities.Projectiles.Add(new Fire(
-            spriteFactory.Enemies.CreateFireSprite(),
+            spriteFactory.CreateProjectile("fire"),
             position + new Vector2(20f * directionSign, 0f),
             new Vector2(250f * directionSign, 0f),
             3f));
@@ -296,7 +299,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private void SpawnEgg(Vector2 position, Direction direction)
     {
         Egg egg = new Egg(
-            spriteFactory.Enemies.CreateEggSprite(),
+            spriteFactory.CreateProjectile("egg"),
             position,
             new Vector2(0f, 0f),
             3f);
@@ -308,7 +311,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         float directionSign = direction == Direction.Left ? -1f : 1f;
         entityBuffer.Enemies.Add(new BulletBill(
-            spriteFactory.Enemies.CreateBulletBill(),
+            spriteFactory.CreateEnemy("bulletBill"),
             position,
             new Vector2(250f * directionSign, 0f)));
     }
@@ -321,7 +324,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
                 "Cannot replace a ParaKoopa that is not in the active enemy list.");
 
         gameEntities.Enemies[index] = new Turtle(
-            spriteFactory.Enemies.CreateTurtleSprite(),
+            spriteFactory.CreateEnemy("turtle"),
             paraKoopa.Position)
         {
             Velocity = paraKoopa.Velocity,
@@ -331,7 +334,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private void ReplaceEggWithSpiny(Egg egg)
     {
         gameEntities.Enemies.Add(new Spiny(
-            spriteFactory.Enemies.CreateSpinySprite(),
+            spriteFactory.CreateEnemy("spiny"),
             egg.Position));
     }
 
@@ -415,7 +418,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         {
             foreach (ICollider collider in gameEntities.GetAllColliders())
             {
-                spriteFactory.Hitboxes.DrawHitbox(spriteBatch, collider.Bounds.Left, collider.Bounds.Right, collider.Bounds.Top, collider.Bounds.Bottom);
+                hitboxes.DrawHitbox(spriteBatch, collider.Bounds.Left, collider.Bounds.Right, collider.Bounds.Top, collider.Bounds.Bottom);
             }
         }
 

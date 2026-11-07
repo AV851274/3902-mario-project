@@ -64,11 +64,11 @@ public class Item : IItem, IPhysicsBody
     public Vector2 Position { get; set; }
     public Vector2 Velocity { get; set; }
 
-    public Item(ItemSpriteFactory spriteFactory, ItemType type, Vector2 position, float bounceSpeed = 400f)
+    public Item(SpriteFactory spriteFactory, ItemType type, Vector2 position, float bounceSpeed = 400f)
     {
         this.type = type;
         Position = position;
-        sprite = spriteFactory.CreateItemSprite(type);
+        sprite = spriteFactory.Create(type);
         if (!float.IsFinite(bounceSpeed) || bounceSpeed < 0f)
             throw new System.ArgumentOutOfRangeException(nameof(bounceSpeed));
         BounceSpeed = type == ItemType.Star ? bounceSpeed : 0f;

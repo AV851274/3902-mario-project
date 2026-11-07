@@ -1,0 +1,493 @@
+{
+  "sprites": {
+    "goomba": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Walk",
+      "clips": {
+        "Walk": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 16,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 18,
+                "y": 16,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            }
+          ]
+        },
+        "Stomped": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 16,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            }
+          ]
+        }
+      }
+    },
+    "turtle": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Walk",
+      "clips": {
+        "Walk": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 112,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 18,
+                "y": 112,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            }
+          ]
+        },
+        "Stomped": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 72,
+                "y": 111,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "buzzyBeetle": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Walk",
+      "clips": {
+        "Walk": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 34,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 18,
+                "y": 34,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            }
+          ]
+        },
+        "Stomped": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 36,
+                "y": 34,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "spiny": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Walk",
+      "clips": {
+        "Walk": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 72,
+                "y": 352,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 90,
+                "y": 352,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            }
+          ]
+        }
+      }
+    },
+    "paraKoopa": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Walk",
+      "clips": {
+        "Walk": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 36,
+                "y": 112,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 54,
+                "y": 112,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            }
+          ]
+        }
+      }
+    },
+    "lakitu": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 54,
+                "y": 138,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            }
+          ]
+        },
+        "EggThrow": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 72,
+                "y": 138,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            }
+          ]
+        }
+      }
+    },
+    "greenCheep": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Swim",
+      "clips": {
+        "Swim": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 164,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 18,
+                "y": 164,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            }
+          ]
+        },
+        "Stomped": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 164,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "grayCheep": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Swim",
+      "clips": {
+        "Swim": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 292,
+                "y": 164,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 310,
+                "y": 164,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.2
+            }
+          ]
+        },
+        "Stomped": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 292,
+                "y": 164,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 1.0
+            }
+          ]
+        }
+      }
+    },
+    "hammerBro": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 182,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 18,
+                "y": 182,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            }
+          ]
+        },
+        "Stomped": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 182,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            }
+          ]
+        },
+        "HammerThrow": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 37,
+                "y": 182,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            },
+            {
+              "rect": {
+                "x": 55,
+                "y": 182,
+                "width": 16,
+                "height": 24
+              },
+              "duration": 0.2
+            }
+          ]
+        }
+      }
+    },
+    "podoboo": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 90,
+                "y": 370,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.12
+            }
+          ]
+        }
+      }
+    },
+    "bulletBill": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 54,
+                "y": 53,
+                "width": 16,
+                "height": 16
+              },
+              "duration": 0.12
+            }
+          ]
+        }
+      }
+    },
+    "bowser": {
+      "kind": "animated",
+      "texture": "enemies",
+      "scale": 2.5,
+      "initialClip": "Idle",
+      "clips": {
+        "Idle": {
+          "loop": true,
+          "frames": [
+            {
+              "rect": {
+                "x": 0,
+                "y": 208,
+                "width": 32,
+                "height": 32
+              },
+              "duration": 0.4
+            },
+            {
+              "rect": {
+                "x": 34,
+                "y": 208,
+                "width": 32,
+                "height": 32
+              },
+              "duration": 0.4
+            }
+          ]
+        },
+        "FireBreath": {
+          "loop": false,
+          "frames": [
+            {
+              "rect": {
+                "x": 68,
+                "y": 208,
+                "width": 32,
+                "height": 32
+              },
+              "duration": 0.4
+            },
+            {
+              "rect": {
+                "x": 102,
+                "y": 208,
+                "width": 32,
+                "height": 32
+              },
+              "duration": 0.4
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "sprites": {
+    "hitbox": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 1,
+      "rect": {
+        "x": 323,
+        "y": 26,
+        "width": 1,
+        "height": 1
+      }
+    }
+  }
+}

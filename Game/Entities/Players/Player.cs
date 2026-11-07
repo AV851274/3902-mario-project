@@ -102,21 +102,21 @@ public class Player : IPlayer
     public bool CollisionEnabled => !isDying;
     public Box Bounds => body.Bounds;
 
-    public Player(MarioSpriteFactory factory, Vector2 position)
+    public Player(SpriteFactory factory, Vector2 position)
     {
         appearancesTable = new() {
             [new AppearanceKey(MarioPower.Small, false)] =
-                new Appearance(factory.CreateSmallMarioSprite(), Vector2.Zero),
+                new Appearance(factory.CreateMario("small"), Vector2.Zero),
             [new AppearanceKey(MarioPower.Big, false)] =
-                new Appearance(factory.CreateBigMarioSprite(), new Vector2(0f, -40f)),
+                new Appearance(factory.CreateMario("big"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Fire, false)] =
-                new Appearance(factory.CreateFireMarioSprite(), new Vector2(0f, -40f)),
+                new Appearance(factory.CreateMario("fire"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Small, true)] =
-                new Appearance(factory.CreateSmallSwimmingMarioSprite(), Vector2.Zero),
+                new Appearance(factory.CreateMario("small.swimming"), Vector2.Zero),
             [new AppearanceKey(MarioPower.Big, true)] =
-                new Appearance(factory.CreateBigSwimmingMarioSprite(), new Vector2(0f, -40f)),
+                new Appearance(factory.CreateMario("big.swimming"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Fire, true)] =
-                new Appearance(factory.CreateFireSwimmingMarioSprite(), new Vector2(0f, -40f)),
+                new Appearance(factory.CreateMario("fire.swimming"), new Vector2(0f, -40f)),
         };
         body = new PlayerBody { Position = position };
         RefreshSprite();
