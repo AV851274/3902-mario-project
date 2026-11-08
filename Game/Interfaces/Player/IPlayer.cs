@@ -14,8 +14,10 @@ public interface IPlayer : IGameObject, IPhysicsBody
     event Action<SoundType> SoundRequested;
     event Action DeathStarted;
     event Action Died;
+    event Action FlagpoleReached;
     void Attack();
     void Crouch();
+    void StartFlagpoleSlide(IBlock flagpole);
     void TakeDamage();
     void SetPower(MarioPower power);
     void SetSwimming(bool swimming);

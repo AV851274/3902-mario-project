@@ -47,7 +47,9 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private readonly PhysicsEngine physicsEngine;
     private readonly GameStats stats = new GameStats();
     private Hud hud;
+    private SpriteFont hudFont;
     private SoundManager sounds;
+    private bool isWinState;
 
     // Rooms in order; the mouse cycles through them (left = previous, right = next)
     private static readonly string[] RoomFiles = { "1-1.csv", "underwater.csv" };
@@ -83,7 +85,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         var assets = new AssetManager(Content, "definitions/assets.json");
         spriteFactory = new SpriteFactory(assets);
         hitboxes = new HitboxRenderer(assets);
-        hud = new Hud(assets.GetFont("hud"), stats);
+        hudFont = assets.GetFont("hud");
+        hud = new Hud(hudFont, stats);
         sounds = new SoundManager(assets);
 
         ResetGame();
@@ -113,6 +116,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     private void LoadRoom(int roomIndex, MarioPower power = MarioPower.Small, Vector2? spawn = null)
     {
+        isWinState = false;
         currentRoom = roomIndex;
         gameEntities.Reset();
         entityBuffer.Reset();
@@ -198,6 +202,7 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         player.SoundRequested += sounds.Play;
         player.DeathStarted += OnMarioDeathStarted;
         player.Died += OnMarioDied;
+        player.FlagpoleReached += OnFlagpoleReached;
         keyboardController = new KeyboardController(this, player);
         mouseController = new MouseController(this);
         return player;
@@ -235,6 +240,12 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     {
         stats.LoseLife();
         reloadRoomRequested = true;
+    }
+
+    private void OnFlagpoleReached()
+    {
+        isWinState = true;
+        sounds.StopMusic();
     }
 
     private void SpawnFireball(Vector2 position, Direction direction)
@@ -353,6 +364,15 @@ public class MarioGame : Microsoft.Xna.Framework.Game
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
+        if (isWinState)
+        {
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.Enter) || state.IsKeyDown(Keys.R))
+                ResetGame();
+            base.Update(gameTime);
+            return;
+        }
+
         keyboardController.Update(gameTime);
         mouseController.Update(gameTime);
 
@@ -439,10 +459,17 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         // HUD is drawn without the camera transform so it stays fixed on screen
         spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-        hud.Draw(spriteBatch, GraphicsDevice.Viewport.Width);
+        if (isWinState)
+            DrawWinState();
+        else
+            hud.Draw(spriteBatch, GraphicsDevice.Viewport.Width);
         spriteBatch.End();
 
         base.Draw(gameTime);
     }
 
+    private void DrawWinState()
+    {
+        // TODO
+    }
 }

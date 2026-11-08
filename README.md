@@ -14,7 +14,7 @@ CURRENT SPRINT: #3
 | 4 / 5 / 6                | Small / Big / Fire swimming Mario |
 | Left click / Right click | Previous room / Next room         |
 | R                        | Reset to the first room           |
-| Q                        | Quit                              |
+| Q                        | Quit                                  |
 
 ## Current features
 
@@ -33,6 +33,7 @@ CURRENT SPRINT: #3
 - Big / Fire Mario break bricks; Small Mario bumps them
 - Items: mushroom, fire flower, coin, and star; mushrooms and stars move and bounce off walls
 - Blocks: ground, brick, ? block, hard block, pipes, trees, bridges, and cloud blocks that disappear after being stood on
+- The flagpole at the end of 1-1 catches Mario, slides him down to the ground, and shows the course-clear screen
 - Background scenery: clouds, hills, bushes, and castles
 - Camera follows Mario horizontally; taller rooms zoom out to fit the window
 

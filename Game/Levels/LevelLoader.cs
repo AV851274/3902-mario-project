@@ -273,6 +273,14 @@ public class LevelLoader
                     case "/":
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Wave, new Vector2(position.X, position.Y + 24)));
                         break;
+                    case "flagPole":
+                    case "F":
+                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.FlagPole, position));
+                        break;
+                    case "flag":
+                    case "fl":
+                        gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Flag, position));
+                        break;
                     case "waterRock":
                         gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.WaterRock, position));
                         break;
