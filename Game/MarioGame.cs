@@ -19,8 +19,6 @@ using Mario.Game.Levels;
 using Mario.Game.Rendering;
 using Mario.Game.Rendering.Camera;
 using Mario.Game.Physics;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Mario.Game;
 
@@ -58,6 +56,12 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     private const float PipeExitOffset = 144f;
     private Vector2 returnPosition;
     private bool warpRequested;
+    private GameScreen currentScreen = GameScreen.Start;
+    private KeyboardState previousKeyboardState;
+    private SpriteFont screenFont;
+    private StartScreenState startScreenState;
+    private PausedScreenState pausedScreenState;
+    private GameOverScreenState gameOverScreenState;
 
     public MarioGame()
     {
@@ -83,7 +87,23 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         var assets = new AssetManager(Content, "definitions/assets.json");
         spriteFactory = new SpriteFactory(assets);
         hitboxes = new HitboxRenderer(assets);
-        hud = new Hud(assets.GetFont("hud"), stats);
+        screenFont = assets.GetFont("hud");
+        hud = new Hud(screenFont, stats);
+        startScreenState = new StartScreenState(
+            spriteBatch,
+            screenFont,
+            GraphicsDevice
+        );
+        pausedScreenState = new PausedScreenState(
+            spriteBatch,
+            screenFont,
+            GraphicsDevice
+        );
+        gameOverScreenState = new GameOverScreenState(
+            spriteBatch,
+            screenFont,
+            GraphicsDevice
+        );
         sounds = new SoundManager(assets);
 
         ResetGame();
@@ -352,6 +372,58 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
             Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
+        
+        KeyboardState keyboardState = Keyboard.GetState();
+
+        if (currentScreen == GameScreen.Start)
+        {
+            startScreenState.Update(gameTime);
+
+            if (startScreenState.StartRequested)
+            {
+                currentScreen = GameScreen.Playing;
+            }
+
+            previousKeyboardState = keyboardState;
+            base.Update(gameTime);
+            return;
+        }
+        if (currentScreen == GameScreen.GameOver)
+        {
+            gameOverScreenState.Update(gameTime);
+
+            if (gameOverScreenState.RestartRequested)
+            {
+                ResetGame();
+                currentScreen = GameScreen.Playing;
+            }
+
+            previousKeyboardState = keyboardState;
+            base.Update(gameTime);
+            return;
+        }
+        if (currentScreen == GameScreen.Playing &&
+            keyboardState.IsKeyDown(Keys.P) &&
+            previousKeyboardState.IsKeyUp(Keys.P))
+        {
+            currentScreen = GameScreen.Paused;
+            pausedScreenState.ResetInput();
+        }
+
+        previousKeyboardState = keyboardState;
+
+        if (currentScreen == GameScreen.Paused)
+        {
+            pausedScreenState.Update(gameTime);
+
+            if (pausedScreenState.ResumeRequested)
+            {
+                currentScreen = GameScreen.Playing;
+            }
+
+            base.Update(gameTime);
+            return;
+        }
 
         keyboardController.Update(gameTime);
         mouseController.Update(gameTime);
@@ -378,9 +450,11 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         if (reloadRoomRequested)
         {
             reloadRoomRequested = false;
+
             if (stats.Lives <= 0)
             {
-                ResetGame();
+                currentScreen = GameScreen.GameOver;
+                gameOverScreenState.ResetInput();
             }
             else
             {
@@ -395,9 +469,20 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
         base.Update(gameTime);
     }
-
     protected override void Draw(GameTime gameTime)
     {
+        if (currentScreen == GameScreen.Start)
+        {
+            startScreenState.Draw(gameTime);
+            base.Draw(gameTime);
+            return;
+        }
+        if (currentScreen == GameScreen.GameOver)
+        {
+            gameOverScreenState.Draw(gameTime);
+            base.Draw(gameTime);
+            return;
+        }
         GraphicsDevice.Clear(Color.CornflowerBlue);
 
         spriteBatch.Begin(
@@ -441,6 +526,10 @@ public class MarioGame : Microsoft.Xna.Framework.Game
         spriteBatch.Begin(samplerState: SamplerState.PointClamp);
         hud.Draw(spriteBatch, GraphicsDevice.Viewport.Width);
         spriteBatch.End();
+        if (currentScreen == GameScreen.Paused)
+        {
+            pausedScreenState.Draw(gameTime);
+        }
 
         base.Draw(gameTime);
     }
