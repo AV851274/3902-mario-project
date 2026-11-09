@@ -7,7 +7,7 @@ namespace Mario.Game.Interfaces;
 /// Registers entities and handles projectile creation requests.
 /// </summary>
 /// <remarks>
-/// Entities request projectiles by type, position, and velocity. GameEntities checks
+/// Entities request projectiles by type, position, and velocity. GameWorld checks
 /// active and queued counts before ProjectileFactory creates the sprite and object
 /// with type-specific defaults. Non-projectile objects use Spawn; their sprite
 /// creation is a separate dependency.

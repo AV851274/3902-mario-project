@@ -1,5 +1,4 @@
 using System;
-using Mario.Game.Entities.Projectiles;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Interfaces;
 using System.Collections.Generic;
@@ -12,8 +11,8 @@ namespace Mario.Game.State;
 
 public class GameEntities
 {
-    private const int MaxFireballs = 4;
     private readonly List<IGameObject> pendingSpawns = new();
+    private readonly Queue<IProjectile> pendingProjectiles = new();
 
     public List<IPlayer> Players { get; } = new();
     public List<IBlock> Blocks { get; } = new();
@@ -25,23 +24,16 @@ public class GameEntities
     public void QueueSpawn(IGameObject entity)
     {
         ArgumentNullException.ThrowIfNull(entity);
-        pendingSpawns.Add(entity);
+        if (entity is IProjectile projectile)
+            pendingProjectiles.Enqueue(projectile);
+        else
+            pendingSpawns.Add(entity);
     }
 
-    public bool TrySpawnProjectile(
-        ProjectileType type, Vector2 position, Vector2 velocity, ProjectileFactory factory)
-    {
-        // Reject before constructing the projectile or allocating its sprite.
-        if (type == ProjectileType.Fireball && CountActive<Fireball>() >= MaxFireballs)
-            return false;
-
-        QueueSpawn(factory.Create(type, position, velocity));
-        return true;
-    }
-
-    // Include queued entities so limits still apply before the end-of-frame commit.
-    public int CountActive<T>() where T : IGameObject =>
-        GetAllGameObjects().Concat(pendingSpawns).OfType<T>().Count(entity => entity.Active);
+    // Include queued projectiles so multiple requests in one frame respect limits.
+    public int GetActiveProjectileCount<T>() where T : IProjectile =>
+        Projectiles.OfType<T>().Count(projectile => projectile.Active) +
+        pendingProjectiles.OfType<T>().Count(projectile => projectile.Active);
 
     public void CommitSpawns()
     {
@@ -56,11 +48,17 @@ public class GameEntities
                 case IBlock block: Blocks.Add(block); break;
                 case IItem item: Items.Add(item); break;
                 case IEnemy enemy: Enemies.Add(enemy); break;
-                case IProjectile projectile: Projectiles.Add(projectile); break;
                 default: Background.Add(entity); break;
             }
         }
         pendingSpawns.Clear();
+
+        foreach (IProjectile projectile in pendingProjectiles)
+        {
+            if (projectile.Active)
+                Projectiles.Add(projectile);
+        }
+        pendingProjectiles.Clear();
     }
 
     public IEnumerable<IGameObject> GetAllGameObjects()
@@ -107,6 +105,7 @@ public class GameEntities
     public void Reset()
     {
         pendingSpawns.Clear();
+        pendingProjectiles.Clear();
         Players.Clear();
         Blocks.Clear();
         Items.Clear();

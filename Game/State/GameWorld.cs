@@ -20,6 +20,7 @@ namespace Mario.Game.State;
 
 public sealed class GameWorld : IEntitySpawner, IDisposable
 {
+    private const int MaxFireballs = 4;
     private const int PowerUpScore = 1000;
     private const int OverworldRoom = 0;
     private const int UnderwaterRoom = 1;
@@ -56,8 +57,16 @@ public sealed class GameWorld : IEntitySpawner, IDisposable
         ResetGame();
     }
 
-    public bool TrySpawnProjectile(ProjectileType type, Vector2 position, Vector2 velocity) =>
-        gameEntities.TrySpawnProjectile(type, position, velocity, projectileFactory);
+    public bool TrySpawnProjectile(ProjectileType type, Vector2 position, Vector2 velocity)
+    {
+        // Check limits before constructing the projectile or allocating its sprite.
+        if (type == ProjectileType.Fireball &&
+            gameEntities.GetActiveProjectileCount<Fireball>() >= MaxFireballs)
+            return false;
+
+        gameEntities.QueueSpawn(projectileFactory.Create(type, position, velocity));
+        return true;
+    }
 
     public void Spawn(IGameObject entity)
     {
