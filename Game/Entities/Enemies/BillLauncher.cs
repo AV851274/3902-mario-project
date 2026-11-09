@@ -2,6 +2,7 @@ using System;
 using Mario.Game.Animation;
 using Mario.Game.Entities.Players;
 using Mario.Game.Interfaces;
+using Mario.Game.Entities.Projectiles;
 using Mario.Game.Interfaces.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +11,8 @@ namespace Mario.Game.Entities.Enemies;
 
 public class BillLauncher : StaticEnemyBase
 {
+    private readonly IEntitySpawner spawner;
+
     private const int Width = 40;
     private const int Height = 40;
     private const float ShootCooldown = 3f;
@@ -22,16 +25,16 @@ public class BillLauncher : StaticEnemyBase
 
     public override bool CanHurtPlayer => false;
 
-    public event Action<Vector2, Direction> SummonBill;
 
     public void Follow(IPlayer player)
     {
         target = player;
     }
 
-    public BillLauncher(ISprite sprite, Vector2 initialPosition)
+    public BillLauncher(ISprite sprite, Vector2 initialPosition, IEntitySpawner spawner)
         : base(sprite, initialPosition, Width, Height)
     {
+        this.spawner = spawner;
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -56,7 +59,9 @@ public class BillLauncher : StaticEnemyBase
 
     public void ShootBill()
     {
-        SummonBill?.Invoke(Position, FacingDirection);
+        float direction = FacingDirection == Direction.Left ? -1f : 1f;
+        spawner.TrySpawnProjectile(ProjectileType.BulletBill,
+            Position, new Vector2(250f * direction, 0f));
     }
 
     public override void Stomp()

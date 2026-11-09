@@ -1,4 +1,5 @@
 using Mario.Game.Commands;
+using Mario.Game.State;
 using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -12,11 +13,11 @@ public class MouseController : IController
     private ICommand toggleHitboxesCommand;
     private MouseState previousState;
 
-    public MouseController(MarioGame game)
+    public MouseController(GameWorld world)
     {
-        previousRoomCommand = new PreviousRoomCommand(game);
-        nextRoomCommand = new NextRoomCommand(game);
-        toggleHitboxesCommand = new ToggleHitboxesCommand(game);
+        previousRoomCommand = new PreviousRoomCommand(world);
+        nextRoomCommand = new NextRoomCommand(world);
+        toggleHitboxesCommand = new ToggleHitboxesCommand(world);
 
         // Start from the real mouse state so a click held during a room switch isn't treated as a new click
         previousState = Mouse.GetState();

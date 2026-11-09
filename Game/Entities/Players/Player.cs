@@ -6,7 +6,7 @@ using Mario.Game.Audio;
 using Mario.Game.Interfaces;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Entities.Players.PlayerStates;
-using Mario.Game.Rendering.Sprites;
+using Mario.Game.Entities.Projectiles;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,6 +14,7 @@ namespace Mario.Game.Entities.Players;
 
 public class Player : IPlayer
 {
+    private readonly IEntitySpawner spawner;
     private const float ThrowAnimationTime = 0.3f;
     private const float InvincibleDuration = 1.5f;
     private const float StompGraceDuration = 0.2f;
@@ -35,7 +36,6 @@ public class Player : IPlayer
     private float stompGraceTimer;
     private bool isDying;
 
-    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Foreground;
     public event Action WarpRequested;
     private bool isHoldingDown;
 
@@ -81,7 +81,6 @@ public class Player : IPlayer
     }
 
 
-    public event Action<Vector2, Direction> SummonFireball;
     public event Action<SoundType> SoundRequested;
     public event Action DeathStarted;
     public event Action Died;
@@ -102,21 +101,22 @@ public class Player : IPlayer
     public bool CollisionEnabled => !isDying;
     public Box Bounds => body.Bounds;
 
-    public Player(SpriteFactory factory, Vector2 position)
+    public Player(ISpriteFactory sprites, IEntitySpawner spawner, Vector2 position)
     {
+        this.spawner = spawner;
         appearancesTable = new() {
             [new AppearanceKey(MarioPower.Small, false)] =
-                new Appearance(factory.Create("mario", "small"), Vector2.Zero),
+                new Appearance(sprites.Create("mario", "small"), Vector2.Zero),
             [new AppearanceKey(MarioPower.Big, false)] =
-                new Appearance(factory.Create("mario", "big"), new Vector2(0f, -40f)),
+                new Appearance(sprites.Create("mario", "big"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Fire, false)] =
-                new Appearance(factory.Create("mario", "fire"), new Vector2(0f, -40f)),
+                new Appearance(sprites.Create("mario", "fire"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Small, true)] =
-                new Appearance(factory.Create("mario", "small.swimming"), Vector2.Zero),
+                new Appearance(sprites.Create("mario", "small.swimming"), Vector2.Zero),
             [new AppearanceKey(MarioPower.Big, true)] =
-                new Appearance(factory.Create("mario", "big.swimming"), new Vector2(0f, -40f)),
+                new Appearance(sprites.Create("mario", "big.swimming"), new Vector2(0f, -40f)),
             [new AppearanceKey(MarioPower.Fire, true)] =
-                new Appearance(factory.Create("mario", "fire.swimming"), new Vector2(0f, -40f)),
+                new Appearance(sprites.Create("mario", "fire.swimming"), new Vector2(0f, -40f)),
         };
         body = new PlayerBody { Position = position };
         RefreshSprite();
@@ -282,11 +282,22 @@ public class Player : IPlayer
         // Attack
         if (attackPressed && MarioPowerState.CanShootFireball)
         {
-            SummonFireball?.Invoke(Position, facingDirection);
+            ShootFireball();
             timeSinceThrow = 0f;
         }
 
         attackPressed = false;
+    }
+
+    private void ShootFireball()
+    {
+        float direction = facingDirection == Direction.Left ? -1f : 1f;
+        if (spawner.TrySpawnProjectile(ProjectileType.Fireball,
+            Position + new Vector2(25f * direction, -20f),
+            new Vector2(500f * direction, 200f)))
+        {
+            SoundRequested?.Invoke(SoundType.Fireball);
+        }
     }
 
     public void UpdateAnimation(GameTime gameTime)

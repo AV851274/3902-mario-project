@@ -16,6 +16,7 @@ public class Block : IBlock
     private const float BumpHeight = 12f;
     private const float BumpDuration = 0.15f;
 
+    private readonly IEntitySpawner spawner;
     private SpriteFactory spriteFactory;
     private ISprite sprite;
     private BlockType type;
@@ -53,13 +54,12 @@ public class Block : IBlock
 
     public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
 
-    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Block;
 
-    public event Action<ItemType, Vector2> ItemReleased;
     public event Action<SoundType> SoundRequested;
 
-    public Block(SpriteFactory spriteFactory, BlockType type, Vector2 position, ItemType? contents = null)
+    public Block(SpriteFactory spriteFactory, IEntitySpawner spawner, BlockType type, Vector2 position, ItemType? contents = null)
     {
+        this.spawner = spawner;
         this.spriteFactory = spriteFactory;
         this.type = type;
         this.contents = contents;
@@ -125,7 +125,11 @@ public class Block : IBlock
             released = ItemType.FireFlower;
         }
 
-        ItemReleased?.Invoke(released, Position);
+        var item = new Item(spriteFactory, released, Position);
+        item.StartEmerging();
+        spawner.Spawn(item);
+        if (released != ItemType.Coin)
+            SoundRequested?.Invoke(SoundType.Item);
 
         contents = null;
     }

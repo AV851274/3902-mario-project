@@ -1,18 +1,19 @@
 using Mario.Game.Interfaces;
+using Mario.Game.State;
 
 namespace Mario.Game.Commands;
 
 public class NextRoomCommand : ICommand
 {
-    private MarioGame game;
+    private GameWorld world;
 
-    public NextRoomCommand(MarioGame game)
+    public NextRoomCommand(GameWorld world)
     {
-        this.game = game;
+        this.world = world;
     }
 
     public void Execute()
     {
-        game.NextRoom();
+        world.NextRoom();
     }
 }

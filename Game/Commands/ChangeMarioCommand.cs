@@ -1,24 +1,24 @@
 using Mario.Game.Interfaces;
+using Mario.Game.State;
 using Mario.Game.Entities.Players;
-using Mario.Game;
 
 namespace Mario.Game.Commands;
 
 public class ChangeMarioCommand : ICommand
 {
-    private MarioGame game;
+    private GameWorld world;
     private bool swimming;
     private MarioPower power;
 
-    public ChangeMarioCommand(MarioGame game, bool swimming, MarioPower power)
+    public ChangeMarioCommand(GameWorld world, bool swimming, MarioPower power)
     {
-        this.game = game;
+        this.world = world;
         this.swimming = swimming;
         this.power = power;
     }
 
     public void Execute()
     {
-        game.ChangeMario(swimming, power);
+        world.ChangeMario(swimming, power);
     }
 }

@@ -2,39 +2,30 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Mario.Game.State;
+namespace Mario.Game.State.GameScreen;
 
 public class GameOverScreenState : GameScreenStateBase
 {
-    private KeyboardState previousKeyboardState;
-
-    public bool RestartRequested { get; private set; }
+    private readonly GameWorld world;
 
     public GameOverScreenState(
+        GameScreenManager screens,
         SpriteBatch spriteBatch,
         SpriteFont screenFont,
-        GraphicsDevice graphicsDevice)
-        : base(spriteBatch, screenFont, graphicsDevice)
+        GraphicsDevice graphicsDevice,
+        GameWorld world)
+        : base(screens, spriteBatch, screenFont, graphicsDevice)
     {
-    }
-
-    public void ResetInput()
-    {
-        previousKeyboardState = Keyboard.GetState();
-        RestartRequested = false;
+        this.world = world;
     }
 
     public override void Update(GameTime gameTime)
     {
-        KeyboardState keyboardState = Keyboard.GetState();
-
-        if (keyboardState.IsKeyDown(Keys.Enter) &&
-            previousKeyboardState.IsKeyUp(Keys.Enter))
+        if (WasKeyPressed(Keys.Enter))
         {
-            RestartRequested = true;
+            world.ResetGame();
+            screens.ChangeTo(GameScreenType.Playing);
         }
-
-        previousKeyboardState = keyboardState;
     }
 
     public override void Draw(GameTime gameTime)

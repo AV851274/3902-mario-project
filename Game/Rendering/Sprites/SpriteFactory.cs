@@ -10,7 +10,7 @@ namespace Mario.Game.Rendering.Sprites;
 
 // Builds a fresh sprite from a JSON definition using AssetManager's shared texture.
 // Static definitions provide a rectangle; animated definitions provide named clips.
-public sealed class SpriteFactory
+public sealed class SpriteFactory : ISpriteFactory
 {
     private readonly AssetManager assets;
 

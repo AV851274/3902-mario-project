@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Mario.Game.Interfaces;
 using Mario.Game.Entities.Blocks;
 using Mario.Game.State;
 using Mario.Game.Rendering.Sprites;
@@ -21,7 +22,8 @@ public class LevelLoader
         ContentManager content,
         string fileName,
         GameEntities gameEntities,
-        SpriteFactory spriteFactory)
+        SpriteFactory spriteFactory,
+        IEntitySpawner spawner)
     {
         using var csvin = new StreamReader(
             TitleContainer.OpenStream(Path.Combine(content.RootDirectory, "levels", fileName)));
@@ -51,53 +53,53 @@ public class LevelLoader
                 {
                     case "G":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.Ground, position));
+                            new Block(spriteFactory, spawner, BlockType.Ground, position));
                         break;
 
                     case "B":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.Brick, position));
+                            new Block(spriteFactory, spawner, BlockType.Brick, position));
                         break;
 
                     case "?":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.Question, position, ItemType.Coin));
+                            new Block(spriteFactory, spawner, BlockType.Question, position, ItemType.Coin));
                         break;
                     case "?m":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.Question, position, ItemType.Mushroom));
+                            new Block(spriteFactory, spawner, BlockType.Question, position, ItemType.Mushroom));
                         break;
                     case "?s":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.Question, position, ItemType.Star));
+                            new Block(spriteFactory, spawner, BlockType.Question, position, ItemType.Star));
                         break;
                     case "Bl":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.Block, position));
+                            new Block(spriteFactory, spawner, BlockType.Block, position));
                         break;
                     case "treeLeft":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.TreeLeft, position));
+                            new Block(spriteFactory, spawner, BlockType.TreeLeft, position));
                         break;
                     case "treeRight":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.TreeRight, position));
+                            new Block(spriteFactory, spawner, BlockType.TreeRight, position));
                         break;
                     case "treeMiddle":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.TreeMiddle, position));
+                            new Block(spriteFactory, spawner, BlockType.TreeMiddle, position));
                         break;
                     case "treeRoot":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.TreeRoot, position));
+                            new Block(spriteFactory, spawner, BlockType.TreeRoot, position));
                         break;
                     case "launcherNeck":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.LauncherNeck, position));
+                            new Block(spriteFactory, spawner, BlockType.LauncherNeck, position));
                         break;
                     case "launcherBody":
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.LauncherBody, position));
+                            new Block(spriteFactory, spawner, BlockType.LauncherBody, position));
                         break;
                     case "smCastle":
                         gameEntities.Background.Add(
@@ -126,19 +128,19 @@ public class LevelLoader
                         gameEntities.Enemies.Add(
                             new HammerBro(
                                 spriteFactory.Create("enemies", "hammerBro"),
-                                position));
+                                position, spawner));
                         break;
                     case "Bw":
                         gameEntities.Enemies.Add(
                             new Bowser(
                                 spriteFactory.Create("enemies", "bowser"),
-                                position));
+                                position, spawner));
                         break;
                     case "Lk":
                         gameEntities.Enemies.Add(
                             new Lakitu(
                                 spriteFactory.Create("enemies", "lakitu"),
-                                position));
+                                position, spawner));
                         break;
                     case "Bz":
                         gameEntities.Enemies.Add(
@@ -153,7 +155,7 @@ public class LevelLoader
                                 new Vector2(position.X + 12, position.Y + 12), 6));
 
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory,
+                            new Block(spriteFactory, spawner,
                                 BlockType.UsedQuestion, 
                                 position));
 
@@ -174,9 +176,9 @@ public class LevelLoader
                         gameEntities.Enemies.Add(
                             new BillLauncher(
                                 null,
-                                position));
+                                position, spawner));
                         gameEntities.Blocks.Add(
-                            new Block(spriteFactory, BlockType.LauncherHead, position));
+                            new Block(spriteFactory, spawner, BlockType.LauncherHead, position));
                         break;
                     case "Pb":
                         gameEntities.Enemies.Add(
@@ -188,7 +190,7 @@ public class LevelLoader
                         gameEntities.Enemies.Add(
                             new ParaKoopa(
                                 spriteFactory.Create("enemies", "paraKoopa"),
-                                position));
+                                position, spawner, spriteFactory));
                         break;
 
                     case "GrayCheep":
@@ -244,28 +246,28 @@ public class LevelLoader
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, new Vector2(position.X + 24, position.Y)));
                         break;
                     case "PL":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopLeft, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.PipeTopLeft, position));
                         break;
                     case "PR":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeTopRight, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.PipeTopRight, position));
                         break;
                     case "pl":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeLeft, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.PipeLeft, position));
                         break;
                     case "pr":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.PipeRight, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.PipeRight, position));
                         break;
                     case "warpL":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.WarpPipeTopLeft, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.WarpPipeTopLeft, position));
                         break;
                     case "warpR":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.WarpPipeTopRight, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.WarpPipeTopRight, position));
                         break;
                     case "bridge":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.Bridge, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.Bridge, position));
                         break;
                     case "cloud":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.Cloud, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.Cloud, position));
                         break;
                     case "w":
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Water, new Vector2(position.X, position.Y + 24)));
@@ -274,7 +276,7 @@ public class LevelLoader
                         gameEntities.Background.Add(new BackgroundObject(spriteFactory, BackgroundType.Wave, new Vector2(position.X, position.Y + 24)));
                         break;
                     case "waterRock":
-                        gameEntities.Blocks.Add(new Block(spriteFactory, BlockType.WaterRock, position));
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.WaterRock, position));
                         break;
                     default:
                         throw new FormatException(

@@ -1,4 +1,4 @@
-CURRENT SPRINT: #3
+CURRENT SPRINT: #4
 
 ## Controls
 
@@ -58,8 +58,10 @@ Runtime source is grouped under `Game/` by responsibility:
 - `Interfaces/` contains shared contracts.
 - `Physics/` contains the physics engine, collision handling, and the `Box` bounds type.
 - `Animation/`, `Controllers/`, and `Commands/` contain animation and input handling.
-- `Rendering/` contains the camera and the sprite factories (Mario, enemy, item, block, and background).
-- `Levels/` and `State/` contain level loading and the collection of game entities.
+- `Rendering/` contains sprites, the camera, HUD, and `WorldRenderer`, which draws the world, water background, and optional hitboxes.
+- `Levels/` loads CSV maps. `State/GameWorld.cs` owns gameplay, room transitions, and world-level events, and delegates drawing to its `WorldRenderer`. `MarioGame` creates the renderer and shared stats, then injects them into the world.
+- `State/GameEntities.cs` owns entity collections and a queue committed after physics each frame. New entities begin updating on the next frame; resetting a room also clears queued entities.
+- `State/GameScreen/` contains the screen manager and Start, Playing, Paused, and GameOver states. Playing and Paused share one world; pausing draws it without updating it.
 - `MarioGame.cs` and `Program.cs` are the game and its entry point.
 
 Content assets and project files remain at the repository root because the MonoGame content pipeline and build configuration use those paths. `Code-Reviews/` remains separate from runtime code.
