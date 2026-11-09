@@ -18,6 +18,9 @@ public class SwimmingPlayerBody : PlayerBodyBase
     public override float MaxFallSpeed => 100f;
     public bool IsSwimming => !IsOnGround && timeSinceStroke < StrokeAnimationTime;
 
+    protected override float SmallWidth =>
+        !IsOnGround ? 34f : Velocity.X == 0f ? 32f : 36f;
+
     public SwimmingPlayerBody()
     {
     }

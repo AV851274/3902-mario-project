@@ -31,6 +31,8 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
 
     public Direction FacingDirection { get; protected set; } = Direction.Right;
 
+    protected abstract float SmallWidth { get; }
+
     protected float MoveDirection { get; set; }
     protected bool DashRequested { get; set; }
     protected bool JumpRequested { get; set; }
@@ -59,6 +61,15 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
         {
             FacingDirection = playerBody.FacingDirection;
         }
+    }
+
+    public void UpdateBounds(MarioPower power)
+    {
+        bool small = power == MarioPower.Small;
+        float top = small ? 8f : IsCrouching ? -8f : -32f;
+        float width = small ? SmallWidth : 42f;
+        float height = small ? 40f : IsCrouching ? 56f : 80f;
+        LocalBounds = new Box(0, top, width, height);
     }
 
     // Compute the acceleration needed for the capped next speed, without integrating it.
