@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mario.Game.Interfaces;
+using Mario.Game.Entities.Projectiles;
 using Mario.Game.Animation;
 using System;
 
@@ -8,6 +9,8 @@ namespace Mario.Game.Entities.Enemies;
 
 public class Bowser : EnemyBase
 {
+    private readonly IEntitySpawner spawner;
+
     private const float WalkSpeed = 30f;
     private const float JumpSpeed = -500f;
     private const int Width = 80;
@@ -25,13 +28,12 @@ public class Bowser : EnemyBase
 
     public override bool IsDefeated => base.IsDefeated;
 
-    public event Action<Vector2, Direction> SummonHammer;
 
-    public event Action<Vector2, Direction> SummonFire;
 
-    public Bowser(ISprite sprite, Vector2 initialPosition)
+    public Bowser(ISprite sprite, Vector2 initialPosition, IEntitySpawner spawner)
         : base(sprite, initialPosition, Width, Height)
     {
+        this.spawner = spawner;
         IsOnGround = true;
         Velocity = new Vector2(-WalkSpeed, 0f);
     }
@@ -93,12 +95,18 @@ public class Bowser : EnemyBase
 
     public void ThrowHammer()
     {
-        SummonHammer?.Invoke(Position, facingDirection);
+        float direction = facingDirection == Direction.Left ? -1f : 1f;
+        spawner.TrySpawnProjectile(ProjectileType.Hammer,
+            Position + new Vector2(20f * direction, -20f),
+            new Vector2(250f * direction, -350f));
     }
 
     public void BreatheFire()
     {
-        SummonFire?.Invoke(Position, facingDirection);
+        float direction = facingDirection == Direction.Left ? -1f : 1f;
+        spawner.TrySpawnProjectile(ProjectileType.Fire,
+            Position + new Vector2(20f * direction, 0f),
+            new Vector2(250f * direction, 0f));
     }
 
     protected override void OnWallBounce(float RelativeVelocityBeforeX)

@@ -27,11 +27,10 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
     public virtual ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public virtual bool canBeStomped => true;
     public Box Bounds => new Box(Position.X, Position.Y, width, height);
-    public bool Active => Position.Y <= 1000f;
+    public virtual bool Active => Position.Y <= 1000f;
     public bool CollisionEnabled => Active && !IsDefeated;
     public virtual bool IsDefeated => DefeatedByFireball;
     public virtual bool CanHurtPlayer => !IsDefeated;
-    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Foreground;
 
     protected EnemyBase(ISprite sprite, Vector2 position, float width, float height)
     {

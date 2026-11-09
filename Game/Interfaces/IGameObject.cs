@@ -5,15 +5,6 @@ namespace Mario.Game.Interfaces;
 
 public interface IGameObject
 {
-    public enum DrawLayer
-    {
-        Background,
-        Item,
-        Block,
-        Foreground,
-        Effects
-    }
-    public DrawLayer layer {get; }
     public void Draw(SpriteBatch spriteBatch);
     public void Update(GameTime gameTime);
     public bool Active => true;

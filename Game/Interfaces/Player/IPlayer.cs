@@ -1,5 +1,4 @@
 using System;
-using Mario.Game.Animation;
 using Mario.Game.Audio;
 using Mario.Game.Entities.Players;
 using Microsoft.Xna.Framework;
@@ -10,7 +9,6 @@ public interface IPlayer : IGameObject, IPhysicsBody
 {
     IPlayerBodyAction BodyAction { get; }
     IMarioPowerState MarioPowerState { get; }
-    event Action<Vector2, Direction> SummonFireball;
     event Action<SoundType> SoundRequested;
     event Action DeathStarted;
     event Action Died;

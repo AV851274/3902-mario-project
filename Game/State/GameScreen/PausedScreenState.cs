@@ -2,41 +2,35 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace Mario.Game.State;
+namespace Mario.Game.State.GameScreen;
 
 public class PausedScreenState : GameScreenStateBase
 {
-    private KeyboardState previousKeyboardState;
+    private readonly GameWorld world;
 
-    public bool ResumeRequested { get; private set; }
     public PausedScreenState(
+        GameScreenManager screens,
         SpriteBatch spriteBatch,
         SpriteFont screenFont,
-        GraphicsDevice graphicsDevice)
-        : base(spriteBatch, screenFont, graphicsDevice)
+        GraphicsDevice graphicsDevice,
+        GameWorld world)
+        : base(screens, spriteBatch, screenFont, graphicsDevice)
     {
-    }
-    public void ResetInput()
-    {
-        previousKeyboardState = Keyboard.GetState();
-        ResumeRequested = false;
+        this.world = world;
     }
 
     public override void Update(GameTime gameTime)
     {
-        KeyboardState keyboardState = Keyboard.GetState();
-
-        if (keyboardState.IsKeyDown(Keys.P) &&
-            previousKeyboardState.IsKeyUp(Keys.P))
+        if (WasKeyPressed(Keys.P))
         {
-            ResumeRequested = true;
+            screens.ChangeTo(GameScreenType.Playing);
         }
-
-        previousKeyboardState = keyboardState;
     }
 
     public override void Draw(GameTime gameTime)
     {
+        world.Draw();
+
         spriteBatch.Begin(samplerState: SamplerState.PointClamp);
 
         float centerY = graphicsDevice.Viewport.Height / 2f;

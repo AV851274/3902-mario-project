@@ -1,6 +1,7 @@
 using System;
 using Mario.Game.Animation;
 using Mario.Game.Interfaces;
+using Mario.Game.Entities.Projectiles;
 using Mario.Game.Interfaces.Player;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,6 +14,8 @@ public enum LakituState
 }
 public class Lakitu : EnemyBase
 {
+    private readonly IEntitySpawner spawner;
+
     private const float FollowSpeed = 800f;
     private const float FollowAcceleration = 200f;
     private const float FollowDistance = 120f;
@@ -35,16 +38,16 @@ public class Lakitu : EnemyBase
 
     public Direction FacingDirection => facingDirection;
 
-    public event Action<Vector2, Direction> SummonEgg;
 
     public void Follow(IPlayer player)
     {
         target = player;
     }
 
-    public Lakitu(ISprite sprite, Vector2 initialPosition)
+    public Lakitu(ISprite sprite, Vector2 initialPosition, IEntitySpawner spawner)
         : base(sprite, initialPosition, Width, Height)
     {
+        this.spawner = spawner;
         Velocity = Vector2.Zero;
     }
 
@@ -118,7 +121,7 @@ public class Lakitu : EnemyBase
 
     public void ThrowEgg()
     {
-        SummonEgg?.Invoke(Position, facingDirection);
+        spawner.TrySpawnProjectile(ProjectileType.Egg, Position, Vector2.Zero);
     }
 
     public override void Stomp()

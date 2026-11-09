@@ -16,6 +16,8 @@ public class PlayerBody : PlayerBodyBase
     private float JumpSpeed => Math.Abs(Velocity.X) > 190f ? 550f : 500f;
     private bool IsRising => Velocity.Y < -20f;
     public override float GravityScale => IsRising && IsJumpHeld ? 0.62f : IsRising ? 2f : 1f;
+    protected override float SmallWidth => IsOnGround && Velocity.X == 0f ? 34f : 42f;
+
     public PlayerBody() { }
 
     public PlayerBody(IPhysicsBody body) : base(body) { }

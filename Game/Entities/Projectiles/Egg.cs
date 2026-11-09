@@ -3,7 +3,7 @@ using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mario.Game.Interfaces.Player;
-using System;
+using Mario.Game.Entities.Enemies;
 
 namespace Mario.Game.Entities.Projectiles;
 
@@ -23,12 +23,14 @@ public class Egg : IProjectile
     public bool Active { get; private set; }
     public Vector2 Velocity { get; set; }
 
-    public IGameObject.DrawLayer layer => IGameObject.DrawLayer.Effects;
 
-    public event Action<Egg> SummonSpiny;
+    private readonly IEntitySpawner spawner;
+    private readonly ISpriteFactory sprites;
 
-    public Egg(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime)
+    public Egg(ISprite sprite, Vector2 position, Vector2 velocity, float lifeTime, IEntitySpawner spawner, ISpriteFactory sprites)
     {
+        this.spawner = spawner;
+        this.sprites = sprites;
         this.sprite = sprite;
         Position = position;
         Velocity = velocity;
@@ -51,11 +53,12 @@ public class Egg : IProjectile
         if (Position.Y >= deathY)
         {
             Active = false;
+            return;
         }
 
         if (IsOnGround)
         {
-            SummonSpiny?.Invoke(this);
+            spawner.Spawn(new Spiny(sprites.Create("enemies", "spiny"), Position));
             Active = false;
         }
 
@@ -69,7 +72,7 @@ public class Egg : IProjectile
             sprite.Draw(spriteBatch, Position);
     }
 
-        public void OnCollision(CollisionEvent collision)
+    public void OnCollision(CollisionEvent collision)
     {
         if (!Active)
             return;

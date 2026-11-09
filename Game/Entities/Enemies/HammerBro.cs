@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Mario.Game.Interfaces;
+using Mario.Game.Entities.Projectiles;
 using Mario.Game.Animation;
 using System;
 
@@ -15,6 +16,8 @@ public enum HammerBroState
 
 public class HammerBro : EnemyBase
 {
+    private readonly IEntitySpawner spawner;
+
     private const float WalkSpeed = 30f;
     private const float JumpSpeed = -500f;
     private const int Width = 40;
@@ -31,15 +34,15 @@ public class HammerBro : EnemyBase
 
     public override bool IsDefeated => isStomped || base.IsDefeated;
 
-    public event Action<Vector2, Direction> SummonHammer;
 
     private HammerBroState state = HammerBroState.Idle;
     private float throwElapsed;
     private const float HammerThrowDuration = 0.4f;
 
-    public HammerBro(ISprite sprite, Vector2 initialPosition)
+    public HammerBro(ISprite sprite, Vector2 initialPosition, IEntitySpawner spawner)
         : base(sprite, initialPosition, Width, Height)
     {
+        this.spawner = spawner;
         IsOnGround = true;
         Velocity = new Vector2(-WalkSpeed, 0f);
     }
@@ -118,7 +121,10 @@ public class HammerBro : EnemyBase
 
     public void ThrowHammer()
     {
-        SummonHammer?.Invoke(Position, facingDirection);
+        float direction = facingDirection == Direction.Left ? -1f : 1f;
+        spawner.TrySpawnProjectile(ProjectileType.Hammer,
+            Position + new Vector2(20f * direction, -20f),
+            new Vector2(250f * direction, -350f));
     }
 
     protected override void OnWallBounce(float RelativeVelocityBeforeX)
