@@ -9,29 +9,29 @@ public class PlayingScreenState : GameScreenStateBase
     private readonly GameWorld world;
 
     public PlayingScreenState(
-        GameScreenManager screens,
         SpriteBatch spriteBatch,
         SpriteFont screenFont,
         GraphicsDevice graphicsDevice,
         GameWorld world)
-        : base(screens, spriteBatch, screenFont, graphicsDevice)
+        : base(spriteBatch, screenFont, graphicsDevice)
     {
         this.world = world;
     }
 
-    public override void Update(GameTime gameTime)
+    public override GameScreenType? Update(GameTime gameTime)
     {
         if (WasKeyPressed(Keys.P))
         {
-            screens.ChangeTo(GameScreenType.Paused);
-            return;
+            return GameScreenType.Paused;
         }
 
         world.Update(gameTime);
         if (world.IsCourseClear)
-            screens.ChangeTo(GameScreenType.CourseClear);
-        else if (world.IsGameOver)
-            screens.ChangeTo(GameScreenType.GameOver);
+            return GameScreenType.CourseClear;
+        if (world.IsGameOver)
+            return GameScreenType.GameOver;
+
+        return null;
     }
 
     public override void Draw(GameTime gameTime) => world.Draw();

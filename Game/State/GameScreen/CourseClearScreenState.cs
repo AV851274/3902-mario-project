@@ -10,12 +10,11 @@ public class CourseClearScreenState : GameScreenStateBase
     private KeyboardState previousKeyboardState;
 
     public CourseClearScreenState(
-        GameScreenManager screens,
         SpriteBatch spriteBatch,
         SpriteFont screenFont,
         GraphicsDevice graphicsDevice,
         GameWorld world)
-        : base(screens, spriteBatch, screenFont, graphicsDevice)
+        : base(spriteBatch, screenFont, graphicsDevice)
     {
         this.world = world;
     }
@@ -26,7 +25,7 @@ public class CourseClearScreenState : GameScreenStateBase
         previousKeyboardState = Keyboard.GetState();
     }
 
-    public override void Update(GameTime gameTime)
+    public override GameScreenType? Update(GameTime gameTime)
     {
         KeyboardState keyboardState = Keyboard.GetState();
         bool restart = (keyboardState.IsKeyDown(Keys.Enter) && previousKeyboardState.IsKeyUp(Keys.Enter)) ||
@@ -35,8 +34,10 @@ public class CourseClearScreenState : GameScreenStateBase
         if (restart)
         {
             world.ResetGame();
-            screens.ChangeTo(GameScreenType.Playing);
+            return GameScreenType.Playing;
         }
+
+        return null;
     }
 
     public override void Draw(GameTime gameTime)

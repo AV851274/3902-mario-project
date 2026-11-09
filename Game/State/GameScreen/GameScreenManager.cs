@@ -18,22 +18,22 @@ public sealed class GameScreenManager
     {
         states = new()
         {
-            [GameScreenType.Start] = new StartScreenState(this, spriteBatch, screenFont, graphicsDevice),
+            [GameScreenType.Start] = new StartScreenState(spriteBatch, screenFont, graphicsDevice),
             [GameScreenType.Playing] = new PlayingScreenState(
-                this, spriteBatch, screenFont, graphicsDevice, world),
+                spriteBatch, screenFont, graphicsDevice, world),
             [GameScreenType.Paused] = new PausedScreenState(
-                this, spriteBatch, screenFont, graphicsDevice, world),
+                spriteBatch, screenFont, graphicsDevice, world),
             [GameScreenType.GameOver] = new GameOverScreenState(
-                this, spriteBatch, screenFont, graphicsDevice, world),
+                spriteBatch, screenFont, graphicsDevice, world),
             [GameScreenType.CourseClear] = new CourseClearScreenState(
-                this, spriteBatch, screenFont, graphicsDevice, world),
+                spriteBatch, screenFont, graphicsDevice, world),
         };
 
         currentState = states[GameScreenType.Start];
         currentState.Enter();
     }
 
-    public void ChangeTo(GameScreenType screen)
+    private void ChangeTo(GameScreenType screen)
     {
         IGameScreenState nextState = states[screen];
         if (ReferenceEquals(currentState, nextState))
@@ -44,7 +44,12 @@ public sealed class GameScreenManager
         currentState.Enter();
     }
 
-    public void Update(GameTime gameTime) => currentState.Update(gameTime);
+    public void Update(GameTime gameTime)
+    {
+        GameScreenType? nextScreen = currentState.Update(gameTime);
+        if (nextScreen.HasValue)
+            ChangeTo(nextScreen.Value);
+    }
 
     public void Draw(GameTime gameTime) => currentState.Draw(gameTime);
 }

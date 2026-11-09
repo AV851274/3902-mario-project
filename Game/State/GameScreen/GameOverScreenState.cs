@@ -9,23 +9,24 @@ public class GameOverScreenState : GameScreenStateBase
     private readonly GameWorld world;
 
     public GameOverScreenState(
-        GameScreenManager screens,
         SpriteBatch spriteBatch,
         SpriteFont screenFont,
         GraphicsDevice graphicsDevice,
         GameWorld world)
-        : base(screens, spriteBatch, screenFont, graphicsDevice)
+        : base(spriteBatch, screenFont, graphicsDevice)
     {
         this.world = world;
     }
 
-    public override void Update(GameTime gameTime)
+    public override GameScreenType? Update(GameTime gameTime)
     {
         if (WasKeyPressed(Keys.Enter))
         {
             world.ResetGame();
-            screens.ChangeTo(GameScreenType.Playing);
+            return GameScreenType.Playing;
         }
+
+        return null;
     }
 
     public override void Draw(GameTime gameTime)

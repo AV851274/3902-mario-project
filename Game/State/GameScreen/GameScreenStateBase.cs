@@ -7,19 +7,16 @@ namespace Mario.Game.State.GameScreen;
 
 public abstract class GameScreenStateBase : IGameScreenState
 {
-    protected readonly GameScreenManager screens;
     private KeyboardState previousKeyboardState;
     protected readonly SpriteBatch spriteBatch;
     protected readonly SpriteFont screenFont;
     protected readonly GraphicsDevice graphicsDevice;
 
     protected GameScreenStateBase(
-        GameScreenManager screens,
         SpriteBatch spriteBatch,
         SpriteFont screenFont,
         GraphicsDevice graphicsDevice)
     {
-        this.screens = screens;
         this.spriteBatch = spriteBatch;
         this.screenFont = screenFont;
         this.graphicsDevice = graphicsDevice;
@@ -38,7 +35,7 @@ public abstract class GameScreenStateBase : IGameScreenState
         return pressed;
     }
 
-    public abstract void Update(GameTime gameTime);
+    public abstract GameScreenType? Update(GameTime gameTime);
 
     public abstract void Draw(GameTime gameTime);
 

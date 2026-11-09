@@ -7,20 +7,21 @@ namespace Mario.Game.State.GameScreen;
 public class StartScreenState : GameScreenStateBase
 {
     public StartScreenState(
-        GameScreenManager screens,
         SpriteBatch spriteBatch,
         SpriteFont screenFont,
         GraphicsDevice graphicsDevice)
-        : base(screens, spriteBatch, screenFont, graphicsDevice)
+        : base(spriteBatch, screenFont, graphicsDevice)
     {
     }
 
-    public override void Update(GameTime gameTime)
+    public override GameScreenType? Update(GameTime gameTime)
     {
         if (WasKeyPressed(Keys.Enter))
         {
-            screens.ChangeTo(GameScreenType.Playing);
+            return GameScreenType.Playing;
         }
+
+        return null;
     }
 
     public override void Draw(GameTime gameTime)
