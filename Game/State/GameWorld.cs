@@ -44,6 +44,7 @@ public sealed class GameWorld : IEntitySpawner, IDisposable
     private Vector2 returnPosition;
 
     public bool IsGameOver => stats.Lives <= 0;
+    public bool IsCourseClear { get; private set; }
 
     public GameWorld(MarioGame game, AssetManager assets, GameStats stats, WorldRenderer renderer)
     {
@@ -97,6 +98,7 @@ public sealed class GameWorld : IEntitySpawner, IDisposable
 
     private void LoadRoom(int roomIndex, MarioPower power = MarioPower.Small, Vector2? spawn = null)
     {
+        IsCourseClear = false;
         currentRoom = roomIndex;
         gameEntities.Reset();
         reloadRoomRequested = false;
@@ -145,6 +147,7 @@ public sealed class GameWorld : IEntitySpawner, IDisposable
         player.SoundRequested += sounds.Play;
         player.DeathStarted += OnMarioDeathStarted;
         player.Died += OnMarioDied;
+        player.FlagpoleReached += OnFlagpoleReached;
         keyboardController = new KeyboardController(game, this, player);
         mouseController = new MouseController(this);
         return player;
@@ -184,6 +187,12 @@ public sealed class GameWorld : IEntitySpawner, IDisposable
         reloadRoomRequested = true;
     }
 
+    private void OnFlagpoleReached()
+    {
+        IsCourseClear = true;
+        sounds.StopMusic();
+    }
+
     private void OnItemCollected(ItemType type)
     {
         if (type == ItemType.Coin)
@@ -200,11 +209,17 @@ public sealed class GameWorld : IEntitySpawner, IDisposable
 
     public void Update(GameTime gameTime)
     {
+        if (IsCourseClear)
+            return;
+
         keyboardController.Update(gameTime);
         mouseController.Update(gameTime);
 
         gameEntities.Update(gameTime);
         physicsEngine.Step(gameEntities, gameTime);
+        if (IsCourseClear)
+            return;
+
         stats.Update(gameTime);
         if (stats.IsOutOfTime)
         {

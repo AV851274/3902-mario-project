@@ -11,6 +11,7 @@ public enum BackgroundType
     BigBush,
     BigCastle,
     SmallCastle,
+    Flag,
     Water,
     Wave,
 }

@@ -13,6 +13,7 @@ namespace Mario.Game.Entities.Blocks;
 public class Block : IBlock
 {
     private const int Size = 48;
+    private const int FlagPoleHeight = 480;
     private const float BumpHeight = 12f;
     private const float BumpDuration = 0.15f;
 
@@ -29,30 +30,13 @@ public class Block : IBlock
     public bool Active => true;
     private bool isIntact = true;
     public bool IsWarpPipe => type == BlockType.WarpPipeTopLeft || type == BlockType.WarpPipeTopRight;
+    public bool IsFlagPole => type == BlockType.FlagPole;
 
     public Vector2 Position { get; private set; }
 
-    public ICollider.BlockingModes BlockingMode
-    {
-        get {
-            if (type == BlockType.Cloud)
-            {
-                return cloudTimerStarted && cloudTimer <= 0f
-                    ? ICollider.BlockingModes.None
-                    : ICollider.BlockingModes.TopOnly;
-            }
-
-            if (type == BlockType.MovingPlatform || type == BlockType.Bridge)
-                return ICollider.BlockingModes.TopOnly;
-
-            if (!isIntact) //Brick break
-                return ICollider.BlockingModes.None;
-
-            return ICollider.BlockingModes.Solid;
-        }
-    }
-
-    public Box Bounds => new Box(Position.X, Position.Y, Size, Size);
+    public Box Bounds => IsFlagPole
+        ? new Box(Position.X, Position.Y, Size, FlagPoleHeight)
+        : new Box(Position.X, Position.Y, Size, Size);
 
 
     public event Action<SoundType> SoundRequested;
@@ -65,6 +49,27 @@ public class Block : IBlock
         this.contents = contents;
         sprite = spriteFactory.Create("blocks", type);
         Position = position;
+    }
+
+    public ICollider.BlockingModes BlockingMode =>
+        IsFlagPole ? ICollider.BlockingModes.ThroughWalls : GetBlockingMode();
+
+    private ICollider.BlockingModes GetBlockingMode()
+    {
+        if (type == BlockType.Cloud)
+        {
+            return cloudTimerStarted && cloudTimer <= 0f
+                ? ICollider.BlockingModes.None
+                : ICollider.BlockingModes.TopOnly;
+        }
+
+        if (type == BlockType.MovingPlatform || type == BlockType.Bridge)
+            return ICollider.BlockingModes.TopOnly;
+
+        if (!isIntact)
+            return ICollider.BlockingModes.None;
+
+        return ICollider.BlockingModes.Solid;
     }
 
     public void OnCollision(CollisionEvent collision)

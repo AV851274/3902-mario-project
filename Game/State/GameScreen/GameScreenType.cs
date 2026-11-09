@@ -5,5 +5,6 @@ public enum GameScreenType
     Start,
     Playing,
     Paused,
-    GameOver
+    GameOver,
+    CourseClear
 }

@@ -209,6 +209,17 @@
         "height": 16
       }
     },
+    "flagPole": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 0,
+        "y": 608,
+        "width": 16,
+        "height": 160
+      }
+    },
     "question": {
       "kind": "animated",
       "texture": "tileset",

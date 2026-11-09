@@ -10,5 +10,6 @@ public interface IBlock: IGameObject, ICollider
     event Action<SoundType> SoundRequested;
     void Hit(bool big);
     bool IsWarpPipe { get; }
+    bool IsFlagPole { get; }
 
 }

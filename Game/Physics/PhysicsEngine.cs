@@ -113,6 +113,8 @@ public sealed class PhysicsEngine
     {
         foreach (var player in entities.Players.Distinct())
         {
+            foreach (var flagpole in entities.Blocks.Where(block => block.IsFlagPole))
+                ResolveCollision(player, flagpole, previousBounds);
             foreach (var item in entities.Items.Distinct())
                 ResolveCollision(player, item, previousBounds);
             foreach (var enemy in entities.Enemies.Distinct().ToArray())

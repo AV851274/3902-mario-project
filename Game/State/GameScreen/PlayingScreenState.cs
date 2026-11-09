@@ -28,7 +28,9 @@ public class PlayingScreenState : GameScreenStateBase
         }
 
         world.Update(gameTime);
-        if (world.IsGameOver)
+        if (world.IsCourseClear)
+            screens.ChangeTo(GameScreenType.CourseClear);
+        else if (world.IsGameOver)
             screens.ChangeTo(GameScreenType.GameOver);
     }
 

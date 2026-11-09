@@ -99,6 +99,17 @@
         "height": 80
       }
     },
+    "flag": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 264,
+        "y": 624,
+        "width": 16,
+        "height": 16
+      }
+    },
     "wave": {
       "kind": "static",
       "texture": "tileset",

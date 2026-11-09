@@ -18,6 +18,7 @@ public class Player : IPlayer
     private const float StompGraceDuration = 0.2f;
     private const float DeathJumpSpeed = 500f;
     private const float FallOffScreenY = 1000f;
+    private const float FlagpoleSlideSpeed = 240f;
 
     private readonly PlayerAppearance appearance;
     private PlayerBodyBase body;
@@ -27,6 +28,9 @@ public class Player : IPlayer
     private float invincibleTimer;
     private float stompGraceTimer;
     private bool isDying;
+    private bool isFlagpoleSliding;
+    private float flagpoleCenterX;
+    private float flagpoleBottomY;
 
     public event Action WarpRequested;
     private bool isHoldingDown;
@@ -56,6 +60,9 @@ public class Player : IPlayer
             if (isDying)
                 return 1f;
 
+            if (isFlagpoleSliding)
+                return 0f;
+
             return body.GravityScale;
         }
     }
@@ -66,6 +73,9 @@ public class Player : IPlayer
             if (isDying)
                 return float.PositiveInfinity;
 
+            if (isFlagpoleSliding)
+                return FlagpoleSlideSpeed;
+
             return body.MaxFallSpeed;
         }
     }
@@ -74,6 +84,7 @@ public class Player : IPlayer
     public event Action<SoundType> SoundRequested;
     public event Action DeathStarted;
     public event Action Died;
+    public event Action FlagpoleReached;
 
     public Vector2 Velocity
     {
@@ -152,6 +163,24 @@ public class Player : IPlayer
 
     public void OnCollision(CollisionEvent collision)
     {
+        if (collision.Other is IBlock flagpole && flagpole.IsFlagPole)
+        {
+            StartFlagpoleSlide(flagpole);
+            return;
+        }
+
+        if (isFlagpoleSliding &&
+            collision.Other is IBlock &&
+            collision.Normal.Y < 0f &&
+            Bounds.Bottom >= flagpoleBottomY - 1f)
+        {
+            isFlagpoleSliding = false;
+            Velocity = Vector2.Zero;
+            IsOnGround = true;
+            FlagpoleReached?.Invoke();
+            return;
+        }
+
         if (collision.Other is IBlock pipe && pipe.IsWarpPipe && collision.Normal.Y < 0f && isHoldingDown)
         {
             WarpRequested?.Invoke();
@@ -202,6 +231,22 @@ public class Player : IPlayer
         attackPressed = true;
     }
 
+    public void StartFlagpoleSlide(IBlock flagpole)
+    {
+        if (isFlagpoleSliding || isDying)
+            return;
+
+        isFlagpoleSliding = true;
+        flagpoleCenterX = flagpole.Bounds.X + flagpole.Bounds.Width / 2f;
+        flagpoleBottomY = flagpole.Bounds.Bottom;
+        Position = new Vector2(
+            Position.X + flagpoleCenterX - (Bounds.X + Bounds.Width / 2f),
+            Position.Y);
+        Velocity = new Vector2(0f, FlagpoleSlideSpeed);
+        PendingAcceleration = Vector2.Zero;
+        IsOnGround = false;
+    }
+
     public void Update(GameTime gameTime)
     {
         body.UpdateBounds(MarioPowerState.Power);
@@ -220,8 +265,21 @@ public class Player : IPlayer
         if (isDying)
             return;
 
-        body.Update(gameTime);
-        if (body.JumpedThisFrame)
+        if (isFlagpoleSliding)
+        {
+            Position = new Vector2(
+                Position.X + flagpoleCenterX - (Bounds.X + Bounds.Width / 2f),
+                Position.Y);
+            Velocity = new Vector2(0f, FlagpoleSlideSpeed);
+            PendingAcceleration = Vector2.Zero;
+            IsOnGround = false;
+        }
+        else
+        {
+            body.Update(gameTime);
+        }
+
+        if (!isFlagpoleSliding && body.JumpedThisFrame)
         {
             SoundRequested?.Invoke(JumpSound());
         }

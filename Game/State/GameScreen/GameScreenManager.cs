@@ -25,6 +25,8 @@ public sealed class GameScreenManager
                 this, spriteBatch, screenFont, graphicsDevice, world),
             [GameScreenType.GameOver] = new GameOverScreenState(
                 this, spriteBatch, screenFont, graphicsDevice, world),
+            [GameScreenType.CourseClear] = new CourseClearScreenState(
+                this, spriteBatch, screenFont, graphicsDevice, world),
         };
 
         currentState = states[GameScreenType.Start];
