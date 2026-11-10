@@ -178,6 +178,9 @@
 #begin levels/underwater.csv
 /copy:levels/underwater.csv
 
+#begin levels/testRoom.csv
+/copy:levels/testRoom.csv
+
 #begin definitions/assets.json
 /copy:definitions/assets.json
 

@@ -25,7 +25,7 @@ public sealed class GameWorld : IEntitySpawner, IDisposable
     private const int OverworldRoom = 0;
     private const int UnderwaterRoom = 1;
     private const float PipeExitOffset = 144f;
-    private static readonly string[] RoomFiles = { "1-1.csv", "underwater.csv" };
+    private static readonly string[] RoomFiles = { "1-1.csv", "underwater.csv", "testRoom.csv" };
 
     private readonly MarioGame game;
     private readonly ContentManager content;
