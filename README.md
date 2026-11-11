@@ -13,6 +13,7 @@ CURRENT SPRINT: #4
 | 1 / 2 / 3                | Small / Big / Fire Mario          |
 | 4 / 5 / 6                | Small / Big / Fire swimming Mario |
 | Left click / Right click | Previous room / Next room         |
+| M                        | Mute / unmute background music    |
 | R                        | Reset to the first room           |
 | Q                        | Quit                                  |
 
