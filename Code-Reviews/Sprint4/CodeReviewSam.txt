@@ -1,0 +1,28 @@
+Code Review of PlayerAppearance.cs by Samuel Chandler
+Code authored by: ZX
+Day of Code Review: 11/12/2026
+Sprint 4
+
+Minutes spent on review: 45
+
+Readability: 8/10
+
+Overall, the PlayerAppearance.cs file is pretty simple to read and understand.
+It is only 92 lines long and gets what it needs to get done pretty quick. Solid method
+names like (SetForm, ShowDeath, and PlayThrow) tell you exacxtly what is being done within
+each method and each one does so very breifly. The only issue I see is the new Vector2(0f, -40f)
+is copy and pasted 4 times without an explanation, you would have to deduce yourself that it is
+needed for big mario offset.
+
+A small note is there is only one comment in the code. I think that either comment the file well.
+Or no comments are needed, this is a very minor critique that can be ignored but something to think about.
+
+Maintainability/Quality: 8/10
+
+Taking this out of Player.cs was a very much so needed change. So bonus points there,
+this takes ~100 lines of code out of that class that was not needed. One small thing is that
+the draw class draws with a predetermined offset, so the earlier -40 offsets dont do much I think.
+
+Adding a new form is super easy with a simple copy and paste, and using a JSON file to track
+all sprites helps with this tremendously. Keeping all of marios powers and forms in one easy to understand place.
+Helping the Maintainability and Quality of this file a lot.
