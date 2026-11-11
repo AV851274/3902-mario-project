@@ -96,6 +96,8 @@ public sealed class GameWorld : IEntitySpawner, IDisposable
 
     public void ToggleHitboxes() => renderer.ToggleHitboxes();
 
+    public void ToggleMusicMute() => sounds.ToggleMusicMute();
+
     private void LoadRoom(int roomIndex, MarioPower power = MarioPower.Small, Vector2? spawn = null)
     {
         IsCourseClear = false;
