@@ -61,7 +61,8 @@ public class BillLauncher : StaticEnemyBase
     {
         float direction = FacingDirection == Direction.Left ? -1f : 1f;
         spawner.TrySpawnProjectile(ProjectileType.BulletBill,
-            Position, new Vector2(250f * direction, 0f));
+            Position + new Vector2(FacingDirection == Direction.Left ? -38f : 45f, 4f), 
+            new Vector2(250f * direction, 0f));
     }
 
     public override void Stomp()
