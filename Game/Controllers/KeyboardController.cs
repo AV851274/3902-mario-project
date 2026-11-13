@@ -6,8 +6,7 @@ using Mario.Game.Entities.Players;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using Mario.Game;
-using Mario.Game.State;
+using Mario.Game.Audio;
 
 namespace Mario.Game.Controllers;
 
@@ -30,20 +29,20 @@ public class KeyboardController : IController
     private KeyboardState previousState;
     private readonly IPlayer player;
 
-    public KeyboardController(MarioGame game, GameWorld world, IPlayer player)
+    public KeyboardController(MarioGame game, IGameControls world, IPlayer player, GameAudio audio)
     {
         this.player = player;
         pressCommands = new Dictionary<Keys, ICommand> {
             { Keys.Q, new QuitCommand(game) },
             { Keys.R, new ResetCommand(world) },
             { Keys.E, new PlayerTakeDamageCommand(player) },
-            { Keys.M, new ToggleMusicCommand(world) },
-            { Keys.D1, new ChangeMarioCommand(world, false, MarioPower.Small) },
-            { Keys.D2, new ChangeMarioCommand(world, false, MarioPower.Big) },
-            { Keys.D3, new ChangeMarioCommand(world, false, MarioPower.Fire) },
-            { Keys.D4, new ChangeMarioCommand(world, true, MarioPower.Small) },
-            { Keys.D5, new ChangeMarioCommand(world, true, MarioPower.Big) },
-            { Keys.D6, new ChangeMarioCommand(world, true, MarioPower.Fire) },
+            { Keys.M, new ToggleMusicCommand(audio) },
+            { Keys.D1, new ChangeMarioCommand(player, false, MarioPower.Small) },
+            { Keys.D2, new ChangeMarioCommand(player, false, MarioPower.Big) },
+            { Keys.D3, new ChangeMarioCommand(player, false, MarioPower.Fire) },
+            { Keys.D4, new ChangeMarioCommand(player, true, MarioPower.Small) },
+            { Keys.D5, new ChangeMarioCommand(player, true, MarioPower.Big) },
+            { Keys.D6, new ChangeMarioCommand(player, true, MarioPower.Fire) },
         };
 
         playerCommands = new Dictionary<PlayerActions, ICommand> {

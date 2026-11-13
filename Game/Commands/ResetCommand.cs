@@ -1,13 +1,12 @@
 using Mario.Game.Interfaces;
-using Mario.Game.State;
 
 namespace Mario.Game.Commands;
 
 public class ResetCommand : ICommand
 {
-    private GameWorld world;
+    private readonly IGameControls world;
 
-    public ResetCommand(GameWorld world)
+    public ResetCommand(IGameControls world)
     {
         this.world = world;
     }
