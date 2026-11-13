@@ -55,9 +55,6 @@ internal sealed class BackgroundTileHandler : ILevelTileHandler
             case "w":
                 background.Add(new BackgroundObject(spriteFactory, BackgroundType.Water, new Vector2(position.X, position.Y + 24)));
                 return true;
-            case "/":
-                background.Add(new BackgroundObject(spriteFactory, BackgroundType.Wave, new Vector2(position.X, position.Y + 24)));
-                return true;
             case "flag":
             case "fl":
                 background.Add(new BackgroundObject(spriteFactory, BackgroundType.Flag, position));

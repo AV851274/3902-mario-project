@@ -100,6 +100,9 @@ internal sealed class BlockTileHandler : ILevelTileHandler
             case "F":
                 blocks.Add(new Block(spriteFactory, spawner, BlockType.FlagPole, position));
                 return true;
+            case "/":
+                blocks.Add(new Block(spriteFactory, spawner, BlockType.Wave, new Vector2(position.X, position.Y + 24)));
+                return true;
             case "waterRock":
                 blocks.Add(new Block(spriteFactory, spawner, BlockType.WaterRock, position));
                 return true;

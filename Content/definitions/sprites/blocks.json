@@ -282,6 +282,17 @@
         "height": 16
       }
     },
+    "wave": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 637,
+        "y": 15,
+        "width": 16,
+        "height": 16
+      }
+    },
     "waterRock": {
       "kind": "static",
       "texture": "tileset",
