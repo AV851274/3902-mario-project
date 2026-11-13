@@ -12,7 +12,7 @@ public enum LakituState
     Idle,
     Thrown
 }
-public class Lakitu : EnemyBase
+public class Lakitu : EnemyBase, IPlayerFollower
 {
     private readonly IEntitySpawner spawner;
 
