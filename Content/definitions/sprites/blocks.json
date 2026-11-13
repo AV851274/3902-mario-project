@@ -292,6 +292,17 @@
         "width": 16,
         "height": 16
       }
+    },
+    "coralBlock": {
+      "kind": "static",
+      "texture": "tileset",
+      "scale": 3,
+      "rect": {
+        "x": 215,
+        "y": 297,
+        "width": 16,
+        "height": 16
+      }
     }
   }
 }

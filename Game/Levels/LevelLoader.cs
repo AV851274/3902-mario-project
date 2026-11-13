@@ -286,6 +286,9 @@ public class LevelLoader
                     case "waterRock":
                         gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.WaterRock, position));
                         break;
+                    case "coralBlock":
+                        gameEntities.Blocks.Add(new Block(spriteFactory, spawner, BlockType.CoralBlock, position));
+                        break;
                     default:
                         throw new FormatException(
                             $"Unknown tile '{tile}' at row {row + 1}, column {col + 1}");
