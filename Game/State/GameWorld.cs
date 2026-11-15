@@ -18,16 +18,16 @@ namespace Mario.Game.State;
 public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
 {
     private const int MaxFireballs = 4;
-    private const int PowerUpScore = 1000;
 
     private readonly SpriteFactory spriteFactory;
     private readonly ProjectileFactory projectileFactory;
+    private readonly ItemFactory itemFactory;
     private readonly GameEntities gameEntities = new();
     private readonly RoomManager roomManager;
     private readonly MarioGame game;
     private IController keyboardController = null!;
     private IController mouseController = null!;
-    private readonly GameAudio audio;
+    private readonly IGameAudio audio;
     private readonly PhysicsEngine physicsEngine = new(gravity: 1000f);
     private readonly GameStats stats;
     private readonly WorldRenderer renderer;
@@ -51,6 +51,7 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
         roomManager = new RoomManager(game.Content);
         projectileFactory = new ProjectileFactory(spriteFactory, this);
         audio = new GameAudio(assets);
+        itemFactory = new ItemFactory(spriteFactory, stats, audio);
         this.game = game;
 
         ResetGame();
@@ -71,24 +72,9 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
 
         return true;
     }
-    private void RegisterEntityEvents(IGameObject entity)
-    {
-        if (entity is IItem item)
-        {
-            item.Collected += OnItemCollected;
-            audio.Register(item);
-        }
 
-        if (entity is IBlock block)
-        {
-            audio.Register(block);
-        }
-    }
-    public void Spawn(IGameObject entity)
-    {
-        RegisterEntityEvents(entity);
+    public void Spawn(IGameObject entity) =>
         gameEntities.QueueSpawn(entity);
-    }
 
     public void ResetGame()
     {
@@ -113,7 +99,7 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
 
         audio.StartRoomMusic();
 
-        var level = roomManager.LoadRoom(roomIndex, gameEntities, spriteFactory, this);
+        var level = roomManager.LoadRoom(roomIndex, gameEntities, spriteFactory, this, itemFactory, audio);
 
         Vector2 marioSpawn = spawn ?? level.spawn;
 
@@ -123,19 +109,11 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
             roomManager.IsUnderwater
         );
 
-        foreach (IBlock block in gameEntities.Blocks)
-            RegisterEntityEvents(block);
-
-        foreach (IItem item in gameEntities.Items)
-            RegisterEntityEvents(item);
-
-        IPlayer mario = new Player(spriteFactory, this, marioSpawn);
+        IPlayer mario = new Player(spriteFactory, this, audio, marioSpawn);
         mario.SetSwimming(roomManager.IsUnderwater);
 
         keyboardController = new KeyboardController(game, this, mario, audio);
         mouseController = new MouseController(this);
-
-        audio.Register(mario);
 
         mario.WarpRequested += OnWarpRequested;
         mario.Died += OnMarioDied;
@@ -180,14 +158,6 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
     private void OnFlagpoleReached()
     {
         IsCourseClear = true;
-    }
-
-    private void OnItemCollected(ItemType type)
-    {
-        if (type == ItemType.Coin)
-            stats.AddCoin();
-        else
-            stats.AddScore(PowerUpScore);
     }
 
     public void Update(GameTime gameTime)

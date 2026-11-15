@@ -18,6 +18,8 @@ public class Block : IBlock
     private const float BumpDuration = 0.15f;
 
     private readonly IEntitySpawner spawner;
+    private readonly ItemFactory itemFactory;
+    private readonly IGameAudio audio;
     private SpriteFactory spriteFactory;
     private ISprite sprite;
     private BlockType type;
@@ -38,12 +40,12 @@ public class Block : IBlock
         ? new Box(Position.X, Position.Y, Size, FlagPoleHeight)
         : new Box(Position.X, Position.Y, Size, Size);
 
-
-    public event Action<SoundType> SoundRequested;
-
-    public Block(SpriteFactory spriteFactory, IEntitySpawner spawner, BlockType type, Vector2 position, ItemType? contents = null)
+    public Block(SpriteFactory spriteFactory, IEntitySpawner spawner, ItemFactory itemFactory,
+        IGameAudio audio, BlockType type, Vector2 position, ItemType? contents = null)
     {
         this.spawner = spawner;
+        this.itemFactory = itemFactory;
+        this.audio = audio;
         this.spriteFactory = spriteFactory;
         this.type = type;
         this.contents = contents;
@@ -108,11 +110,11 @@ public class Block : IBlock
 
         if (!isIntact)
         {
-            SoundRequested?.Invoke(SoundType.Brick);
+            audio.PlaySound(SoundType.Brick);
         }
         else if (type == BlockType.Brick)
         {
-            SoundRequested?.Invoke(SoundType.Bump);
+            audio.PlaySound(SoundType.Bump);
         }
     }
 
@@ -130,11 +132,11 @@ public class Block : IBlock
             released = ItemType.FireFlower;
         }
 
-        var item = new Item(spriteFactory, released, Position);
+        var item = itemFactory.Create(released, Position);
         item.StartEmerging();
         spawner.Spawn(item);
         if (released != ItemType.Coin)
-            SoundRequested?.Invoke(SoundType.Item);
+            audio.PlaySound(SoundType.Item);
 
         contents = null;
     }

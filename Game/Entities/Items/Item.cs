@@ -1,4 +1,5 @@
 using Mario.Game.Physics;
+using Mario.Game.Audio;
 using Mario.Game.Interfaces;
 using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
@@ -14,9 +15,9 @@ public class Item : IItem, IPhysicsBody
     private const float RiseSpeed = 80f;
     private const int Size = 48;
     private const int CoinWidth = 24;
+    private const int PowerUpScore = 1000;
     public bool IsCollected { get; private set; }
     public bool Active => !IsCollected;
-    public event System.Action<ItemType> Collected;
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public Box Bounds => new Box(
         Position.X,
@@ -35,6 +36,8 @@ public class Item : IItem, IPhysicsBody
         }
     }
 
+    private readonly IRewardReceiver rewards;
+    private readonly IGameAudio audio;
     private ISprite sprite;
     private ItemType type;
     private float direction = 1f;
@@ -63,8 +66,11 @@ public class Item : IItem, IPhysicsBody
     public Vector2 Position { get; set; }
     public Vector2 Velocity { get; set; }
 
-    public Item(SpriteFactory spriteFactory, ItemType type, Vector2 position, float bounceSpeed = 400f)
+    public Item(SpriteFactory spriteFactory, IRewardReceiver rewards, IGameAudio audio,
+        ItemType type, Vector2 position, float bounceSpeed = 400f)
     {
+        this.rewards = rewards;
+        this.audio = audio;
         this.type = type;
         Position = position;
         sprite = spriteFactory.Create("items", type);
@@ -81,7 +87,12 @@ public class Item : IItem, IPhysicsBody
         }
 
         IsCollected = true;
-        Collected?.Invoke(type);
+        if (type == ItemType.Coin)
+            rewards.AddCoin();
+        else
+            rewards.AddScore(PowerUpScore);
+
+        audio.PlaySound(type == ItemType.Coin ? SoundType.Coin : SoundType.PowerUp);
         MarioPower power = player.MarioPowerState.Power;
 
         if (type == ItemType.Mushroom)

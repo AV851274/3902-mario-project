@@ -1,11 +1,9 @@
 using Mario.Game.Assets;
-using Mario.Game.Entities.Items;
 using Mario.Game.Interfaces;
-using Mario.Game.Interfaces.Player;
 
 namespace Mario.Game.Audio;
 
-public sealed class GameAudio
+public sealed class GameAudio : IGameAudio
 {
     private readonly SoundManager sounds;
 
@@ -19,38 +17,18 @@ public sealed class GameAudio
         sounds.PlayMusic();
     }
 
-    public void Register(IBlock block)
+    public void PlaySound(SoundType sound)
     {
-        block.SoundRequested += sounds.Play;
+        sounds.Play(sound);
     }
 
-    public void Register(IItem item)
-    {
-        item.Collected += OnItemCollected;
-    }
-
-    public void Register(IPlayer player)
-    {
-        player.SoundRequested += sounds.Play;
-        player.DeathStarted += OnMarioDeathStarted;
-        player.FlagpoleReached += OnFlagpoleReached;
-    }
-
-    private void OnItemCollected(ItemType type)
-    {
-        if (type == ItemType.Coin)
-            sounds.Play(SoundType.Coin);
-        else
-            sounds.Play(SoundType.PowerUp);
-    }
-
-    private void OnMarioDeathStarted()
+    public void PlayDeathAudio()
     {
         sounds.StopMusic();
         sounds.Play(SoundType.Death);
     }
 
-    private void OnFlagpoleReached()
+    public void PlayFlagpoleAudio()
     {
         sounds.StopMusic();
     }
