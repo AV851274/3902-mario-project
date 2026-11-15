@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Mario.Game.Entities.Blocks;
 using Mario.Game.Entities.Enemies;
 using Mario.Game.Interfaces;
 using Mario.Game.Interfaces.Player;
@@ -113,7 +114,7 @@ public sealed class PhysicsEngine
     {
         foreach (var player in entities.Players.Distinct())
         {
-            foreach (var flagpole in entities.Blocks.Where(block => block.IsFlagPole))
+            foreach (var flagpole in entities.Blocks.Where(block => block.Type == BlockType.FlagPole))
                 ResolveCollision(player, flagpole, previousBounds);
             foreach (var item in entities.Items.Distinct())
                 ResolveCollision(player, item, previousBounds);

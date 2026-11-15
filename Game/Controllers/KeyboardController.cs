@@ -6,7 +6,6 @@ using Mario.Game.Entities.Players;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
-using Mario.Game.Audio;
 
 namespace Mario.Game.Controllers;
 
@@ -29,7 +28,7 @@ public class KeyboardController : IController
     private KeyboardState previousState;
     private readonly IPlayer player;
 
-    public KeyboardController(MarioGame game, IGameControls world, IPlayer player, GameAudio audio)
+    public KeyboardController(MarioGame game, IGameControls world, IPlayer player, IGameAudio audio)
     {
         this.player = player;
         pressCommands = new Dictionary<Keys, ICommand> {

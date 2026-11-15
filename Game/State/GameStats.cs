@@ -1,9 +1,10 @@
 using System;
+using Mario.Game.Interfaces;
 using Microsoft.Xna.Framework;
 
 namespace Mario.Game.State;
 
-public class GameStats
+public class GameStats : IRewardReceiver
 {
     private const int StartingLives = 3;
     private const float StartingTime = 400f;

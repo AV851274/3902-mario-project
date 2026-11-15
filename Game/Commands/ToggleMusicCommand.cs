@@ -1,13 +1,12 @@
-using Mario.Game.Audio;
 using Mario.Game.Interfaces;
 
 namespace Mario.Game.Commands;
 
 public class ToggleMusicCommand : ICommand
 {
-    private readonly GameAudio audio;
+    private readonly IGameAudio audio;
 
-    public ToggleMusicCommand(GameAudio audio)
+    public ToggleMusicCommand(IGameAudio audio)
     {
         this.audio = audio;
     }
