@@ -2,6 +2,7 @@ using Mario.Game.Physics;
 using System;
 using Mario.Game.Animation;
 using Mario.Game.Audio;
+using Mario.Game.Entities.Blocks;
 using Mario.Game.Interfaces;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Entities.Players.PlayerStates;
@@ -163,7 +164,7 @@ public class Player : IPlayer
 
     public void OnCollision(CollisionEvent collision)
     {
-        if (collision.Other is IBlock flagpole && flagpole.IsFlagPole)
+        if (collision.Other is IBlock flagpole && flagpole.Type == BlockType.FlagPole)
         {
             StartFlagpoleSlide(flagpole);
             return;
@@ -182,7 +183,9 @@ public class Player : IPlayer
             return;
         }
 
-        if (collision.Other is IBlock pipe && pipe.IsWarpPipe && collision.Normal.Y < 0f && isHoldingDown)
+        if (collision.Other is IBlock pipe &&
+            pipe.Type is BlockType.WarpPipeTopLeft or BlockType.WarpPipeTopRight &&
+            collision.Normal.Y < 0f && isHoldingDown)
         {
             WarpRequested?.Invoke();
         }

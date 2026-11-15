@@ -3,6 +3,7 @@ using System.Linq;
 using Mario.Game.Assets;
 using Mario.Game.Audio;
 using Mario.Game.Controllers;
+using Mario.Game.Entities.Blocks;
 using Mario.Game.Entities.Items;
 using Mario.Game.Entities.Players;
 using Mario.Game.Entities.Projectiles;
@@ -22,6 +23,7 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
     private readonly SpriteFactory spriteFactory;
     private readonly ProjectileFactory projectileFactory;
     private readonly ItemFactory itemFactory;
+    private readonly BlockFactory blockFactory;
     private readonly GameEntities gameEntities = new();
     private readonly RoomManager roomManager;
     private readonly MarioGame game;
@@ -52,6 +54,7 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
         projectileFactory = new ProjectileFactory(spriteFactory, this);
         audio = new GameAudio(assets);
         itemFactory = new ItemFactory(spriteFactory, stats, audio);
+        blockFactory = new BlockFactory(spriteFactory, itemFactory, this, audio);
         this.game = game;
 
         ResetGame();
@@ -99,7 +102,7 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
 
         audio.StartRoomMusic();
 
-        var level = roomManager.LoadRoom(roomIndex, gameEntities, spriteFactory, this, itemFactory, audio);
+        var level = roomManager.LoadRoom(roomIndex, gameEntities, spriteFactory, this, itemFactory, blockFactory);
 
         Vector2 marioSpawn = spawn ?? level.spawn;
 

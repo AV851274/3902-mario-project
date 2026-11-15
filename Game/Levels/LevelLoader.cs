@@ -1,4 +1,5 @@
 using System;
+using Mario.Game.Entities.Blocks;
 using Mario.Game.Entities.Items;
 using Mario.Game.Interfaces;
 using Mario.Game.Rendering.Sprites;
@@ -14,17 +15,17 @@ public class LevelLoader
 
     public static (Vector2 spawn, int width, int height) LoadLevel(
         ContentManager content, string fileName, GameEntities gameEntities,
-        SpriteFactory spriteFactory, IEntitySpawner spawner, ItemFactory itemFactory, IGameAudio audio)
+        SpriteFactory spriteFactory, IEntitySpawner spawner, ItemFactory itemFactory, BlockFactory blockFactory)
     {
         var rows = CsvLevelReader.Read(content, fileName);
 
         ILevelTileHandler[] handlers =
         [
-            new BlockTileHandler(gameEntities.Blocks, spriteFactory, spawner, itemFactory, audio),
+            new BlockTileHandler(gameEntities.Blocks, blockFactory),
             new EnemyTileHandler(gameEntities.Enemies, spriteFactory, spawner),
             new ItemTileHandler(gameEntities.Items, itemFactory),
             new BackgroundTileHandler(gameEntities.Background, spriteFactory),
-            new CompoundTileHandler(gameEntities.Blocks, gameEntities.Enemies, spriteFactory, spawner, itemFactory, audio)
+            new CompoundTileHandler(gameEntities.Blocks, gameEntities.Enemies, spriteFactory, spawner, blockFactory)
         ];
 
         Vector2 marioSpawn = new(100, 100);

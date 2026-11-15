@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Mario.Game.Entities.Blocks;
 using Mario.Game.Entities.Items;
 using Mario.Game.Interfaces;
-using Mario.Game.Rendering.Sprites;
 using Microsoft.Xna.Framework;
 
 namespace Mario.Game.Levels;
@@ -10,19 +9,12 @@ namespace Mario.Game.Levels;
 internal sealed class BlockTileHandler : ILevelTileHandler
 {
     private readonly ICollection<IBlock> blocks;
-    private readonly SpriteFactory spriteFactory;
-    private readonly IEntitySpawner spawner;
-    private readonly ItemFactory itemFactory;
-    private readonly IGameAudio audio;
+    private readonly BlockFactory blockFactory;
 
-    public BlockTileHandler(ICollection<IBlock> blocks, SpriteFactory spriteFactory,
-        IEntitySpawner spawner, ItemFactory itemFactory, IGameAudio audio)
+    public BlockTileHandler(ICollection<IBlock> blocks, BlockFactory blockFactory)
     {
         this.blocks = blocks;
-        this.spriteFactory = spriteFactory;
-        this.spawner = spawner;
-        this.itemFactory = itemFactory;
-        this.audio = audio;
+        this.blockFactory = blockFactory;
     }
 
     public bool Place(string tile, Vector2 position)
@@ -31,88 +23,88 @@ internal sealed class BlockTileHandler : ILevelTileHandler
         {
             case "G":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Ground, position));
+                    blockFactory.Create(BlockType.Ground, position));
                 return true;
             case "B":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Brick, position));
+                    blockFactory.Create(BlockType.Brick, position));
                 return true;
             case "?":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Question, position, ItemType.Coin));
+                    blockFactory.Create(BlockType.Question, position, ItemType.Coin));
                 return true;
             case "?m":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Question, position, ItemType.Mushroom));
+                    blockFactory.Create(BlockType.Question, position, ItemType.Mushroom));
                 return true;
             case "?s":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Question, position, ItemType.Star));
+                    blockFactory.Create(BlockType.Question, position, ItemType.Star));
                 return true;
             case "Bl":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Block, position));
+                    blockFactory.Create(BlockType.Block, position));
                 return true;
             case "treeLeft":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.TreeLeft, position));
+                    blockFactory.Create(BlockType.TreeLeft, position));
                 return true;
             case "treeRight":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.TreeRight, position));
+                    blockFactory.Create(BlockType.TreeRight, position));
                 return true;
             case "treeMiddle":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.TreeMiddle, position));
+                    blockFactory.Create(BlockType.TreeMiddle, position));
                 return true;
             case "treeRoot":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.TreeRoot, position));
+                    blockFactory.Create(BlockType.TreeRoot, position));
                 return true;
             case "launcherNeck":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.LauncherNeck, position));
+                    blockFactory.Create(BlockType.LauncherNeck, position));
                 return true;
             case "launcherBody":
                 blocks.Add(
-                    new Block(spriteFactory, spawner, itemFactory, audio, BlockType.LauncherBody, position));
+                    blockFactory.Create(BlockType.LauncherBody, position));
                 return true;
             case "PL":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.PipeTopLeft, position));
+                blocks.Add(blockFactory.Create(BlockType.PipeTopLeft, position));
                 return true;
             case "PR":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.PipeTopRight, position));
+                blocks.Add(blockFactory.Create(BlockType.PipeTopRight, position));
                 return true;
             case "pl":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.PipeLeft, position));
+                blocks.Add(blockFactory.Create(BlockType.PipeLeft, position));
                 return true;
             case "pr":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.PipeRight, position));
+                blocks.Add(blockFactory.Create(BlockType.PipeRight, position));
                 return true;
             case "warpL":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.WarpPipeTopLeft, position));
+                blocks.Add(blockFactory.Create(BlockType.WarpPipeTopLeft, position));
                 return true;
             case "warpR":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.WarpPipeTopRight, position));
+                blocks.Add(blockFactory.Create(BlockType.WarpPipeTopRight, position));
                 return true;
             case "bridge":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Bridge, position));
+                blocks.Add(blockFactory.Create(BlockType.Bridge, position));
                 return true;
             case "cloud":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Cloud, position));
+                blocks.Add(blockFactory.Create(BlockType.Cloud, position));
                 return true;
             case "flagPole":
             case "F":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.FlagPole, position));
+                blocks.Add(blockFactory.Create(BlockType.FlagPole, position));
                 return true;
             case "/":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.Wave, new Vector2(position.X, position.Y + 24)));
+                blocks.Add(blockFactory.Create(BlockType.Wave, new Vector2(position.X, position.Y + 24)));
                 return true;
             case "waterRock":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.WaterRock, position));
+                blocks.Add(blockFactory.Create(BlockType.WaterRock, position));
                 return true;
             case "coralBlock":
-                blocks.Add(new Block(spriteFactory, spawner, itemFactory, audio, BlockType.CoralBlock, position));
+                blocks.Add(blockFactory.Create(BlockType.CoralBlock, position));
                 return true;
             default:
                 return false;

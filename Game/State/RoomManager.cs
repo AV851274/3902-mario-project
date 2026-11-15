@@ -1,4 +1,5 @@
 using System;
+using Mario.Game.Entities.Blocks;
 using Mario.Game.Entities.Items;
 using Mario.Game.Interfaces;
 using Mario.Game.Levels;
@@ -44,7 +45,7 @@ internal sealed class RoomManager
         SpriteFactory spriteFactory,
         IEntitySpawner spawner,
         ItemFactory itemFactory,
-        IGameAudio audio)
+        BlockFactory blockFactory)
     {
         if (roomIndex < 0 || roomIndex >= RoomFiles.Length)
             throw new ArgumentOutOfRangeException(nameof(roomIndex));
@@ -59,7 +60,7 @@ internal sealed class RoomManager
             spriteFactory,
             spawner,
             itemFactory,
-            audio
+            blockFactory
         );
     }
 
