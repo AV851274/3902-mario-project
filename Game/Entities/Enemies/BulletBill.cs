@@ -15,6 +15,7 @@ public class BulletBill : EnemyBase
     public override float GravityScale => IsDefeated ? 1f : 0f;
     public override bool IsDefeated => isStomped;
     public override ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
+    public bool IsSpawning => flightTime < 0.5f;
 
     public BulletBill(ISprite sprite, Vector2 initialPosition, Vector2 velocity)
         : base(sprite, initialPosition, Size, Size)

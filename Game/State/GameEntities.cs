@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Mario.Game.Entities.Enemies;
 
 
 namespace Mario.Game.State;
@@ -96,10 +97,30 @@ public class GameEntities
         // Keep drawing order separate from the simulation order above.
         foreach (IGameObject obj in Background) obj.Draw(spriteBatch);
         foreach (IItem item in Items) item.Draw(spriteBatch);
+
+        //Draw spawning bullet bills underneath their cannons
+        foreach (IEnemy enemy in Enemies)
+        {
+            if (enemy is BulletBill bulletBill && bulletBill.IsSpawning)
+            {
+                bulletBill.Draw(spriteBatch);
+            }
+        }
+
         foreach (IBlock block in Blocks) block.Draw(spriteBatch);
-        foreach (IEnemy enemy in Enemies) enemy.Draw(spriteBatch);
+
+        foreach (IEnemy enemy in Enemies)
+        {
+            if (!(enemy is BulletBill bulletBill && bulletBill.IsSpawning))
+            {
+                enemy.Draw(spriteBatch);
+            }
+        }
+
         foreach (IPlayer player in Players) player.Draw(spriteBatch);
         foreach (IProjectile projectile in Projectiles) projectile.Draw(spriteBatch);
+               
+        
     }
 
     public void Reset()
