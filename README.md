@@ -90,63 +90,61 @@ Every moving object implements `IPhysicsBody`. Each frame, `PhysicsEngine.Step`:
 
 ## Code analysis (Roslyn .NET analyzers)
 
-Analyzers are enabled in `Monogame.csproj` (`AnalysisMode = All`). Latest run (10/26/2026): 0 errors, 189 warnings.
+Analyzers are enabled in `Monogame.csproj` (`AnalysisMode = All`). Latest run (11/16/2026, .NET SDK 10.0.113): 0 errors, 250 warnings (238 analyzer warnings and 12 C# nullability warnings).
 
-None affect how the game runs; we reviewed each type and left them as-is for these reasons:
+These warnings are not currently considered critical because the review found no confirmed gameplay failure or security vulnerability caused by them. Most concern API design, naming, or redundant code, and `Random` is used only for enemy behavior. The reviewed nullability warnings have existing guards, intentional unused values, or initialization paths, and normal shutdown already disposes the flagged resources.
 
-| Rules                          | Count | Why it's minor                                                                                                                          |
-| ------------------------------ | ----- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| CA1515, CA1062, CA1002         | 139   | Library rules (make types internal, null-check parameters, don't expose `List<T>`). Our game is standalone and only calls its own code. |
-| CA1805, CA1024, CA1052, CA1823 | 16    | Style only (explicit default values, Get-method vs property, non-static `LevelLoader`, two unused constants in `Spiny`).                |
-| CA5394                         | 10    | `Random` only drives enemy behavior, not security.                                                                                      |
-| CA1003                         | 10    | Our events are internal; `Action` is simpler than `EventHandler<T>`.                                                                    |
-| CA1859, CA1051                 | 8     | Intentional design: we depend on interfaces, and base classes share `protected` fields with subclasses.                                 |
-| CA1716, CA1724, CA1034, CA2213 | 6     | Naming/cleanup notes (`Stop` is a VB keyword, `Player` name overlap, nested `CollisionResult`, MonoGame disposes graphics itself).      |
+| Rule | Count | Explanation and impact |
+| ---- | ----- | ---------------------- |
+| CA1002 | 6 | Avoid exposing `List<T>` in public APIs. `GameEntities` exposes lists, so callers must follow the collection update rules. |
+| CA1003 | 3 | Use standard event-handler types. Our `Action` events work for simple in-game notifications. |
+| CA1024 | 2 | Use properties for getter-like methods. FireBar keeps methods to make their calculations and allocations clearer. |
+| CA1034 | 1 | Avoid public nested types. Our nested `CollisionResult` affects API organization, not collision behavior. |
+| CA1051 | 6 | Avoid public or protected instance fields. Our `protected` fields simplify access but tie subclasses to base-class details. |
+| CA1052 | 1 | Make static-only classes static. `LevelLoader` could be static without changing level loading. |
+| CA1062 | 55 | Check reference parameters for null. Our methods rely on controlled callers; non-nullable annotations do not add runtime checks. |
+| CA1305 | 3 | Specify a culture when formatting values. Our HUD uses the user's locale, so display conventions may vary. |
+| CA1515 | 123 | Make application-only types internal. Our public types do not need to be used by other assemblies. |
+| CA1716 | 4 | Avoid other .NET languages' keywords in API names. Our `Stop` and `Exit` names work normally in C#. |
+| CA1724 | 1 | Avoid type names that clash with namespaces. `Player` overlaps with a namespace name and can make references confusing. |
+| CA1805 | 9 | Avoid redundant default initializers. Our explicit `false` or `0` values repeat defaults C# already provides. |
+| CA1819 | 1 | Avoid properties that return arrays. Callers can modify `Frames` elements even though the property uses `init`. |
+| CA1822 | 2 | Make members static when they use no instance state. Our two sound-manager methods fit the current instance-based API. |
+| CA1823 | 2 | Remove unused fields. `Spiny` has two unused constants that can be removed without changing behavior. |
+| CA1859 | 7 | Use concrete types where they can improve performance. We retain interfaces for abstraction; any performance benefit should be measured. |
+| CA2213 | 3 | Release disposable fields through `Dispose`. MonoGame disposes `graphics`; `UnloadContent` disposes `spriteBatch` and `world`, but paths that skip unloading need attention. |
+| CA5394 | 9 | Avoid non-cryptographic random generators. Our `Random` calls only control enemy behavior, so cryptographic security is unnecessary. |
+| CS8600 | 1 | A possibly null value is assigned to a non-nullable variable. Failed clip lookups return before the result is used. |
+| CS8601 | 1 | A possibly null reference is assigned to a non-nullable target. Failed clip lookups return before assigning `currentClip`. |
+| CS8618 | 7 | A non-nullable member may be uninitialized after construction. Existing guards, safe event calls, and `Reset()` handle the reviewed cases. |
+| CS8625 | 2 | Null is assigned or passed to a non-nullable reference type. Our null clips and unused launcher sprite are intentional. |
+| CS8629 | 1 | A nullable value may be read while null. `IsEmerging` checks `HasValue` before `.Value`, but the compiler cannot follow that property. |
 
-```
-~Task remaining (Y)
-36 |█
-   |█ ▓
-30 |  █ ▓
-   |      ▓   █
-24 |        ▓    █
-   |          ▓     █
-18 |            ▓      █
-   |              ▓       █
-12 |                ▓       █
-   |                  ▓
- 6 |                    ▓     █
-   |                      ▓
- 0 |________________________▓_█___
-    10/6      10/13    10/19    10/26
-    █ actual   ▓ ideal
-```
-
-Going off a downward linear ideal line compared to our code commits. We lagged behind a little near the end of the sprint. But pulled in and finished strong to get what needed to be done in time. Ideally the team will reflect on this and have a bit more of an early push or a linear workflow through sprint 4.
 
 ```
-                        LINES OF CODE:
-EnemySpriteFactory.cs   ███████████████████████████████ 307
-MarioGame.cs            ██████████████████████████ 264
-Player.cs               ██████████████████████████ 259
-LevelLoader.cs          ██████████████████████████ 259
-MarioSpriteFactory.cs   ██████████████████ 181
-Item.cs                 ███████████████ 147
-PhysicsEngine.cs        ██████████████ 144
-Block.cs                █████████████ 126
-CollisionManager.cs     ████████████ 116
-Fireball.cs             ███████████ 110
-Lakitu.cs               ███████████ 108
-HammerBro.cs            ██████████ 104
-CheepCheep.cs           ██████████ 98
-AnimationController.cs  ██████████ 97
-Bowser.cs               █████████ 90
+          LINES OF CODE (1 █ ≈ 10 code lines)
+Player.cs               ███████████████████████████ 272
+GameWorld.cs            █████████████████           172
+Item.cs                 ███████████████             150
+PhysicsEngine.cs        ██████████████              137
+GameEntities.cs         ███████████                 113
+AnimationController.cs  ███████████                 112
+Lakitu.cs               ███████████                 110
+Fireball.cs             ███████████                 110
+HammerBro.cs            ███████████                 109
+BlockTileHandler.cs     ███████████                 109
+EnemyTileHandler.cs     ██████████                  101
+PlayerBodyBase.cs       ██████████                  100
+CollisionManager.cs     ██████████                   99
+Bowser.cs               ██████████                   97
+CheepCheep.cs           █████████                    93
 ```
 
-This histogram notes the 15 largerst files in the project. The main desire with this graph it to reflect on what can be refactored to be
-closer to the goal of having all files be <150 lines of code. The top four files go high above this goal, the team plans on condensing these files as the sprints go to allow for the files to be the best they can be. MarioGame.cs is the most important since the main game file should be as short and sweet as possible.
+This chart shows the 15 largest C# files under `Game/`, measured on 11/16/2026. The 127 source files contain 5,086 code lines in total.
 
-The team used AI agents to help handle bug fixing and to help wrap our heads around the tasks at hand. Claude Code played a role in reviewing code errors and cleaning up the project as well. Making sure to not let it go wild as the team needed to understand
+During Sprint 4, we split several large files by responsibility. `MarioGame.cs` now delegates world logic, rendering, and screen management to `GameWorld`, `WorldRenderer`, and `GameScreenManager`. `LevelLoader.cs` delegates CSV parsing and tile placement to a separate reader and specialized handlers, and the former `Block.cs` was divided into a shared base, a factory, and individual block types. We also replaced the large sprite factories with a shared `SpriteFactory` driven by JSON definitions. In future sprint, we will analyze `Player.cs` (272 code lines), `GameWorld.cs` (172) and try to refactor them where responsibilities can be separated clearly.
+
+The team used AI agents to help handle bug fixing, boilerplate, simple refactor, and to help wrap our heads around the tasks at hand. AI agents also played a role in reviewing code and cleaning up the project as well. Making sure to not let it go wild as the team needed to understand
 and have readability stay strong in the project.
 
 ## SPRINT 3 REVIEW:
