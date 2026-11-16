@@ -1,0 +1,24 @@
+Code Review of refactored LevelLoader and other relative classes.
+Reviewer: Zhenxiang "ZX" Ning
+Code authored by: Aakash Vatti
+Day of Code Review: 11/16/2026.
+Based on commit: 09e4184673d891a0f80ed7b50824b13ce57e7645
+
+Sprint 4
+
+Readability: 8.5/10
+
+The LevelLoader component experienced a significant code refactoring compared to
+the previous sprint, though its behavior remained largely unchanged. 
+This update split the long LevelLoader.cs file into several smaller files and delegated the parsing 
+task to different concrete handlers classes. This has improved the code’s readability.
+I think an area for improvement is the for loop in the LoadLevel static method,
+which isn’t very clear; adding a few comments could further enhance its readability.
+
+Maintainability/Quality: 9/10
+
+By creating a handler interface and multiple concrete classes, the responsibilities 
+of the classes have become clearer, and cohesion has increased. 
+I believe one area for improvement would be to replace the dependencies of some 
+handlers on the concrete SpriteFactory with the ISpriteFactory interface, 
+in order to further reduce coupling.
