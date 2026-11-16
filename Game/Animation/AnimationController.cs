@@ -110,4 +110,28 @@ public class AnimationController : ISprite
 
         spriteBatch.Draw(spriteSheet, position, sourceRectangle, Color.White, rotation, origin, scale, effects, 0f);
     }
+
+    public void Draw(
+    SpriteBatch spriteBatch,
+    Rectangle destinationRectangle,
+    float rotation = 0f,
+    SpriteEffects effects = SpriteEffects.None)
+{
+    if (currentClip == null)
+    {
+        return;
+    }
+
+    Rectangle sourceRectangle = currentClip.GetFrame(frameIndex);
+
+    spriteBatch.Draw(
+        spriteSheet,
+        destinationRectangle,
+        sourceRectangle,
+        Color.White,
+        rotation,
+        origin,
+        effects,
+        0f);
+}
 }

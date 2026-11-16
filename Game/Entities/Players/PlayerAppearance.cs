@@ -75,17 +75,27 @@ public sealed class PlayerAppearance
     }
 
     public void Draw(SpriteBatch spriteBatch, PlayerBodyBase body, Direction facingDirection, float invincibleTimer)
+{
+    // Flash while invincible: skip drawing every other tenth of a second.
+    if (invincibleTimer > 0f && (int)(invincibleTimer * 10) % 2 == 0)
+        return;
+
+    bool flip = swimming ? facingDirection == Direction.Left : facingDirection == Direction.Right;
+    SpriteEffects effects = flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+
+    if (current.Sprite is AnimationController animation)
     {
-        // Flash while invincible: skip drawing every other tenth of a second.
-        if (invincibleTimer > 0f && (int)(invincibleTimer * 10) % 2 == 0)
-            return;
+        Rectangle destination = new Rectangle(
+            (int)body.Bounds.X,
+            (int)body.Bounds.Y,
+            (int)body.Bounds.Width,
+            (int)body.Bounds.Height);
 
-        bool flip = swimming ? facingDirection == Direction.Left : facingDirection == Direction.Right;
-        SpriteEffects effects = flip ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
-        Vector2 drawPosition = body.Position + current.Offset;
-        if (current.Sprite is AnimationController animation)
-            drawPosition.Y = body.Bounds.Bottom - animation.CurrentFrameHeight;
-
-        current.Sprite.Draw(spriteBatch, drawPosition, effects: effects);
+        animation.Draw(spriteBatch, destination, effects: effects);
+        return;
     }
+
+    Vector2 drawPosition = body.Position + current.Offset;
+    current.Sprite.Draw(spriteBatch, drawPosition, effects: effects);
+}
 }
