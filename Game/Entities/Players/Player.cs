@@ -2,6 +2,7 @@ using Mario.Game.Physics;
 using System;
 using Mario.Game.Animation;
 using Mario.Game.Audio;
+using Mario.Game.Entities.Blocks;
 using Mario.Game.Interfaces;
 using Mario.Game.Interfaces.Player;
 using Mario.Game.Entities.Players.PlayerStates;
@@ -14,6 +15,7 @@ namespace Mario.Game.Entities.Players;
 public class Player : IPlayer
 {
     private readonly IEntitySpawner spawner;
+    private readonly IGameAudio audio;
     private const float InvincibleDuration = 1.5f;
     private const float StompGraceDuration = 0.2f;
     private const float DeathJumpSpeed = 500f;
@@ -81,8 +83,6 @@ public class Player : IPlayer
     }
 
 
-    public event Action<SoundType> SoundRequested;
-    public event Action DeathStarted;
     public event Action Died;
     public event Action FlagpoleReached;
 
@@ -102,9 +102,10 @@ public class Player : IPlayer
     public bool CollisionEnabled => !isDying;
     public Box Bounds => body.Bounds;
 
-    public Player(ISpriteFactory sprites, IEntitySpawner spawner, Vector2 position)
+    public Player(ISpriteFactory sprites, IEntitySpawner spawner, IGameAudio audio, Vector2 position)
     {
         this.spawner = spawner;
+        this.audio = audio;
         appearance = new PlayerAppearance(sprites);
         body = new PlayerBody { Position = position };
     }
@@ -144,7 +145,7 @@ public class Player : IPlayer
     private void StartDying()
     {
         isDying = true;
-        DeathStarted?.Invoke();
+        audio.PlayDeathAudio();
         appearance.ShowDeath();
         Velocity = new Vector2(0f, -DeathJumpSpeed);
         IsOnGround = false;
@@ -163,7 +164,7 @@ public class Player : IPlayer
 
     public void OnCollision(CollisionEvent collision)
     {
-        if (collision.Other is IBlock flagpole && flagpole.IsFlagPole)
+        if (collision.Other is IBlock flagpole && flagpole.Type == BlockType.FlagPole)
         {
             StartFlagpoleSlide(flagpole);
             return;
@@ -177,11 +178,14 @@ public class Player : IPlayer
             isFlagpoleSliding = false;
             Velocity = Vector2.Zero;
             IsOnGround = true;
+            audio.PlayFlagpoleAudio();
             FlagpoleReached?.Invoke();
             return;
         }
 
-        if (collision.Other is IBlock pipe && pipe.IsWarpPipe && collision.Normal.Y < 0f && isHoldingDown)
+        if (collision.Other is IBlock pipe &&
+            pipe.Type is BlockType.WarpPipeTopLeft or BlockType.WarpPipeTopRight &&
+            collision.Normal.Y < 0f && isHoldingDown)
         {
             WarpRequested?.Invoke();
         }
@@ -195,7 +199,7 @@ public class Player : IPlayer
             if (stomped && enemy.canBeStomped)
             {
                 enemy.Stomp();
-                SoundRequested?.Invoke(SoundType.StompSwim);
+                audio.PlaySound(SoundType.StompSwim);
                 stompGraceTimer = StompGraceDuration;
                 Velocity = new Vector2(Velocity.X, -350f);
                 IsOnGround = false;
@@ -256,7 +260,7 @@ public class Player : IPlayer
             // Falling into a pit skips the death animation, so the death starts here
             if (!isDying)
             {
-                DeathStarted?.Invoke();
+                audio.PlayDeathAudio();
             }
             Died?.Invoke();
             return;
@@ -281,7 +285,7 @@ public class Player : IPlayer
 
         if (!isFlagpoleSliding && body.JumpedThisFrame)
         {
-            SoundRequested?.Invoke(JumpSound());
+            audio.PlaySound(JumpSound());
         }
         facingDirection = body.FacingDirection;
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -306,7 +310,7 @@ public class Player : IPlayer
             Position + new Vector2(25f * direction, -20f),
             new Vector2(500f * direction, 200f)))
         {
-            SoundRequested?.Invoke(SoundType.Fireball);
+            audio.PlaySound(SoundType.Fireball);
         }
     }
 

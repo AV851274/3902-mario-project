@@ -28,4 +28,5 @@ public enum BlockType
     FlagPole,
     WaterRock,
     CoralBlock,
+    Wave,
 }

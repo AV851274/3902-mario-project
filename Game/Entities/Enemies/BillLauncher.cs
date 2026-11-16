@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Mario.Game.Entities.Enemies;
 
-public class BillLauncher : StaticEnemyBase
+public class BillLauncher : StaticEnemyBase, IPlayerFollower
 {
     private readonly IEntitySpawner spawner;
 

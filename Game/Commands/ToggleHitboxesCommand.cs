@@ -1,13 +1,12 @@
 using Mario.Game.Interfaces;
-using Mario.Game.State;
 
 namespace Mario.Game.Commands;
 
 public class ToggleHitboxesCommand : ICommand
 {
-    private GameWorld world;
+    private readonly IGameControls world;
 
-    public ToggleHitboxesCommand(GameWorld world)
+    public ToggleHitboxesCommand(IGameControls world)
     {
         this.world = world;
     }
