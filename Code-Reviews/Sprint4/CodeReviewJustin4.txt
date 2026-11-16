@@ -6,13 +6,24 @@ Minutes Spent on it: 80
 
 Readability: 8/10
 
-GameStats is pretty short and straightforwards. At each Reset() it sets five stats to their default values and then has a method to update each of the ones that change with gameplay. Coins increment and can increment lives, dying loses a life, and other simple functionalities are easy to understand with the obvious names. There aren't comments, but they aren't necessary.
+GameStats is pretty short and straightforwards. At each Reset() it sets five stats to their default values and then has a method to update each of the ones that 
+change with gameplay. Coins increment and can increment lives, dying loses a life, and other simple functionalities are easy to understand with the obvious names. 
+There aren't comments, but they aren't necessary.
 
-Gameworld.cs has a lot more functionality included. It is still pretty straightforwards to read all the variable names to understand most of what's going on. However, I think a couple of the functions (InitializeRoom, Update) could use comments to break the code into chunks and be more easily readable. 
+Gameworld.cs has a lot more functionality included. It is still pretty straightforwards to read all the variable names to understand most of what's going on. 
+However, I think a couple of the functions (InitializeRoom, Update) could use comments to break the code into chunks and be more easily readable. 
 
 
 Maintainability/Quality: 7/10
 
-GameStats is a small enough file that adding other statistics to the file itself would be pretty simple. It'd just take adding a default value to Reset(), a variable at the top of the class, and maybe other functions to update it as needed. If there was a new stat that needed to be changed in response to a lot of different functionality, however (like how score is updated in response to basically everything), it could be pretty tedious to implement with how the class is currently set up, since you'd need to add a function to update the stat to every file where the stat is updated. It'd possibly be useful to add a system for stats to detect and respond to certain events.
+GameStats is a small enough file that adding other statistics to the file itself would be pretty simple. It'd just take adding a default value to Reset(), a variable
+at the top of the class, and maybe other functions to update it as needed. If there was a new stat that needed to be changed in response to a lot of different 
+functionality, however (like how score is updated in response to basically everything), it could be pretty tedious to implement with how the class is currently set 
+up, since you'd need to add a function to update the stat to every file where the stat is updated. It'd possibly be useful to add a system for stats to detect and 
+respond to certain events.
 
-GameWorld is a big upgrade over having a lot of its functionality in MarioGame. Even more functionality in GameWorld is just other classes and having them do something. Because of this, I feel as though a lot of additional features would instead involve creating a new class entirely and calling a couple of its functions in GameWorld, which I think is a pretty effective way of doing things. Its only issue is that the Update function is really long and likely to become even longer with any changes. The function is already very streamlined, so the best option if we were to resolve this (which I'm not sure is necessary with the scope of this project) would probably be to just move a handful of the function calls in Update to other functions (maybe other Update calls?).
+GameWorld is a big upgrade over having a lot of its functionality in MarioGame. Even more functionality in GameWorld is just other classes and having them do 
+something. Because of this, I feel as though a lot of additional features would instead involve creating a new class entirely and calling a couple of its functions 
+in GameWorld, which I think is a pretty effective way of doing things. Its only issue is that the Update function is really long and likely to become even longer 
+with any changes. The function is already very streamlined, so the best option if we were to resolve this (which I'm not sure is necessary with the scope of this 
+project) would probably be to just move a handful of the function calls in Update to other functions (maybe other Update calls?).
