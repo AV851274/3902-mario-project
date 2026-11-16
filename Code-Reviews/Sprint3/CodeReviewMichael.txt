@@ -1,6 +1,6 @@
 Code Review of CheepCheep
 Code Review By: Michael Sidoti
-Code Written By: Samuel Chandler
+Code Written By: Justin Kumar
 Day of Code Review: 10/25/2026
 Minutes Spent on it: 56
 

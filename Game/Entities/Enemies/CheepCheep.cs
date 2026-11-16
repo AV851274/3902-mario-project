@@ -14,7 +14,7 @@ public class CheepCheep : EnemyBase
     public override float GravityScale => StruckByFireball ? 0.2f : 0f;
     private float SwimSpeed = 60f;
     private const int Size = 40;
-    private const float bobHeight = 5f;
+    private const float bobHeight = 7f;
     private const float boundSize = 75f;
     private const float turnAcc = 1f;
     private float targetVelocityX;
@@ -51,7 +51,7 @@ public class CheepCheep : EnemyBase
         if (IsDefeated)
             effects |= SpriteEffects.FlipVertically;
 
-        sprite.Draw(spriteBatch, Position - new Vector2(0, BobOffset()), effects: effects);
+        sprite.Draw(spriteBatch, Position, effects: effects);
     }
 
     public override void Update(GameTime gameTime)
@@ -65,20 +65,18 @@ public class CheepCheep : EnemyBase
         {
             bobTimer += deltaTime;
             if (fishColor == FishColor.Green) adjustGreenPosition();
+
+            float bobVelocityY = -BobAdjust();
+            Velocity = new Vector2(Velocity.X, bobVelocityY);
         }
 
         sprite.UpdateAnimation(gameTime);
     }
 
-    public override void Stomp()
+    public override void Stomp() //CheepCheep does nothing when stomped
     {
 
     }
-
-    // protected override void OnWallBounce(float RelativeVelocityBeforeX)
-    // {
-
-    // }
 
     public override void HitByFireball()
     {
@@ -86,10 +84,9 @@ public class CheepCheep : EnemyBase
         Velocity = new Vector2(0f, -100f);
     }
 
-    private float BobOffset()
+    private float BobAdjust()
     {
-        float progress = bobTimer / bobDuration;
-        return MathF.Sin(progress * MathF.PI) * bobHeight;
+        return MathF.Cos(bobTimer * (MathF.PI / bobDuration)) * bobHeight * (MathF.PI / bobDuration);
     }
 
     private float adjustGreenPosition()
@@ -97,14 +94,12 @@ public class CheepCheep : EnemyBase
         if (Position.X < leftBound)
         {
             targetVelocityX = SwimSpeed;
-            //Position = new Vector2(leftBound, Position.Y);
             Velocity = new Vector2(Velocity.X+turnAcc, Velocity.Y);
             if (Velocity.X > targetVelocityX) Velocity = new Vector2(targetVelocityX, Velocity.Y);
         }
         else if (Position.X > rightBound)
         {
             targetVelocityX = -SwimSpeed;
-            //Position = new Vector2(rightBound, Position.Y);
             Velocity = new Vector2(Velocity.X-turnAcc, Velocity.Y);
             if (Velocity.X < targetVelocityX) Velocity = new Vector2(targetVelocityX, Velocity.Y);
         }
