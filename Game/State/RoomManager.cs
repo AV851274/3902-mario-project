@@ -11,9 +11,7 @@ namespace Mario.Game.State;
 
 internal sealed class RoomManager
 {
-    private const int OverworldRoom = 0;
-    private const int UnderwaterRoom = 1;
-    private const float PipeExitOffset = 144f;
+    private const int PipeExitTileOffset = 3;
 
     private static readonly string[] RoomFiles =
     {
@@ -26,7 +24,7 @@ internal sealed class RoomManager
     private Vector2 returnPosition;
 
     public int CurrentRoom { get; private set; }
-    public bool IsUnderwater => CurrentRoom == UnderwaterRoom;
+    public bool IsUnderwater => CurrentRoom == GameConstants.World.UnderwaterRoomIndex;
 
     public int NextRoomIndex =>
         (CurrentRoom + 1) % RoomFiles.Length;
@@ -68,11 +66,11 @@ internal sealed class RoomManager
         Vector2 playerPosition)
     {
         if (IsUnderwater)
-            return (OverworldRoom, returnPosition);
+            return (GameConstants.World.OverworldRoomIndex, returnPosition);
 
         returnPosition = playerPosition
-            + new Vector2(PipeExitOffset, 0f);
+            + new Vector2(GameConstants.World.TileSize * PipeExitTileOffset, 0f);
 
-        return (UnderwaterRoom, null);
+        return (GameConstants.World.UnderwaterRoomIndex, null);
     }
 }

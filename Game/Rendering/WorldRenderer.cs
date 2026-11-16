@@ -9,7 +9,7 @@ namespace Mario.Game.Rendering;
 
 public sealed class WorldRenderer : IDisposable
 {
-    private const int WaterTopY = 48;
+    private const int PixelTextureSize = 1;
     private static readonly Color WaterColor = new(0x42, 0x42, 0xFF);
 
     private readonly GraphicsDevice graphicsDevice;
@@ -33,7 +33,7 @@ public sealed class WorldRenderer : IDisposable
         this.spriteBatch = spriteBatch;
         this.hitboxes = hitboxes;
         this.hud = hud;
-        pixel = new Texture2D(graphicsDevice, 1, 1);
+        pixel = new Texture2D(graphicsDevice, PixelTextureSize, PixelTextureSize);
         pixel.SetData(new[] { Color.White });
     }
 
@@ -67,7 +67,8 @@ public sealed class WorldRenderer : IDisposable
 
         // Water is behind entities and uses the world camera transform.
         if (underwater)
-            spriteBatch.Draw(pixel, new Rectangle(0, WaterTopY, levelWidth, levelHeight - WaterTopY), WaterColor);
+            spriteBatch.Draw(pixel, new Rectangle(0, GameConstants.World.TileSize, levelWidth,
+                levelHeight - GameConstants.World.TileSize), WaterColor);
 
         entities.Draw(spriteBatch);
 

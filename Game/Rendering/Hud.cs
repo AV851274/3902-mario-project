@@ -9,6 +9,7 @@ public class Hud
 {
     private const float TopMargin = 16f;
     private const float RowGap = 4f;
+    private const float ColumnCenterOffset = 0.5f;
     private static readonly string[] Labels = { "MARIO", "COINS", "WORLD", "TIME", "LIVES" };
 
     private readonly SpriteFont font;
@@ -36,7 +37,7 @@ public class Hud
 
         for (int i = 0; i < Labels.Length; i++)
         {
-            float centerX = columnWidth * (i + 0.5f);
+            float centerX = columnWidth * (i + ColumnCenterOffset);
             DrawCentered(spriteBatch, Labels[i], centerX, TopMargin);
             DrawCentered(spriteBatch, values[i], centerX, valueY);
         }

@@ -19,8 +19,12 @@ public class Player : IPlayer
     private const float InvincibleDuration = 1.5f;
     private const float StompGraceDuration = 0.2f;
     private const float DeathJumpSpeed = 500f;
-    private const float FallOffScreenY = 1000f;
     private const float FlagpoleSlideSpeed = 240f;
+    private const float StompBounceVelocity = -350f;
+    private const float FireballSpawnOffsetX = 25f;
+    private const float FireballSpawnOffsetY = -20f;
+    private const float FireballVelocityX = 500f;
+    private const float FireballVelocityY = 200f;
 
     private readonly PlayerAppearance appearance;
     private PlayerBodyBase body;
@@ -201,7 +205,7 @@ public class Player : IPlayer
                 enemy.Stomp();
                 audio.PlaySound(SoundType.StompSwim);
                 stompGraceTimer = StompGraceDuration;
-                Velocity = new Vector2(Velocity.X, -350f);
+                Velocity = new Vector2(Velocity.X, StompBounceVelocity);
                 IsOnGround = false;
             }
             else if (enemy.CanHurtPlayer)
@@ -255,7 +259,7 @@ public class Player : IPlayer
     {
         body.UpdateBounds(MarioPowerState.Power);
 
-        if (Position.Y > FallOffScreenY)
+        if (Position.Y > GameConstants.World.EntityDespawnY)
         {
             // Falling into a pit skips the death animation, so the death starts here
             if (!isDying)
@@ -307,8 +311,9 @@ public class Player : IPlayer
     {
         float direction = facingDirection == Direction.Left ? -1f : 1f;
         if (spawner.TrySpawnProjectile(ProjectileType.Fireball,
-            Position + new Vector2(25f * direction, -20f),
-            new Vector2(500f * direction, 200f)))
+            Position + new Vector2(
+                FireballSpawnOffsetX * direction, FireballSpawnOffsetY),
+            new Vector2(FireballVelocityX * direction, FireballVelocityY)))
         {
             audio.PlaySound(SoundType.Fireball);
         }

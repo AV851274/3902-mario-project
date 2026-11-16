@@ -9,6 +9,9 @@ namespace Mario.Game.Levels;
 
 internal sealed class EnemyTileHandler : ILevelTileHandler
 {
+    private const float HighPodobooJumpVelocity = -1000f;
+    private const float LowPodobooJumpVelocity = -800f;
+
     private readonly ICollection<IEnemy> enemies;
     private readonly SpriteFactory spriteFactory;
     private readonly IEntitySpawner spawner;
@@ -70,13 +73,13 @@ internal sealed class EnemyTileHandler : ILevelTileHandler
                 enemies.Add(
                     new Podoboo(
                         spriteFactory.Create("enemies", "podoboo"),
-                        position, -1000f));
+                        position, HighPodobooJumpVelocity));
                 return true;
             case "Pb":
                 enemies.Add(
                     new Podoboo(
                         spriteFactory.Create("enemies", "podoboo"),
-                        position, -800f));
+                        position, LowPodobooJumpVelocity));
                 return true;
             case "Pk":
                 enemies.Add(

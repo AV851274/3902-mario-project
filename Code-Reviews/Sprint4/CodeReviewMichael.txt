@@ -1,0 +1,25 @@
+Code Review of HitboxRenderer
+Code Review By: Michael Sidoti
+Code Written By: Justin Kumar
+Day of Code Review: 11/16/2026
+Minutes Spent on it: 43
+
+Readability: 9/10
+
+The method is short and easy to read, and the separation of the
+hitbox into top, bottom, left, and right edges makes the rendering logic easy to
+understand.
+
+The one issue is that the method is doing a lot of math in
+one place without much explanation. If a future developer has a bug with the
+hitbox offset, then they may have to reason about every cast and subtraction
+before they know what is going on.
+
+Using a couple comments might help with understanding the math.
+
+Maintainability/Quality: 8/10
+
+The bigger problem that I see is that this code assumes the hitbox bounds are
+always large. The calculations will truncate float values and can be zero or a
+negative value when the collider is thin or somewhat off-screen. 
+So, that can make the hitbox disappear or render in the wrong place.

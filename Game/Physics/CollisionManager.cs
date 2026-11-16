@@ -5,6 +5,8 @@ namespace Mario.Game.Physics;
 
 public static class CollisionManager
 {
+    private const float TopOnlyContactTolerance = 0.1f;
+
     public record struct CollisionResult(Vector2 Normal, float Penetration);
 
     // Resolve one pair and notify both colliders after correction.
@@ -48,7 +50,7 @@ public static class CollisionManager
         Box oldSurface = previousSurface ?? surface.Bounds;
         Box oldOther = previousOther ?? other.Bounds;
         return normal.Y < 0f && relativeVelocity.Y >= 0f &&
-               oldOther.Bottom <= oldSurface.Top + 0.1;
+               oldOther.Bottom <= oldSurface.Top + TopOnlyContactTolerance;
     }
 
     private static bool CanCollide(ICollider collider)

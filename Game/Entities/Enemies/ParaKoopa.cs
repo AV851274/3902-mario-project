@@ -10,11 +10,6 @@ public class ParaKoopa : EnemyBase
     private readonly IEntitySpawner spawner;
     private readonly ISpriteFactory sprites;
 
-    private const float WalkSpeed = 60f;
-    private const int Width = 40;
-    private const int Height = 60;
-    private const float JumpSpeed = -500f;
-
     private Direction facingDirection = Direction.Left;
 
     public Direction FacingDirection => facingDirection;
@@ -26,11 +21,12 @@ public class ParaKoopa : EnemyBase
     public override bool CanHurtPlayer => !IsDefeated;
 
     public ParaKoopa(ISprite sprite, Vector2 initialPosition, IEntitySpawner spawner, ISpriteFactory sprites)
-        : base(sprite, initialPosition, Width, Height)
+        : base(sprite, initialPosition, GameConstants.Entities.StandardSize,
+            GameConstants.Entities.TallHeight)
     {
         this.spawner = spawner;
         this.sprites = sprites;
-        Velocity = new Vector2(-WalkSpeed, 0f);
+        Velocity = new Vector2(-GameConstants.Enemies.StandardWalkSpeed, 0f);
         IsOnGround = true;
     }
 
@@ -50,7 +46,7 @@ public class ParaKoopa : EnemyBase
     {
         if (IsOnGround)
         {
-            Velocity = new Vector2(Velocity.X, JumpSpeed);
+            Velocity = new Vector2(Velocity.X, GameConstants.Enemies.StandardJumpVelocity);
             IsOnGround = false;
         }
 

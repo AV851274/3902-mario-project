@@ -11,21 +11,25 @@ public class CheepCheep : EnemyBase
     public override bool IsDefeated => StruckByFireball;
     public override bool canBeStomped => false;
     public override ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
-    public override float GravityScale => StruckByFireball ? 0.2f : 0f;
-    private float SwimSpeed = 60f;
-    private const int Size = 40;
+    private const float FireballGravityScale = 0.2f;
+    private const float GreenSwimSpeedMultiplier = 1.5f;
+    private const float FireballKnockbackVelocity = -100f;
+    private const int Size = GameConstants.Entities.StandardSize;
     private const float bobHeight = 7f;
     private const float boundSize = 75f;
     private const float turnAcc = 1f;
+    private const float BobCycleDistance = 40f;
+    private float SwimSpeed = GameConstants.Enemies.StandardWalkSpeed;
     private float targetVelocityX;
     private float bobTimer = 0f;
-    private float bobDuration => 40f/SwimSpeed; // Time it takes to complete one bob cycle
+    private float bobDuration => BobCycleDistance / SwimSpeed;
     private float leftBound;
     private float rightBound;
     private bool StruckByFireball = false;
     private Direction facingDirection = Direction.Left;
     public Direction FacingDirection => facingDirection;
     private FishColor fishColor;
+    public override float GravityScale => StruckByFireball ? FireballGravityScale : 0f;
 
     public CheepCheep(ISprite sprite, Vector2 initialPosition, FishColor color)
         : base(sprite, initialPosition, Size, Size)
@@ -33,7 +37,7 @@ public class CheepCheep : EnemyBase
         fishColor = color;
         if (color == FishColor.Green)
         {
-            SwimSpeed *= 1.5f;
+            SwimSpeed *= GreenSwimSpeedMultiplier;
             leftBound = initialPosition.X - boundSize;
             rightBound = initialPosition.X + boundSize;
         }
@@ -81,7 +85,7 @@ public class CheepCheep : EnemyBase
     public override void HitByFireball()
     {
         StruckByFireball = true;
-        Velocity = new Vector2(0f, -100f);
+        Velocity = new Vector2(0f, FireballKnockbackVelocity);
     }
 
     private float BobAdjust()

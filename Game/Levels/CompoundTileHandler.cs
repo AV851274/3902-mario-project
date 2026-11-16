@@ -9,6 +9,8 @@ namespace Mario.Game.Levels;
 
 internal sealed class CompoundTileHandler : ILevelTileHandler
 {
+    private const int FireBarLength = 6;
+
     private readonly ICollection<IBlock> blocks;
     private readonly ICollection<IEnemy> enemies;
     private readonly SpriteFactory spriteFactory;
@@ -33,7 +35,9 @@ internal sealed class CompoundTileHandler : ILevelTileHandler
                 enemies.Add(
                     new FireBar(
                         spriteFactory.Create("projectiles", "fireball"),
-                        new Vector2(position.X + 12, position.Y + 12), 6));
+                        new Vector2(position.X + GameConstants.World.QuarterTileSize,
+                            position.Y + GameConstants.World.QuarterTileSize),
+                        FireBarLength));
 
                 blocks.Add(
                     blockFactory.Create(BlockType.UsedQuestion, position));

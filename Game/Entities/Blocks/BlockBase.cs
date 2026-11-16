@@ -7,14 +7,14 @@ namespace Mario.Game.Entities.Blocks;
 
 public abstract class BlockBase : IBlock
 {
-    protected const int Size = 48;
     protected ISprite Sprite { get; set; }
     protected virtual Vector2 DrawPosition => Position;
 
     public Vector2 Position { get; }
     public bool Active => true;
     public BlockType Type { get; }
-    public virtual Box Bounds => new(Position.X, Position.Y, Size, Size);
+    public virtual Box Bounds => new(Position.X, Position.Y,
+        GameConstants.World.TileSize, GameConstants.World.TileSize);
     public virtual ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.Solid;
 
     protected BlockBase(ISprite sprite, BlockType type, Vector2 position)

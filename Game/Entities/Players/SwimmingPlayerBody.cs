@@ -12,14 +12,18 @@ public class SwimmingPlayerBody : PlayerBodyBase
     private const float MaxGroundSpeed = 100f;
     private const float StrokeSpeed = 150f;
     private const float StrokeAnimationTime = 0.4f;
+    private const float SmallSwimmingIdleWidth = 34f;
+    private const float MaxFallSpeedValue = 100f;
     private float timeSinceStroke = float.PositiveInfinity;
 
     public override float GravityScale => 0.2f;
-    public override float MaxFallSpeed => 100f;
+    public override float MaxFallSpeed => MaxFallSpeedValue;
     public bool IsSwimming => !IsOnGround && timeSinceStroke < StrokeAnimationTime;
 
     protected override float SmallWidth =>
-        Velocity.X == 0f && IsOnGround ? 34f : 36f;
+        Velocity.X == 0f && IsOnGround
+            ? SmallSwimmingIdleWidth
+            : GameConstants.Player.SmallBodyWidth;
 
     public SwimmingPlayerBody()
     {

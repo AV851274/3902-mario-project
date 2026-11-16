@@ -37,8 +37,8 @@ public class GameOverScreenState : GameScreenStateBase
 
         float centerY = graphicsDevice.Viewport.Height / 2f;
 
-        DrawCenteredText("GAME OVER", centerY - 80, Color.White);
-        DrawCenteredText("PRESS ENTER TO RESTART", centerY + 40, Color.White);
+        DrawCenteredText("GAME OVER", centerY - GameConstants.Screen.TitleOffset, Color.White);
+        DrawCenteredText("PRESS ENTER TO RESTART", centerY + GameConstants.Screen.PromptOffset, Color.White);
 
         spriteBatch.End();
     }

@@ -8,8 +8,6 @@ namespace Mario.Game.Entities.Blocks;
 
 public sealed class QuestionBlock : BlockBase
 {
-    private const float BumpHeight = 12f;
-    private const float BumpDuration = 0.15f;
     private float bumpTimer;
 
     protected override Vector2 DrawPosition
@@ -17,7 +15,8 @@ public sealed class QuestionBlock : BlockBase
         get
         {
             float offset = bumpTimer > 0f
-                ? MathF.Sin((1f - bumpTimer / BumpDuration) * MathF.PI) * BumpHeight
+                ? MathF.Sin((1f - bumpTimer / GameConstants.Blocks.BumpDuration) * MathF.PI)
+                    * GameConstants.Blocks.BumpHeight
                 : 0f;
             return Position - new Vector2(0f, offset);
         }
@@ -52,7 +51,7 @@ public sealed class QuestionBlock : BlockBase
         if (isUsed)
             return;
 
-        bumpTimer = BumpDuration;
+        bumpTimer = GameConstants.Blocks.BumpDuration;
         if (contents.HasValue)
         {
             ItemType released = contents.Value;

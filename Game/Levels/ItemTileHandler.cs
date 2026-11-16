@@ -27,7 +27,8 @@ internal sealed class ItemTileHandler : ILevelTileHandler
                 items.Add(itemFactory.Create(ItemType.FireFlower, position));
                 return true;
             case "co":
-                items.Add(itemFactory.Create(ItemType.Coin, new Vector2(position.X + 12, position.Y)));
+                items.Add(itemFactory.Create(ItemType.Coin,
+                    new Vector2(position.X + GameConstants.World.QuarterTileSize, position.Y)));
                 return true;
             case "st":
                 items.Add(itemFactory.Create(ItemType.Star, position));

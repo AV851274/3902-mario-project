@@ -8,11 +8,8 @@ namespace Mario.Game.Entities.Enemies;
 
 public class Turtle : EnemyBase
 {
-    private const float WalkSpeed = 60f;
-    private const float KickSpeed = 6 * WalkSpeed;
-    private const float KickGraceTime = 0.25f;
-    private const int Width = 40;
-    private const int Height = 60;
+    private const float KickSpeed =
+        GameConstants.Enemies.KickSpeedMultiplier * GameConstants.Enemies.StandardWalkSpeed;
 
     // private float leftBound;
     // private float rightBound;
@@ -27,9 +24,10 @@ public class Turtle : EnemyBase
     public override bool CanHurtPlayer => !IsDefeated && (!isStomped || (isKicked && kickGraceTimer <= 0f));
 
     public Turtle(ISprite sprite, Vector2 initialPosition)
-        : base(sprite, initialPosition, Width, Height)
+        : base(sprite, initialPosition, GameConstants.Entities.StandardSize,
+            GameConstants.Entities.TallHeight)
     {
-        Velocity = new Vector2(-WalkSpeed, 0f);
+        Velocity = new Vector2(-GameConstants.Enemies.StandardWalkSpeed, 0f);
         // leftBound = initialPosition.X - patrolDistance;
         // rightBound = initialPosition.X + patrolDistance;
     }
@@ -79,7 +77,7 @@ public class Turtle : EnemyBase
         else if (!isKicked)
         {
             isKicked = true;
-            kickGraceTimer = KickGraceTime;
+            kickGraceTimer = GameConstants.Enemies.KickGraceDuration;
             Velocity = new Vector2(KickSpeed *
                                    (facingDirection == Direction.Left ? -1 : 1), Velocity.Y);
         }

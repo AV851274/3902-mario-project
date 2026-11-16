@@ -16,7 +16,7 @@ public abstract class StaticEnemyBase : IEnemy
     public virtual ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public virtual bool canBeStomped => true;
     public Box Bounds => new Box(Position.X, Position.Y, width, height);
-    public bool Active => Position.Y <= 1000f;
+    public bool Active => Position.Y <= GameConstants.World.EntityDespawnY;
     public bool CollisionEnabled => Active && !IsDefeated;
     public virtual bool IsDefeated => DefeatedByFireball;
     public virtual bool CanHurtPlayer => !IsDefeated;
@@ -41,4 +41,3 @@ public abstract class StaticEnemyBase : IEnemy
         DefeatedByFireball = true;
     }
 }
-

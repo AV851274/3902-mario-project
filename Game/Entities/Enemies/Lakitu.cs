@@ -20,10 +20,8 @@ public class Lakitu : EnemyBase, IPlayerFollower
     private const float FollowAcceleration = 200f;
     private const float FollowDistance = 120f;
     private const float LeadTime = 0.3f;
-    private const int Width = 40;
-    private const int Height = 60;
-
     private const float EggThrowDuration = 0.4f;
+    private const float EggThrowChancePerFrame = 0.005f;
 
     private LakituState state = LakituState.Idle;
     private float throwElapsed;
@@ -45,7 +43,8 @@ public class Lakitu : EnemyBase, IPlayerFollower
     }
 
     public Lakitu(ISprite sprite, Vector2 initialPosition, IEntitySpawner spawner)
-        : base(sprite, initialPosition, Width, Height)
+        : base(sprite, initialPosition, GameConstants.Entities.StandardSize,
+            GameConstants.Entities.TallHeight)
     {
         this.spawner = spawner;
         Velocity = Vector2.Zero;
@@ -74,7 +73,7 @@ public class Lakitu : EnemyBase, IPlayerFollower
 
         UpdateFollowVelocity(deltaTime);
 
-        if (state == LakituState.Idle && Random.Shared.NextDouble() < 0.005)
+        if (state == LakituState.Idle && Random.Shared.NextDouble() < EggThrowChancePerFrame)
         {
             state = LakituState.Thrown;
             throwElapsed = 0;

@@ -17,6 +17,7 @@ public sealed class ItemFactory
         this.audio = audio;
     }
 
-    public Item Create(ItemType type, Vector2 position, float bounceSpeed = 400f) =>
+    public Item Create(ItemType type, Vector2 position,
+        float bounceSpeed = GameConstants.Projectiles.DefaultBounceSpeed) =>
         new Item(sprites, rewards, audio, type, position, bounceSpeed);
 }
