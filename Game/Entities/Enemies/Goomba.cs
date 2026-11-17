@@ -6,17 +6,15 @@ namespace Mario.Game.Entities.Enemies;
 
 public class Goomba : EnemyBase
 {
-    private const float WalkSpeed = 60f;
-    private const int Size = 40;
-
     private bool isStomped;
 
     public override bool IsDefeated => isStomped || base.IsDefeated;
 
     public Goomba(ISprite sprite, Vector2 initialPosition)
-        : base(sprite, initialPosition, Size, Size)
+        : base(sprite, initialPosition, GameConstants.Entities.StandardSize,
+            GameConstants.Entities.StandardSize)
     {
-        Velocity = new Vector2(-WalkSpeed, 0f);
+        Velocity = new Vector2(-GameConstants.Enemies.StandardWalkSpeed, 0f);
     }
 
     public override void Draw(SpriteBatch spriteBatch)

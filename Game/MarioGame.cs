@@ -11,6 +11,9 @@ namespace Mario.Game;
 
 public class MarioGame : Microsoft.Xna.Framework.Game
 {
+    private const int BackBufferWidth = 1280;
+    private const int BackBufferHeight = 768;
+
     private readonly GraphicsDeviceManager graphics;
     private SpriteBatch spriteBatch = null!;
     private GameWorld world = null!;
@@ -19,8 +22,8 @@ public class MarioGame : Microsoft.Xna.Framework.Game
     public MarioGame()
     {
         graphics = new GraphicsDeviceManager(this);
-        graphics.PreferredBackBufferWidth = 1280;
-        graphics.PreferredBackBufferHeight = 768;
+        graphics.PreferredBackBufferWidth = BackBufferWidth;
+        graphics.PreferredBackBufferHeight = BackBufferHeight;
         Content.RootDirectory = "Content";
         IsMouseVisible = true;
     }
@@ -57,8 +60,18 @@ public class MarioGame : Microsoft.Xna.Framework.Game
 
     protected override void UnloadContent()
     {
-        world.Dispose();
-        spriteBatch.Dispose();
         base.UnloadContent();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            world?.Dispose();
+            spriteBatch?.Dispose();
+            graphics.Dispose();
+        }
+
+        base.Dispose(disposing);
     }
 }

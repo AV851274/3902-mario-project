@@ -18,6 +18,7 @@ namespace Mario.Game.State;
 
 public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
 {
+    private const float Gravity = 1000f;
     private const int MaxFireballs = 4;
 
     private readonly SpriteFactory spriteFactory;
@@ -27,10 +28,10 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
     private readonly GameEntities gameEntities = new();
     private readonly RoomManager roomManager;
     private readonly MarioGame game;
-    private IController keyboardController = null!;
-    private IController mouseController = null!;
-    private readonly IGameAudio audio;
-    private readonly PhysicsEngine physicsEngine = new(gravity: 1000f);
+    private KeyboardController? keyboardController;
+    private MouseController? mouseController;
+    private readonly GameAudio audio;
+    private readonly PhysicsEngine physicsEngine = new(gravity: Gravity);
     private readonly GameStats stats;
     private readonly WorldRenderer renderer;
 
@@ -82,7 +83,7 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
     public void ResetGame()
     {
         stats.Reset();
-        InitializeRoom(0);
+        InitializeRoom(GameConstants.World.OverworldRoomIndex);
     }
 
     public void NextRoom() =>
@@ -168,8 +169,8 @@ public sealed class GameWorld : IEntitySpawner, IGameControls, IDisposable
         if (IsCourseClear)
             return;
 
-        keyboardController.Update(gameTime);
-        mouseController.Update(gameTime);
+        keyboardController!.Update(gameTime);
+        mouseController!.Update(gameTime);
 
         gameEntities.Update(gameTime);
         physicsEngine.Step(gameEntities, gameTime);

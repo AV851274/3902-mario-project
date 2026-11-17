@@ -8,8 +8,6 @@ namespace Mario.Game.Entities.Blocks;
 
 public sealed class BrickBlock : BlockBase
 {
-    private const float BumpHeight = 12f;
-    private const float BumpDuration = 0.15f;
     private float bumpTimer;
 
     protected override Vector2 DrawPosition
@@ -17,7 +15,8 @@ public sealed class BrickBlock : BlockBase
         get
         {
             float offset = bumpTimer > 0f
-                ? MathF.Sin((1f - bumpTimer / BumpDuration) * MathF.PI) * BumpHeight
+                ? MathF.Sin((1f - bumpTimer / GameConstants.Blocks.BumpDuration) * MathF.PI)
+                    * GameConstants.Blocks.BumpHeight
                 : 0f;
             return Position - new Vector2(0f, offset);
         }
@@ -42,7 +41,7 @@ public sealed class BrickBlock : BlockBase
 
     public override void Hit(bool big)
     {
-        bumpTimer = BumpDuration;
+        bumpTimer = GameConstants.Blocks.BumpDuration;
         isBroken = big;
         audio.PlaySound(isBroken ? SoundType.Brick : SoundType.Bump);
     }

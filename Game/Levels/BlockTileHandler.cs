@@ -98,7 +98,8 @@ internal sealed class BlockTileHandler : ILevelTileHandler
                 blocks.Add(blockFactory.Create(BlockType.FlagPole, position));
                 return true;
             case "/":
-                blocks.Add(blockFactory.Create(BlockType.Wave, new Vector2(position.X, position.Y + 24)));
+                blocks.Add(blockFactory.Create(BlockType.Wave,
+                    new Vector2(position.X, position.Y + GameConstants.World.HalfTileSize)));
                 return true;
             case "waterRock":
                 blocks.Add(blockFactory.Create(BlockType.WaterRock, position));

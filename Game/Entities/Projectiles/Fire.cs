@@ -8,6 +8,9 @@ namespace Mario.Game.Entities.Projectiles;
 
 public class Fire : IProjectile
 {
+    private const int BoundsWidth = GameConstants.World.TileSize + GameConstants.World.HalfTileSize;
+    private const int BoundsHeight = GameConstants.World.HalfTileSize;
+    private const int GridAdjustment = 1;
     private ISprite sprite;
     private float lifeTime;
     private float elapsedTime = 0f;
@@ -18,7 +21,7 @@ public class Fire : IProjectile
     public bool CollisionEnabled => true;
     public Vector2 Position { get; set; }
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
-    public Box Bounds => new Box(Position.X, Position.Y, 72, 24);
+    public Box Bounds => new Box(Position.X, Position.Y, BoundsWidth, BoundsHeight);
     public bool Active { get; private set; }
     public Vector2 Velocity { get; set; }
 
@@ -42,9 +45,9 @@ public class Fire : IProjectile
             Active = false;
             return;
         }
-        if ((int) Position.Y % 48 != 0)
+        if ((int)Position.Y % GameConstants.World.TileSize != 0)
         {
-            Position = new Vector2(Position.X, Position.Y + 1);
+            Position = new Vector2(Position.X, Position.Y + GridAdjustment);
         }
 
         sprite.Play("Idle");

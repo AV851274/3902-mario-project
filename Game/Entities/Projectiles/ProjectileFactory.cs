@@ -7,6 +7,9 @@ namespace Mario.Game.Entities.Projectiles;
 
 public sealed class ProjectileFactory
 {
+    private const float FireballLifetime = 2f;
+    private const float StandardProjectileLifetime = 3f;
+
     private readonly ISpriteFactory sprites;
     private readonly IEntitySpawner spawner;
 
@@ -20,13 +23,17 @@ public sealed class ProjectileFactory
     public IGameObject Create(ProjectileType type, Vector2 position, Vector2 velocity) => type switch
     {
         ProjectileType.Fireball => new Fireball(
-            sprites.Create("projectiles", "fireball"), position, velocity, 2f, 400f),
+            sprites.Create("projectiles", "fireball"), position, velocity,
+            FireballLifetime, GameConstants.Projectiles.DefaultBounceSpeed),
         ProjectileType.Hammer => new Hammer(
-            sprites.Create("projectiles", "hammer"), position, velocity, 3f),
+            sprites.Create("projectiles", "hammer"), position, velocity,
+            StandardProjectileLifetime),
         ProjectileType.Fire => new Fire(
-            sprites.Create("projectiles", "fire"), position, velocity, 3f),
+            sprites.Create("projectiles", "fire"), position, velocity,
+            StandardProjectileLifetime),
         ProjectileType.Egg => new Egg(
-            sprites.Create("projectiles", "egg"), position, velocity, 3f, spawner, sprites),
+            sprites.Create("projectiles", "egg"), position, velocity,
+            StandardProjectileLifetime, spawner, sprites),
         ProjectileType.BulletBill => new BulletBill(
             sprites.Create("enemies", "bulletBill"), position, velocity),
         _ => throw new ArgumentOutOfRangeException(nameof(type), type, "Unknown projectile type"),

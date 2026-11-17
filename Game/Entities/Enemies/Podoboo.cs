@@ -7,9 +7,8 @@ namespace Mario.Game.Entities.Enemies;
 
 public class Podoboo : EnemyBase
 {
-    private const int Width = 40;
-    private const int Height = 40;
-    private const float waitingY = 720f;
+    private const float WaitingY = 720f;
+    private const float JumpChancePerFrame = 0.005f;
     private float jumpSpeed;
     private bool waiting = false;
     public override float GravityScale => waiting? 0f : 1f;
@@ -18,7 +17,8 @@ public class Podoboo : EnemyBase
     public override ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
 
     public Podoboo(ISprite sprite, Vector2 initialPosition, float jumpSpeed)
-        : base(sprite, initialPosition, Width, Height)
+        : base(sprite, initialPosition, GameConstants.Entities.StandardSize,
+            GameConstants.Entities.StandardSize)
     {
         this.jumpSpeed = jumpSpeed;
         Position = initialPosition;
@@ -34,13 +34,13 @@ public class Podoboo : EnemyBase
     public override void Update(GameTime gameTime)
     {
 
-        if(Position.Y >= waitingY)
+        if (Position.Y >= WaitingY)
         {
             Velocity = Vector2.Zero;
             waiting = true;
         }
 
-        if (waiting && Random.Shared.NextDouble() < 0.005) // 2% chance to jump each frame
+        if (waiting && Random.Shared.NextDouble() < JumpChancePerFrame)
             {
                 Velocity = new Vector2(0f, jumpSpeed);
                 waiting = false;

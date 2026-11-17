@@ -30,30 +30,41 @@ internal sealed class BackgroundTileHandler : ILevelTileHandler
                     new BackgroundObject(spriteFactory, BackgroundType.BigCastle, position));
                 return true;
             case "cl":
-                background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud, new Vector2(position.X + 24, position.Y - 24)));
+                background.Add(new BackgroundObject(spriteFactory, BackgroundType.Cloud,
+                    new Vector2(position.X + GameConstants.World.HalfTileSize,
+                        position.Y - GameConstants.World.HalfTileSize)));
                 return true;
             case "smcl":
-                background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallCloud, new Vector2(position.X + 24, position.Y - 24)));
+                background.Add(new BackgroundObject(spriteFactory, BackgroundType.SmallCloud,
+                    new Vector2(position.X + GameConstants.World.HalfTileSize,
+                        position.Y - GameConstants.World.HalfTileSize)));
                 return true;
             case "bcl":
-                background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigCloud, new Vector2(position.X + 24, position.Y - 24)));
+                background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigCloud,
+                    new Vector2(position.X + GameConstants.World.HalfTileSize,
+                        position.Y - GameConstants.World.HalfTileSize)));
                 return true;
             case "bh":
-                background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill, new Vector2(position.X, position.Y + 48)));
+                background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigHill,
+                    new Vector2(position.X, position.Y + GameConstants.World.TileSize)));
                 return true;
             case "sh":
                 background.Add(
-                    new BackgroundObject(spriteFactory, BackgroundType.SmallHill, new Vector2(position.X, position.Y - 48)));
+                    new BackgroundObject(spriteFactory, BackgroundType.SmallHill,
+                        new Vector2(position.X, position.Y - GameConstants.World.TileSize)));
                 return true;
             case "sb":
                 background.Add(
-                    new BackgroundObject(spriteFactory, BackgroundType.SmallBush, new Vector2(position.X + 24, position.Y)));
+                    new BackgroundObject(spriteFactory, BackgroundType.SmallBush,
+                        new Vector2(position.X + GameConstants.World.HalfTileSize, position.Y)));
                 return true;
             case "bb":
-                background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush, new Vector2(position.X + 24, position.Y)));
+                background.Add(new BackgroundObject(spriteFactory, BackgroundType.BigBush,
+                    new Vector2(position.X + GameConstants.World.HalfTileSize, position.Y)));
                 return true;
             case "w":
-                background.Add(new BackgroundObject(spriteFactory, BackgroundType.Water, new Vector2(position.X, position.Y + 24)));
+                background.Add(new BackgroundObject(spriteFactory, BackgroundType.Water,
+                    new Vector2(position.X, position.Y + GameConstants.World.HalfTileSize)));
                 return true;
             case "flag":
             case "fl":

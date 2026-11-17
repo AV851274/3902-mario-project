@@ -6,11 +6,12 @@ namespace Mario.Game.Rendering.Sprites;
 
 public class StaticSprite : ISprite
 {
+    private const float DefaultScale = 3f;
     private Texture2D texture;
     private Rectangle sourceRectangle;
     private float scale;
 
-    public StaticSprite(Texture2D texture, Rectangle sourceRectangle, float scale = 3)
+    public StaticSprite(Texture2D texture, Rectangle sourceRectangle, float scale = DefaultScale)
     {
         this.texture = texture;
         this.sourceRectangle = sourceRectangle;

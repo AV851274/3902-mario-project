@@ -11,14 +11,13 @@ public class Hammer : IProjectile
     private ISprite sprite;
     private float lifeTime;
     private float elapsedTime = 0f;
-    private float deathY = 1000f;
-
     public Vector2 PendingAcceleration { get; set; }
     public bool IsOnGround { get; set; }
     public bool CollisionEnabled => true;
     public Vector2 Position { get; set; }
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
-    public Box Bounds => new Box(Position.X, Position.Y, 40, 40);
+    public Box Bounds => new Box(Position.X, Position.Y,
+        GameConstants.Entities.StandardSize, GameConstants.Entities.StandardSize);
     public bool Active { get; private set; }
     public Vector2 Velocity { get; set; }
 
@@ -43,7 +42,7 @@ public class Hammer : IProjectile
             return;
         }
 
-        if (Position.Y >= deathY)
+        if (Position.Y >= GameConstants.World.EntityDespawnY)
         {
             Active = false;
         }

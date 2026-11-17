@@ -32,8 +32,8 @@ public class StartScreenState : GameScreenStateBase
 
         float centerY = graphicsDevice.Viewport.Height / 2f;
 
-        DrawCenteredText("SUPER MARIO BROS", centerY - 80, Color.White);
-        DrawCenteredText("PRESS ENTER TO START", centerY + 40, Color.White);
+        DrawCenteredText("SUPER MARIO BROS", centerY - GameConstants.Screen.TitleOffset, Color.White);
+        DrawCenteredText("PRESS ENTER TO START", centerY + GameConstants.Screen.PromptOffset, Color.White);
 
         spriteBatch.End();
     }

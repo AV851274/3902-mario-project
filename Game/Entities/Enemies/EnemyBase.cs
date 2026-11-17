@@ -7,6 +7,8 @@ namespace Mario.Game.Entities.Enemies;
 
 public abstract class EnemyBase : IEnemy, IPhysicsBody
 {
+    private const float FireballKnockbackVelocity = -200f;
+
     // Fish states, can do other enums for other enemies if needed.
     // Not sure if this is the best spot for it, feel free to move it if you know a better place.
     public enum FishColor
@@ -27,7 +29,7 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
     public virtual ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
     public virtual bool canBeStomped => true;
     public Box Bounds => new Box(Position.X, Position.Y, width, height);
-    public virtual bool Active => Position.Y <= 1000f;
+    public virtual bool Active => Position.Y <= GameConstants.World.EntityDespawnY;
     public bool CollisionEnabled => Active && !IsDefeated;
     public virtual bool IsDefeated => DefeatedByFireball;
     public virtual bool CanHurtPlayer => !IsDefeated;
@@ -50,7 +52,7 @@ public abstract class EnemyBase : IEnemy, IPhysicsBody
             return;
 
         DefeatedByFireball = true;
-        Velocity = new Vector2(0f, -200f);
+        Velocity = new Vector2(0f, FireballKnockbackVelocity);
         IsOnGround = false;
     }
 

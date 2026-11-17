@@ -13,8 +13,6 @@ public class Item : IItem, IPhysicsBody
 {
     private const float MushroomSpeed = 100f;
     private const float RiseSpeed = 80f;
-    private const int Size = 48;
-    private const int CoinWidth = 24;
     private const int PowerUpScore = 1000;
     public bool IsCollected { get; private set; }
     public bool Active => !IsCollected;
@@ -23,16 +21,16 @@ public class Item : IItem, IPhysicsBody
         Position.X,
         Position.Y,
         Width,
-        Size);
+        GameConstants.World.TileSize);
 
     private int Width
     {
         get
         {
             if (type == ItemType.Coin)
-                return CoinWidth;
+                return GameConstants.World.HalfTileSize;
 
-            return Size;
+            return GameConstants.World.TileSize;
         }
     }
 
@@ -67,7 +65,8 @@ public class Item : IItem, IPhysicsBody
     public Vector2 Velocity { get; set; }
 
     public Item(SpriteFactory spriteFactory, IRewardReceiver rewards, IGameAudio audio,
-        ItemType type, Vector2 position, float bounceSpeed = 400f)
+        ItemType type, Vector2 position,
+        float bounceSpeed = GameConstants.Projectiles.DefaultBounceSpeed)
     {
         this.rewards = rewards;
         this.audio = audio;
@@ -122,7 +121,7 @@ public class Item : IItem, IPhysicsBody
 
     public void StartEmerging()
     {
-        emergeTargetY = Position.Y - Size;
+        emergeTargetY = Position.Y - GameConstants.World.TileSize;
     }
 
     public void Update(GameTime gameTime)

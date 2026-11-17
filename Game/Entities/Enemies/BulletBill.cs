@@ -7,7 +7,6 @@ namespace Mario.Game.Entities.Enemies;
 
 public class BulletBill : EnemyBase
 {
-    private const int Size = 40;
     private const float MaxFlightTime = 4f;
 
     private bool isStomped;
@@ -15,10 +14,13 @@ public class BulletBill : EnemyBase
     public override float GravityScale => IsDefeated ? 1f : 0f;
     public override bool IsDefeated => isStomped;
     public override ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.ThroughWalls;
-    public bool IsSpawning => flightTime < 0.5f;
+    public bool IsSpawning => flightTime < SpawningDuration;
+
+    private const float SpawningDuration = 0.5f;
 
     public BulletBill(ISprite sprite, Vector2 initialPosition, Vector2 velocity)
-        : base(sprite, initialPosition, Size, Size)
+        : base(sprite, initialPosition, GameConstants.Entities.StandardSize,
+            GameConstants.Entities.StandardSize)
     {
         Velocity = velocity;
         Position = initialPosition;

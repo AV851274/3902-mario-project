@@ -11,7 +11,7 @@ namespace Mario.Game.Levels;
 
 public class LevelLoader
 {
-    private const int TileSize = 48;
+    private static readonly Vector2 DefaultMarioSpawn = new(100f, 100f);
 
     public static (Vector2 spawn, int width, int height) LoadLevel(
         ContentManager content, string fileName, GameEntities gameEntities,
@@ -28,18 +28,20 @@ public class LevelLoader
             new CompoundTileHandler(gameEntities.Blocks, gameEntities.Enemies, spriteFactory, spawner, blockFactory)
         ];
 
-        Vector2 marioSpawn = new(100, 100);
+        Vector2 marioSpawn = DefaultMarioSpawn;
         int levelWidth = 0;
 
         for (int row = 0; row < rows.Count; row++)
         {
             string[] tiles = rows[row];
-            levelWidth = Math.Max(levelWidth, tiles.Length * TileSize);
+            levelWidth = Math.Max(levelWidth, tiles.Length * GameConstants.World.TileSize);
 
             for (int col = 0; col < tiles.Length; col++)
             {
                 string tile = tiles[col].Trim();
-                Vector2 position = new(col * TileSize, row * TileSize);
+                Vector2 position = new(
+                    col * GameConstants.World.TileSize,
+                    row * GameConstants.World.TileSize);
 
                 if (tile is "" or ".") continue;
                 if (tile == "M")
@@ -62,6 +64,6 @@ public class LevelLoader
             }
         }
 
-        return (marioSpawn, levelWidth, rows.Count * TileSize);
+        return (marioSpawn, levelWidth, rows.Count * GameConstants.World.TileSize);
     }
 }

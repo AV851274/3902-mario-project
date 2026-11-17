@@ -10,6 +10,9 @@ namespace Mario.Game.Entities.Projectiles;
 public class Fireball : IProjectile
 {
     private ISprite sprite;
+    private const float BounceVelocity = -300f;
+    private const float ExplosionDrawOffset = 8f;
+    private const float ExplosionDuration = 0.15f;
     private float lifeTime;
     private float timeOfDeath;
     private bool dead = false;
@@ -22,7 +25,8 @@ public class Fireball : IProjectile
     public float BounceSpeed { get; }
     public bool CollisionEnabled => Active && !dead;
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
-    public Box Bounds => new Box(Position.X, Position.Y, 24, 24);
+    public Box Bounds => new Box(Position.X, Position.Y,
+        GameConstants.World.HalfTileSize, GameConstants.World.HalfTileSize);
     public bool Active { get; private set; }
 
     public float GravityScale => dead ? 0f : 1f;
@@ -32,7 +36,7 @@ public class Fireball : IProjectile
         Vector2 position,
         Vector2 velocity,
         float lifeTime,
-        float bounceSpeed = 400f)
+        float bounceSpeed = GameConstants.Projectiles.DefaultBounceSpeed)
     {
         this.sprite = sprite;
         Position = position;
@@ -52,7 +56,7 @@ public class Fireball : IProjectile
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
             elapsedTime += deltaTime;
         if (dead) {
-            if (elapsedTime - timeOfDeath < 0.15f)
+            if (elapsedTime - timeOfDeath < ExplosionDuration)
             {
                 sprite.Play("Explode");
                 sprite.UpdateAnimation(gameTime);
@@ -94,7 +98,7 @@ public class Fireball : IProjectile
             {
                 if (IsOnGround && BounceSpeed > 0f)
                 {
-                    Velocity = new Vector2(Velocity.X, -300f);
+                    Velocity = new Vector2(Velocity.X, BounceVelocity);
                     IsOnGround = false;
                 }
             }
@@ -115,7 +119,8 @@ public class Fireball : IProjectile
         if (Active) {
             if(dead)
             {
-                sprite.Draw(spriteBatch, new Vector2(Position.X - 8, Position.Y - 8));
+                sprite.Draw(spriteBatch, new Vector2(
+                    Position.X - ExplosionDrawOffset, Position.Y - ExplosionDrawOffset));
             } else {
                 SpriteEffects flip = Velocity.X < 0f ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
                 sprite.Draw(spriteBatch, Position, (float)flip);

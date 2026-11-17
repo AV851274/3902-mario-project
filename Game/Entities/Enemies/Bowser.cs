@@ -11,8 +11,9 @@ public class Bowser : EnemyBase
 {
     private readonly IEntitySpawner spawner;
 
-    private const float WalkSpeed = 30f;
-    private const float JumpSpeed = -500f;
+    private const float HammerThrowChancePerFrame = 0.05f;
+    private const float FireBreathChancePerFrame = 0.01f;
+    private const float JumpChancePerFrame = 0.01f;
     private const int Width = 80;
     private const int Height = 80;
     public override bool canBeStomped => false;
@@ -35,7 +36,7 @@ public class Bowser : EnemyBase
     {
         this.spawner = spawner;
         IsOnGround = true;
-        Velocity = new Vector2(-WalkSpeed, 0f);
+        Velocity = new Vector2(-GameConstants.Enemies.SlowWalkSpeed, 0f);
     }
 
     public override void Draw(SpriteBatch spriteBatch)
@@ -61,24 +62,24 @@ public class Bowser : EnemyBase
         float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         if (!IsDefeated)
         {
-            if (Random.Shared.NextDouble() < 0.05) // 5% chance to throw a hammer each frame
+            if (Random.Shared.NextDouble() < HammerThrowChancePerFrame)
             {
                 ThrowHammer();
             }
 
-            if (Random.Shared.NextDouble() < 0.01) // 1% chance to breathe fire each frame
+            if (Random.Shared.NextDouble() < FireBreathChancePerFrame)
             {
                 BreatheFire();
             }
 
-            if (IsOnGround && Random.Shared.NextDouble() < 0.01) // 1% chance to jump each frame
+            if (IsOnGround && Random.Shared.NextDouble() < JumpChancePerFrame)
             {
-                Velocity = new Vector2(Velocity.X, JumpSpeed);
+                Velocity = new Vector2(Velocity.X, GameConstants.Enemies.StandardJumpVelocity);
                 IsOnGround = false;
             }
 
             if (Random.Shared.NextDouble() <
-                0.05) // 5% chance to switch moving direction each frame without changin the facing direction
+                GameConstants.Enemies.DirectionChangeChancePerFrame)
             {
                 Velocity = new Vector2(-Velocity.X, Velocity.Y);
             }
@@ -97,16 +98,20 @@ public class Bowser : EnemyBase
     {
         float direction = facingDirection == Direction.Left ? -1f : 1f;
         spawner.TrySpawnProjectile(ProjectileType.Hammer,
-            Position + new Vector2(20f * direction, -20f),
-            new Vector2(250f * direction, -350f));
+            Position + new Vector2(
+                GameConstants.Enemies.HammerSpawnOffsetX * direction,
+                GameConstants.Enemies.HammerSpawnOffsetY),
+            new Vector2(
+                GameConstants.Enemies.ProjectileHorizontalVelocity * direction,
+                GameConstants.Enemies.HammerVelocityY));
     }
 
     public void BreatheFire()
     {
         float direction = facingDirection == Direction.Left ? -1f : 1f;
         spawner.TrySpawnProjectile(ProjectileType.Fire,
-            Position + new Vector2(20f * direction, 0f),
-            new Vector2(250f * direction, 0f));
+            Position + new Vector2(GameConstants.Enemies.HammerSpawnOffsetX * direction, 0f),
+            new Vector2(GameConstants.Enemies.ProjectileHorizontalVelocity * direction, 0f));
     }
 
     protected override void OnWallBounce(float RelativeVelocityBeforeX)

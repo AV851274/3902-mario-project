@@ -8,11 +8,8 @@ namespace Mario.Game.Entities.Enemies;
 
 public class Spiny : EnemyBase
 {
-    private const float WalkSpeed = 60f;
-    private const float KickSpeed = 6 * WalkSpeed;
-    private const float KickGraceTime = 0.25f;
-    private const int Width = 40;
-    private const int Height = 40;
+    private const float KickSpeed =
+        GameConstants.Enemies.KickSpeedMultiplier * GameConstants.Enemies.StandardWalkSpeed;
 
     // private float leftBound;
     // private float rightBound;
@@ -25,9 +22,10 @@ public class Spiny : EnemyBase
     public override bool canBeStomped => false;
 
     public Spiny(ISprite sprite, Vector2 initialPosition)
-        : base(sprite, initialPosition, Width, Height)
+        : base(sprite, initialPosition, GameConstants.Entities.StandardSize,
+            GameConstants.Entities.StandardSize)
     {
-        Velocity = new Vector2(-WalkSpeed, 0f);
+        Velocity = new Vector2(-GameConstants.Enemies.StandardWalkSpeed, 0f);
     }
 
     public override void Draw(SpriteBatch spriteBatch)

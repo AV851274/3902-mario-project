@@ -13,10 +13,23 @@ public class PlayerBody : PlayerBodyBase
     private const float TurnAcceleration = 900f;
     private const float DashSpeedMultiplier = 1.75f;
     private const float DashAccelerationMultiplier = 1.75f;
-    private float JumpSpeed => Math.Abs(Velocity.X) > 190f ? 550f : 500f;
-    private bool IsRising => Velocity.Y < -20f;
-    public override float GravityScale => IsRising && IsJumpHeld ? 0.7f : IsRising ? 2f : 1f;
-    protected override float SmallWidth => 36f;
+    private const float FastJumpHorizontalSpeed = 190f;
+    private const float FastJumpSpeed = 550f;
+    private const float StandardJumpSpeed = 500f;
+    private const float RisingVelocityThreshold = -20f;
+    private const float HeldJumpGravityScale = 0.7f;
+    private const float RisingGravityScale = 2f;
+    private const float NormalGravityScale = 1f;
+    private float JumpSpeed => Math.Abs(Velocity.X) > FastJumpHorizontalSpeed
+        ? FastJumpSpeed
+        : StandardJumpSpeed;
+    private bool IsRising => Velocity.Y < RisingVelocityThreshold;
+    public override float GravityScale => IsRising && IsJumpHeld
+        ? HeldJumpGravityScale
+        : IsRising
+            ? RisingGravityScale
+            : NormalGravityScale;
+    protected override float SmallWidth => GameConstants.Player.SmallBodyWidth;
     //IsOnGround && Velocity.X == 0f ? 34f : 42f;
 
     public PlayerBody() { }

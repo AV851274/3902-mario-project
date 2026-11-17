@@ -5,9 +5,10 @@ namespace Mario.Game.Rendering.Camera;
 
 public class Camera2D
 {
+    private const float DefaultZoom = 1.6f;
     private readonly float zoom;
 
-    public Camera2D(float zoom = 1.6f)
+    public Camera2D(float zoom = DefaultZoom)
     {
         this.zoom = zoom;
     }

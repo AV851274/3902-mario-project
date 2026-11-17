@@ -13,10 +13,11 @@ public class BillLauncher : StaticEnemyBase, IPlayerFollower
 {
     private readonly IEntitySpawner spawner;
 
-    private const int Width = 40;
-    private const int Height = 40;
     private const float ShootCooldown = 3f;
     private const float MinShootDistance = 72f;
+    private const float LeftBillSpawnOffsetX = 2f;
+    private const float RightBillSpawnOffsetX = 5f;
+    private const float BillSpawnOffsetY = 4f;
     private IPlayer target;
     private float cooldownTimer = ShootCooldown;
 
@@ -32,7 +33,8 @@ public class BillLauncher : StaticEnemyBase, IPlayerFollower
     }
 
     public BillLauncher(ISprite sprite, Vector2 initialPosition, IEntitySpawner spawner)
-        : base(sprite, initialPosition, Width, Height)
+        : base(sprite, initialPosition, GameConstants.Entities.StandardSize,
+            GameConstants.Entities.StandardSize)
     {
         this.spawner = spawner;
     }
@@ -61,8 +63,10 @@ public class BillLauncher : StaticEnemyBase, IPlayerFollower
     {
         float direction = FacingDirection == Direction.Left ? -1f : 1f;
         spawner.TrySpawnProjectile(ProjectileType.BulletBill,
-            Position + new Vector2(FacingDirection == Direction.Left ? 2f : 5f, 4f), 
-            new Vector2(250f * direction, 0f));
+            Position + new Vector2(
+                FacingDirection == Direction.Left ? LeftBillSpawnOffsetX : RightBillSpawnOffsetX,
+                BillSpawnOffsetY),
+            new Vector2(GameConstants.Enemies.ProjectileHorizontalVelocity * direction, 0f));
     }
 
     public override void Stomp()

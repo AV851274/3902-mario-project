@@ -45,8 +45,8 @@ public class CourseClearScreenState : GameScreenStateBase
         graphicsDevice.Clear(Color.Black);
         spriteBatch.Begin(samplerState: SamplerState.PointClamp);
         float centerY = graphicsDevice.Viewport.Height / 2f;
-        DrawCenteredText("COURSE CLEAR", centerY - 80, Color.White);
-        DrawCenteredText("PRESS ENTER OR R TO RESTART", centerY + 40, Color.White);
+        DrawCenteredText("COURSE CLEAR", centerY - GameConstants.Screen.TitleOffset, Color.White);
+        DrawCenteredText("PRESS ENTER OR R TO RESTART", centerY + GameConstants.Screen.PromptOffset, Color.White);
         spriteBatch.End();
     }
 }

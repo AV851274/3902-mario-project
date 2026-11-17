@@ -9,6 +9,15 @@ namespace Mario.Game.Entities.Players;
 
 public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
 {
+    private const int SmallBodyOffsetX = 2;
+    private const int SmallBodyTop = 8;
+    private const float SmallBodyHeight = 40f;
+    private const float BigBodyWidth = 42f;
+    private const float CrouchingBodyHeight = 56f;
+    private const float StandingBodyHeight = 80f;
+    private const int BigCrouchingBodyTop = -8;
+    private const int BigStandingBodyTop = -32;
+
     public Vector2 Position { get; set; }
 
     public Vector2 Velocity { get; set; }
@@ -21,7 +30,11 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
     public virtual float MaxFallSpeed => float.PositiveInfinity;
 
     public ICollider.BlockingModes BlockingMode => ICollider.BlockingModes.None;
-    public Box LocalBounds { get; set; } = new Box(2, 8, 36, 40);
+    public Box LocalBounds { get; set; } = new Box(
+        SmallBodyOffsetX,
+        SmallBodyTop,
+        GameConstants.Player.SmallBodyWidth,
+        SmallBodyHeight);
 
     public Box Bounds => new Box(
         Position.X + LocalBounds.X,
@@ -66,9 +79,17 @@ public abstract class PlayerBodyBase : IPhysicsBody, IPlayerBodyAction
     public void UpdateBounds(MarioPower power)
     {
         bool small = power == MarioPower.Small;
-        float top = small ? 8f : IsCrouching ? -8f : -32f;
-        float width = small ? SmallWidth : 42f;
-        float height = small ? 40f : IsCrouching ? 56f : 80f;
+        float top = small
+            ? SmallBodyTop
+            : IsCrouching
+                ? BigCrouchingBodyTop
+                : BigStandingBodyTop;
+        float width = small ? SmallWidth : BigBodyWidth;
+        float height = small
+            ? SmallBodyHeight
+            : IsCrouching
+                ? CrouchingBodyHeight
+                : StandingBodyHeight;
         LocalBounds = new Box(0, top, width, height);
     }
 
