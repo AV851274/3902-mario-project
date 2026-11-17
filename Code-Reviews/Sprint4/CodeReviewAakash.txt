@@ -1,0 +1,23 @@
+Code Review of PlayerBodyBase.cs
+Reviewer: Aakash Vatti  
+Code authored (and edited) by: Sam Chandler, Micheal Sidoti, ZX
+Day of Code Review: 11/16/2026  
+Sprint 4
+
+Readability: 8.5/10
+
+Overall, PlayerBodyBase.cs is pretty straightforward to read. The variable and method names make it easy to 
+understand what each part is responsible for, especially methods like UpdateBounds, PrepareHorizontalMovement, 
+and ClearInput. I also like how the shared movement properties are grouped together. One thing that could be 
+improved is the PrepareHorizontalMovement method, since it has several nested conditions that make it a little 
+harder to follow. Breaking some of that logic into smaller methods or adding a few comments could improve 
+readability.
+
+Maintainability/Quality: 9/10
+
+I think using an abstract base class for player movement is a good design choice. It allows different player 
+body types to share properties and movement calculations without duplicating code. The abstract methods also 
+let each subclass implement its own movement behavior. One small improvement would be simplifying the 
+UpdateBounds method, since the nested ternary expressions for the player's dimensions could become harder to 
+maintain if more player forms are added. Overall, the class seems well organized and should be fairly easy to 
+extend.
