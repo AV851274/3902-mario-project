@@ -13,7 +13,7 @@ public class PlayerBody : PlayerBodyBase
     private const float TurnAcceleration = 900f;
     private const float DashSpeedMultiplier = 1.75f;
     private const float DashAccelerationMultiplier = 1.75f;
-    private float JumpSpeed => Math.Abs(Velocity.X) > 190f ? 550f : 500f;
+    private float JumpSpeed => Math.Abs(Velocity.X) > 190f ? 575f : 525f;
     private bool IsRising => Velocity.Y < -20f;
     public override float GravityScale => IsRising && IsJumpHeld ? 0.7f : IsRising ? 2f : 1f;
     protected override float SmallWidth => 36f;
